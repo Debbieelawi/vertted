@@ -8,7 +8,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
   
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -955,7 +955,7 @@
       border-color: var(--primary);
     }
 
-    /* ===== ABOUT VERTTED SECTION (NEW) ===== */
+    /* ===== ABOUT VERTTED SECTION ===== */
     .about-section {
       padding: 100px 0;
       background: var(--white);
@@ -971,7 +971,6 @@
       align-items: center;
     }
 
-    /* Left side: Curved Image Visual */
     .about-visual {
       position: relative;
       display: flex;
@@ -983,7 +982,7 @@
       width: 100%;
       max-width: 540px;
       aspect-ratio: 4 / 3;
-      border-radius: 0 0 0 120px; /* Curves the bottom-left */
+      border-radius: 0 0 0 120px;
       overflow: hidden;
       box-shadow: var(--shadow-lg);
       z-index: 2;
@@ -996,7 +995,6 @@
       display: block;
     }
 
-    /* The large overlapping orange curve */
     .about-ornament {
       position: absolute;
       top: -60px;
@@ -1009,7 +1007,6 @@
       opacity: 0.15;
     }
 
-    /* A smaller accent shape */
     .about-ornament-2 {
       position: absolute;
       bottom: -40px;
@@ -1022,7 +1019,6 @@
       opacity: 0.1;
     }
 
-    /* Right side: Text Content */
     .about-content {
       max-width: 540px;
     }
@@ -1105,6 +1101,178 @@
       font-size: 0.9rem;
       color: var(--text-muted);
       line-height: 1.5;
+    }
+
+    /* ===== STAND FOR SECTION ===== */
+    .stand-for-section {
+      padding: 100px 0;
+      background: var(--white); /* Changed to white */
+      color: var(--text-main); /* Changed text color */
+      overflow: hidden;
+    }
+
+    .stand-for-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Aligned to top */
+      margin-bottom: 60px;
+    }
+
+    .stand-for-header-left {
+      max-width: 700px;
+    }
+
+    .stand-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+
+    .stand-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .stand-for-header h2 {
+      font-family: 'Inter', sans-serif; /* Changed font */
+      font-size: 3.8rem;
+      font-weight: 700; /* Matched weight */
+      line-height: 1.1;
+      color: var(--primary); /* Changed color */
+      letter-spacing: -0.02em; /* Matched spacing */
+    }
+
+    .btn-explore-services {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 12px 24px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-pill);
+      background: transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-explore-services:hover {
+      background: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+    }
+
+    .btn-explore-services i {
+      font-size: 0.9rem;
+    }
+
+    /* Accordion Cards Layout */
+    .stand-cards-container {
+      display: flex;
+      gap: 16px;
+      height: 550px;
+    }
+
+    .stand-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      flex: 1;
+      transition: flex 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .stand-card.active {
+      flex: 2.5;
+    }
+
+    /* Dark gradient overlay for readability */
+    .stand-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.1) 100%);
+      z-index: 1;
+      transition: opacity 0.3s;
+    }
+
+    /* Content wrapper */
+    .stand-card-content {
+      position: relative;
+      z-index: 2;
+      padding: 40px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
+      color: var(--white); /* Ensure text remains white over images */
+    }
+
+    .card-heading-group {
+      transition: transform 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-number {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      letter-spacing: 0.05em;
+    }
+
+    .card-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.2;
+    }
+
+    .card-hidden-content {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.6s ease, opacity 0.5s ease, margin 0.5s ease;
+      margin-top: 0;
+    }
+
+    .stand-card.active .card-hidden-content {
+      max-height: 300px;
+      opacity: 1;
+      margin-top: 16px;
+    }
+
+    .card-subtitle {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 12px;
+      line-height: 1.4;
+      font-style: italic; /* Added italic */
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.6;
     }
 
     /* ===== SIDE CHATBOT ===== */
@@ -1320,7 +1488,7 @@
       }
       
       .about-image-wrapper {
-        border-radius: 0 0 120px 120px; /* Symmetrical curve on mobile */
+        border-radius: 0 0 120px 120px;
         max-width: 100%;
       }
       
@@ -1344,6 +1512,40 @@
         text-align: left;
         max-width: 500px;
         margin: 0 auto;
+      }
+
+      /* Stand For Responsive */
+      .stand-for-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+
+      .stand-for-header h2 {
+        font-size: 3rem;
+      }
+
+      .stand-cards-container {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .stand-card {
+        height: 120px; /* Collapsed height on mobile */
+        flex: none !important;
+        transition: height 0.5s ease;
+      }
+
+      .stand-card.active {
+        height: 400px; /* Expanded height on mobile */
+      }
+
+      .stand-card-content {
+        padding: 24px;
+      }
+
+      .card-title {
+        font-size: 1.3rem;
       }
     }
 
@@ -1450,6 +1652,12 @@
 
       .about-content h2 { font-size: 2.2rem; }
       .about-section { padding: 60px 0; }
+
+      .stand-for-section { padding: 60px 0; }
+      .stand-for-header h2 { font-size: 2.2rem; }
+      .stand-card-content { padding: 20px; }
+      .card-title { font-size: 1.1rem; }
+      .card-subtitle { font-size: 1rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1742,11 +1950,10 @@
     </div>
   </section>
 
-  <!-- ===== ABOUT VERTTED SECTION (NEW) ===== -->
+  <!-- ===== ABOUT VERTTED SECTION ===== -->
   <section class="about-section">
     <div class="container about-grid">
       
-      <!-- Left Visual -->
       <div class="about-visual">
         <div class="about-ornament"></div>
         <div class="about-ornament-2"></div>
@@ -1755,7 +1962,6 @@
         </div>
       </div>
 
-      <!-- Right Content -->
       <div class="about-content">
         <div class="about-label">About Vertted</div>
         <h2>Trusted Talent.<br><span>Real Results.</span></h2>
@@ -1786,6 +1992,81 @@
             </div>
           </div>
         </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== STAND FOR SECTION ===== -->
+  <section class="stand-for-section">
+    <div class="container">
+      
+      <div class="stand-for-header">
+        <div class="stand-for-header-left">
+          <div class="stand-label">What We Stand For</div>
+          <h2>Exceptional People.<br><span style="color: var(--accent);">Extraordinary Work.</span><br>Lasting Impact.</h2>
+        </div>
+        <a href="#" class="btn-explore-services">Explore our services <i class="fas fa-arrow-up-right"></i></a>
+      </div>
+
+      <div class="stand-cards-container" id="standCardsContainer">
+        
+        <!-- Card 01 -->
+        <div class="stand-card" data-index="0" style="background-image: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=800&auto=format&fit=crop');">
+          <div class="stand-card-content">
+            <div class="card-heading-group">
+              <span class="card-number">01.</span>
+              <h3 class="card-title">Trust & Authenticity</h3>
+            </div>
+            <div class="card-hidden-content">
+              <p class="card-subtitle">Real people. Verified profiles. Genuine confidence.</p>
+              <p class="card-desc">We build trust through transparency, authenticity, and verified profiles, helping businesses make confident decisions and establish credible, lasting partnerships.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 02 -->
+        <div class="stand-card" data-index="1" style="background-image: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=800&auto=format&fit=crop');">
+          <div class="stand-card-content">
+            <div class="card-heading-group">
+              <span class="card-number">02.</span>
+              <h3 class="card-title">Expertise & Excellence</h3>
+            </div>
+            <div class="card-hidden-content">
+              <p class="card-subtitle">Specialized skills that make a difference.</p>
+              <p class="card-desc">We connect businesses with skilled professionals who bring the right expertise, dedication, and commitment to delivering exceptional results.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 03 -->
+        <div class="stand-card" data-index="2" style="background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop');">
+          <div class="stand-card-content">
+            <div class="card-heading-group">
+              <span class="card-number">03.</span>
+              <h3 class="card-title">Meaningful Connections</h3>
+            </div>
+            <div class="card-hidden-content">
+              <p class="card-subtitle">Bringing the right talent and businesses together.</p>
+              <p class="card-desc">We create opportunities for businesses and professionals to connect, collaborate, and build valuable partnerships that drive mutual growth.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 04 -->
+        <div class="stand-card" data-index="3" style="background-image: url('https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=800&auto=format&fit=crop');">
+          <div class="stand-card-content">
+            <div class="card-heading-group">
+              <span class="card-number">04.</span>
+              <h3 class="card-title">Client Success & Satisfaction</h3>
+            </div>
+            <div class="card-hidden-content">
+              <p class="card-subtitle">Your goals. Our commitment. Your success, our measure.</p>
+              <p class="card-desc">We put our clients first by understanding their needs, exceeding expectations, and ensuring every connection contributes to meaningful results and lasting satisfaction.</p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -2144,6 +2425,52 @@
         currentStartIndex = (currentStartIndex + 3) % freelancers.length;
         renderFreelancers(currentStartIndex);
       }, 5000);
+
+      // ==========================================
+      // 5. STAND FOR ACCORDION LOGIC
+      // ==========================================
+      const standCards = document.querySelectorAll('.stand-card');
+      let activeStandIndex = 1; // Start from the second box
+      let standInterval;
+
+      function setActiveStandCard(index) {
+        standCards.forEach(card => card.classList.remove('active'));
+        if (standCards[index]) {
+          standCards[index].classList.add('active');
+        }
+        activeStandIndex = index;
+      }
+
+      // Set initial active card
+      setActiveStandCard(activeStandIndex);
+
+      // Auto-rotate every 7 seconds
+      function startStandRotation() {
+        standInterval = setInterval(() => {
+          let nextIndex = (activeStandIndex + 1) % standCards.length;
+          setActiveStandCard(nextIndex);
+        }, 7000); // Changed to 7000ms
+      }
+
+      startStandRotation();
+
+      // Optional: Allow manual click to change active card and reset timer
+      standCards.forEach((card, index) => {
+        card.addEventListener('click', () => {
+          if (index !== activeStandIndex) {
+            clearInterval(standInterval);
+            setActiveStandCard(index);
+            startStandRotation();
+          }
+        });
+      });
+
+      // Pause rotation on hover
+      const standContainer = document.getElementById('standCardsContainer');
+      if (standContainer) {
+        standContainer.addEventListener('mouseenter', () => clearInterval(standInterval));
+        standContainer.addEventListener('mouseleave', startStandRotation);
+      }
 
     });
   </script>
