@@ -72,14 +72,14 @@
       justify-content: space-between;
     }
 
-    /* Logo - Now an Image Tag */
+    /* Logo - Image Tag */
     .logo-container {
       display: flex;
       align-items: center;
     }
 
     .logo-img {
-      height: 40px; /* Adjust height as needed for your actual logo */
+      height: 40px;
       width: auto;
       object-fit: contain;
     }
@@ -357,7 +357,7 @@
       width: 100%;
       max-width: 600px;
       aspect-ratio: 1 / 1.05;
-      border-radius: 120px 0 0 0; /* Top-left curve matching the design */
+      border-radius: 120px 0 0 0;
       overflow: hidden;
       box-shadow: var(--shadow-lg);
       background-color: #d9d6d0;
@@ -370,7 +370,7 @@
       display: block;
     }
 
-    /* Floating Rating Card (Top Right) */
+    /* Floating Rating Card */
     .floating-rating {
       position: absolute;
       top: 20px;
@@ -401,7 +401,7 @@
       margin-top: 2px;
     }
 
-    /* Floating Delivery Card (Bottom Left) */
+    /* Floating Delivery Card */
     .floating-delivery {
       position: absolute;
       bottom: 40px;
@@ -492,6 +492,256 @@
 
     .trusted-logos img:hover {
       filter: grayscale(0%);
+    }
+
+    /* ===== MAIN SERVICES SECTION ===== */
+    .main-services {
+      padding: 80px 0;
+      background: var(--white);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .services-header {
+      margin-bottom: 40px;
+    }
+
+    .services-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .services-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .services-header h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.02em;
+    }
+
+    .services-layout {
+      display: flex;
+      gap: 24px;
+      min-height: 480px;
+    }
+
+    /* Large Featured Card */
+    .featured-service-card {
+      flex: 1 1 60%;
+      position: relative;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px;
+      color: var(--white);
+      box-shadow: var(--shadow-md);
+      transition: background 0.4s ease;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .featured-service-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+      z-index: 1;
+    }
+
+    .featured-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .featured-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 16px rgba(242, 107, 33, 0.4);
+    }
+
+    .featured-content h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .featured-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .featured-tags span {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .featured-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .featured-avatars {
+      display: flex;
+      align-items: center;
+    }
+
+    .featured-avatars img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      margin-right: -10px;
+      object-fit: cover;
+    }
+
+    .featured-browse {
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.2s;
+    }
+
+    .featured-browse:hover {
+      gap: 12px;
+    }
+
+    /* Small Cards Column */
+    .service-cards-column {
+      flex: 1 1 40%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .service-small-card {
+      flex: 1;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .service-small-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .service-small-card.active {
+      border-color: var(--accent);
+      border-width: 2px;
+      background: var(--accent-soft);
+    }
+
+    .small-card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .small-card-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      color: var(--white);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .small-card-header h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .small-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .small-card-tags span {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .small-card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .small-card-avatars {
+      display: flex;
+    }
+
+    .small-card-avatars img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      margin-right: -8px;
+      object-fit: cover;
+    }
+
+    .small-card-browse {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     /* ===== SIDE CHATBOT ===== */
@@ -678,6 +928,8 @@
     @media (max-width: 1024px) {
       .hero-content h1 { font-size: 3.4rem; }
       .hero-grid { gap: 30px; }
+      .services-layout { flex-direction: column; }
+      .featured-service-card { min-height: 400px; }
     }
 
     @media (max-width: 900px) {
@@ -761,6 +1013,11 @@
       
       .trusted-logos { gap: 20px 30px; }
       .trusted-logos img { height: 24px; }
+
+      .services-header h2 { font-size: 2rem; }
+      .featured-service-card { padding: 24px; min-height: 350px; }
+      .featured-content h3 { font-size: 1.6rem; }
+      .service-small-card { padding: 16px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -775,8 +1032,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="#" class="logo-container">
-        <!-- REPLACE the src below with your real logo image path -->
-        <img src="image/vertttedlogo.jpeg" alt="Vertted Logo" class="logo-img" />
+        <img src="https://task-match-chat.lovable.app/vertied-logo.png" alt="Vertted Logo" class="logo-img" />
       </a>
       
       <nav class="nav-links">
@@ -838,7 +1094,6 @@
       <div class="hero-visual">
         <div class="curved-video-wrapper">
           <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1287&auto=format&fit=crop">
-            <!-- A serene, professional workspace video -->
             <source src="https://cdn.pixabay.com/video/2020/08/12/47144-450030936_large.mp4" type="video/mp4" />
           </video>
         </div>
@@ -867,12 +1122,141 @@
     <div class="container">
       <div class="trusted-label">Trusted by leading teams</div>
       <div class="trusted-logos">
-        <!-- Placeholder logos for demonstration. Replace src with actual client logos. -->
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" />
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Amazonsmile_logo.svg/2560px-Amazonsmile_logo.svg.png" alt="Amazon" />
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="Netflix" />
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png" alt="Microsoft" />
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Slack_Technologies_Logo.svg/2560px-Slack_Technologies_Logo.svg.png" alt="Slack" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN SERVICES SECTION (NEW) ===== -->
+  <section class="main-services">
+    <div class="container">
+      
+      <div class="services-header">
+        <div class="services-label">MAIN SERVICES</div>
+        <h2>Explore specialists, not generalists</h2>
+      </div>
+
+      <div class="services-layout">
+        
+        <!-- Large Featured Card (Defaults to AI Automation) -->
+        <div class="featured-service-card" id="featuredCard">
+          <div class="featured-content" id="featuredContent">
+            <div class="featured-icon" id="featuredIcon"><i class="fas fa-robot"></i></div>
+            <h3 id="featuredTitle">AI Automation</h3>
+            <div class="featured-tags" id="featuredTags">
+              <span>AI integration</span>
+              <span>Chatbots</span>
+              <span>Workflow automation</span>
+              <span>Prompt engineering</span>
+            </div>
+            <div class="featured-bottom-row">
+              <div class="featured-avatars">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Specialist">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Specialist">
+                <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Specialist">
+              </div>
+              <a href="#" class="featured-browse">Browse <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Smaller Service Cards -->
+        <div class="service-cards-column">
+          
+          <!-- Card 1: Website & Development -->
+          <div class="service-small-card" data-service="web">
+            <div class="small-card-header">
+              <div class="small-card-icon"><i class="fas fa-code"></i></div>
+              <h3>Website & Development</h3>
+            </div>
+            <div class="small-card-tags">
+              <span>UI/UX design</span>
+              <span>WordPress</span>
+              <span>Webflow</span>
+              <span>Shopify</span>
+            </div>
+            <div class="small-card-bottom">
+              <div class="small-card-avatars">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User">
+                <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="User">
+              </div>
+              <span class="small-card-browse">Browse <i class="fas fa-arrow-right"></i></span>
+            </div>
+          </div>
+
+          <!-- Card 2: Marketing -->
+          <div class="service-small-card" data-service="marketing">
+            <div class="small-card-header">
+              <div class="small-card-icon"><i class="fas fa-bullhorn"></i></div>
+              <h3>Marketing</h3>
+            </div>
+            <div class="small-card-tags">
+              <span>Social media</span>
+              <span>SEO</span>
+              <span>Paid ads</span>
+              <span>Email</span>
+            </div>
+            <div class="small-card-bottom">
+              <div class="small-card-avatars">
+                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User">
+                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="User">
+                <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="User">
+              </div>
+              <span class="small-card-browse">Browse <i class="fas fa-arrow-right"></i></span>
+            </div>
+          </div>
+
+          <!-- Card 3: Video & Animation -->
+          <div class="service-small-card" data-service="video">
+            <div class="small-card-header">
+              <div class="small-card-icon"><i class="fas fa-video"></i></div>
+              <h3>Video & Animation</h3>
+            </div>
+            <div class="small-card-tags">
+              <span>Video editing</span>
+              <span>Motion graphics</span>
+              <span>Explainers</span>
+              <span>Reels</span>
+            </div>
+            <div class="small-card-bottom">
+              <div class="small-card-avatars">
+                <img src="https://randomuser.me/api/portraits/men/78.jpg" alt="User">
+                <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="User">
+                <img src="https://randomuser.me/api/portraits/men/15.jpg" alt="User">
+              </div>
+              <span class="small-card-browse">Browse <i class="fas fa-arrow-right"></i></span>
+            </div>
+          </div>
+
+          <!-- Card 4: AI Automation (Note: This is already featured by default, but we include it here for completeness of the 4 services) -->
+          <div class="service-small-card" data-service="ai">
+            <div class="small-card-header">
+              <div class="small-card-icon"><i class="fas fa-robot"></i></div>
+              <h3>AI Automation</h3>
+            </div>
+            <div class="small-card-tags">
+              <span>AI integration</span>
+              <span>Chatbots</span>
+              <span>Workflow automation</span>
+              <span>Prompt engineering</span>
+            </div>
+            <div class="small-card-bottom">
+              <div class="small-card-avatars">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User">
+                <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="User">
+              </div>
+              <span class="small-card-browse">Browse <i class="fas fa-arrow-right"></i></span>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </div>
   </section>
@@ -930,30 +1314,27 @@
         if (isDeleting) {
           typewriterElement.textContent = currentPhrase.substring(0, charIndex - 1);
           charIndex--;
-          typingSpeed = 50; // Faster deletion
+          typingSpeed = 50;
         } else {
           typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
           charIndex++;
-          typingSpeed = 100; // Normal typing
+          typingSpeed = 100;
         }
 
         if (!isDeleting && charIndex === currentPhrase.length) {
-          // Pause at full phrase
           typingSpeed = 2000;
           isDeleting = true;
         } else if (isDeleting && charIndex === 0) {
           isDeleting = false;
           phraseIndex = (phraseIndex + 1) % phrases.length;
-          typingSpeed = 500; // Pause before typing next
+          typingSpeed = 500;
         }
 
         setTimeout(type, typingSpeed);
       }
 
-      // Start the typewriter
       setTimeout(type, 1000);
 
-      // Hide typewriter when user starts typing
       const searchInput = document.getElementById('mainSearch');
       searchInput.addEventListener('input', () => {
         if (searchInput.value.length > 0) {
@@ -974,13 +1355,11 @@
       const chatInput = document.getElementById('chatInput');
       const sendChatBtn = document.getElementById('sendChatBtn');
 
-      let chatState = 'initial'; // Tracks conversation flow
+      let chatState = 'initial';
 
       function openChat() {
         chatPanel.classList.add('active');
         chatOverlay.classList.add('active');
-        
-        // Reset if it's the first time opening
         if (chatMessages.children.length === 0) {
           startConversation();
         }
@@ -995,7 +1374,6 @@
       closeChatBtn.addEventListener('click', closeChat);
       chatOverlay.addEventListener('click', closeChat);
 
-      // Add a message to the UI
       function addMessage(text, sender = 'bot', options = null) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `message ${sender}`;
@@ -1028,16 +1406,11 @@
       }
 
       function handleUserSelection(selection) {
-        // Remove options from the last bot message to prevent double-clicking
         const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
-        if (lastBotMsg) {
-          lastBotMsg.remove();
-        }
+        if (lastBotMsg) lastBotMsg.remove();
 
-        // Add the user's choice as a message
         addMessage(selection, 'user');
 
-        // Process based on state and selection
         setTimeout(() => {
           if (chatState === 'initial') {
             if (selection === 'A freelancer') {
@@ -1053,7 +1426,6 @@
                 "Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.",
                 'bot'
               );
-              // In a real app, this would trigger a form or email.
             }
           } else if (chatState === 'choosing_service') {
             chatState = 'service_selected';
@@ -1061,8 +1433,6 @@
               "Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.",
               'bot'
             );
-            
-            // Optional: Provide a picture if they selected Marketing (as requested in prompt)
             if (selection === 'Marketing') {
               const imgMsg = document.createElement('div');
               imgMsg.className = 'message bot';
@@ -1074,24 +1444,18 @@
         }, 600);
       }
 
-      // Handle typed input
       function handleTypedMessage() {
         const text = chatInput.value.trim();
         if (!text) return;
 
-        // Remove options from the last bot message if they exist
         const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
-        if (lastBotMsg) {
-          lastBotMsg.remove();
-        }
+        if (lastBotMsg) lastBotMsg.remove();
 
         addMessage(text, 'user');
         chatInput.value = '';
 
-        // Simulate AI thinking
         setTimeout(() => {
           if (chatState === 'initial') {
-            // If they type instead of clicking, try to guess intent
             const lower = text.toLowerCase();
             if (lower.includes('freelancer') || lower.includes('expert')) {
               handleUserSelection('A freelancer');
@@ -1117,7 +1481,82 @@
       chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleTypedMessage();
       });
-      
+
+      // ==========================================
+      // 3. INTERACTIVE MAIN SERVICES
+      // ==========================================
+      const serviceData = {
+        web: {
+          title: 'Website & Development',
+          icon: 'fa-code',
+          bgImage: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000&auto=format&fit=crop',
+          tags: ['UI/UX design', 'WordPress', 'Webflow', 'Shopify']
+        },
+        marketing: {
+          title: 'Marketing',
+          icon: 'fa-bullhorn',
+          bgImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop',
+          tags: ['Social media', 'SEO', 'Paid ads', 'Email']
+        },
+        video: {
+          title: 'Video & Animation',
+          icon: 'fa-video',
+          bgImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1000&auto=format&fit=crop',
+          tags: ['Video editing', 'Motion graphics', 'Explainers', 'Reels']
+        },
+        ai: {
+          title: 'AI Automation',
+          icon: 'fa-robot',
+          bgImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop',
+          tags: ['AI integration', 'Chatbots', 'Workflow automation', 'Prompt engineering']
+        }
+      };
+
+      const featuredCard = document.getElementById('featuredCard');
+      const featuredContent = document.getElementById('featuredContent');
+      const featuredIcon = document.getElementById('featuredIcon');
+      const featuredTitle = document.getElementById('featuredTitle');
+      const featuredTags = document.getElementById('featuredTags');
+      const smallCards = document.querySelectorAll('.service-small-card');
+
+      // Set initial background for AI (default)
+      featuredCard.style.backgroundImage = `url(${serviceData.ai.bgImage})`;
+
+      // Highlight the active AI small card by default
+      document.querySelector('.service-small-card[data-service="ai"]').classList.add('active');
+
+      smallCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const serviceKey = card.getAttribute('data-service');
+          const data = serviceData[serviceKey];
+
+          // Update active class
+          smallCards.forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+
+          // Fade out content
+          featuredContent.style.opacity = '0';
+          
+          setTimeout(() => {
+            // Update content
+            featuredCard.style.backgroundImage = `url(${data.bgImage})`;
+            featuredIcon.innerHTML = `<i class="fas ${data.icon}"></i>`;
+            featuredTitle.textContent = data.title;
+            
+            // Rebuild tags
+            featuredTags.innerHTML = '';
+            data.tags.forEach(tag => {
+              const span = document.createElement('span');
+              span.textContent = tag;
+              featuredTags.appendChild(span);
+            });
+
+            // Fade in
+            featuredContent.style.opacity = '1';
+          }, 200);
+        });
+      });
+
     });
   </script>
 </body>
