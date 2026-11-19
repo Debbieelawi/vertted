@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vertted — Hire verified freelancers & specialists</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fafaf9;
+      color: #1a1a24;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ===== VARIABLES ===== */
+    :root {
+      --primary: #1e2b4f;
+      --primary-dark: #151d36;
+      --accent: #f26b21;
+      --accent-hover: #d95b17;
+      --accent-soft: #fdf2e8;
+      --text-main: #1a1a24;
+      --text-muted: #5e5e6b;
+      --border-color: #e5e3df;
+      --white: #ffffff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+      --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
+      --shadow-lg: 0 24px 64px rgba(0,0,0,0.12);
+      --radius-pill: 50px;
+      --radius-card: 24px;
+    }
+
+    /* ===== HEADER ===== */
+    .site-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Logo - Now an Image Tag */
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      height: 40px; /* Adjust height as needed for your actual logo */
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.4rem;
+      align-items: center;
+      font-weight: 500;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .nav-links a {
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .btn-signin {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-main);
+      transition: color 0.2s;
+    }
+
+    .btn-signin:hover {
+      color: var(--accent);
+    }
+
+    .btn-primary-dark {
+      background: var(--primary);
+      color: var(--white);
+      padding: 10px 24px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-primary-dark:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.4rem;
+      color: var(--primary);
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      padding: 60px 0 80px;
+      background: radial-gradient(circle at 90% 10%, #fdf2e8 0%, transparent 40%),
+                  linear-gradient(180deg, #fafaf9 0%, #ffffff 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+
+    /* Left Content */
+    .hero-content {
+      flex: 1 1 50%;
+      max-width: 600px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid #f2c7a7;
+      color: #b84c0a;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 16px;
+      border-radius: 40px;
+      margin-bottom: 24px;
+    }
+
+    .hero-badge i {
+      font-size: 0.85rem;
+    }
+
+    .hero-content h1 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 4.2rem;
+      line-height: 1.08;
+      color: var(--primary);
+      margin-bottom: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-content h1 .highlight {
+      color: var(--accent);
+    }
+
+    .hero-content p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    /* Search Bar */
+    .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-pill);
+      padding: 6px 6px 6px 24px;
+      box-shadow: var(--shadow-sm);
+      max-width: 600px;
+      transition: box-shadow 0.2s;
+      margin-bottom: 24px;
+    }
+
+    .search-wrapper:focus-within {
+      box-shadow: var(--shadow-md);
+    }
+
+    .search-wrapper i {
+      color: #888896;
+      font-size: 1.1rem;
+    }
+
+    .search-input-container {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      overflow: hidden;
+    }
+
+    .search-input-container input {
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      background: transparent;
+      position: relative;
+      z-index: 2;
+    }
+
+    .typewriter-text {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888896;
+      font-size: 1rem;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    .typewriter-text::after {
+      content: '|';
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .search-wrapper button {
+      background: var(--accent);
+      color: var(--white);
+      border-radius: var(--radius-pill);
+      padding: 14px 36px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s;
+    }
+
+    .search-wrapper button:hover {
+      background: var(--accent-hover);
+    }
+
+    /* AI Chat & Services Row */
+    .hero-bottom-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-chat-ai {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--primary);
+      color: var(--white);
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 4px 12px rgba(30, 43, 79, 0.2);
+    }
+
+    .btn-chat-ai:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-chat-ai i {
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .popular-tags {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .popular-tags span {
+      font-weight: 500;
+    }
+
+    .popular-tags button {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-main);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .popular-tags button:hover {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    /* Right Visual */
+    .hero-visual {
+      flex: 1 1 50%;
+      position: relative;
+      display: flex;
+      justify-content: flex-end;
+      min-height: 600px;
+    }
+
+    .curved-video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      aspect-ratio: 1 / 1.05;
+      border-radius: 120px 0 0 0; /* Top-left curve matching the design */
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      background-color: #d9d6d0;
+    }
+
+    .curved-video-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Floating Rating Card (Top Right) */
+    .floating-rating {
+      position: absolute;
+      top: 20px;
+      right: -15px;
+      background: var(--accent);
+      color: var(--white);
+      padding: 14px 20px;
+      border-radius: 16px;
+      box-shadow: 0 12px 24px rgba(242, 107, 33, 0.3);
+      text-align: center;
+      z-index: 10;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-rating .rating-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .floating-rating .rating-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    /* Floating Delivery Card (Bottom Left) */
+    .floating-delivery {
+      position: absolute;
+      bottom: 40px;
+      left: -30px;
+      background: var(--white);
+      padding: 12px 20px;
+      border-radius: 16px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+      animation: float 8s ease-in-out infinite reverse;
+    }
+
+    .floating-delivery img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .floating-delivery-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .floating-delivery-text strong {
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .floating-delivery-text span {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .floating-delivery-text .star {
+      color: var(--accent);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* ===== TRUSTED BY SECTION ===== */
+    .trusted-by {
+      padding: 50px 0 60px;
+      background: var(--white);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .trusted-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 30px;
+    }
+
+    .trusted-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 40px 60px;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+
+    .trusted-logos:hover {
+      opacity: 0.8;
+    }
+
+    .trusted-logos img {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+      filter: grayscale(100%);
+      transition: filter 0.3s;
+    }
+
+    .trusted-logos img:hover {
+      filter: grayscale(0%);
+    }
+
+    /* ===== SIDE CHATBOT ===== */
+    .chatbot-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(2px);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s;
+    }
+
+    .chatbot-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .chatbot-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 420px;
+      max-width: 100vw;
+      background: var(--white);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.3s ease-out;
+    }
+
+    .chatbot-panel.active {
+      transform: translateX(0);
+    }
+
+    .chatbot-header {
+      background: var(--primary);
+      color: var(--white);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .chatbot-header-avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .chatbot-header-info h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .chatbot-header-info p {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .chatbot-close {
+      margin-left: auto;
+      color: var(--white);
+      font-size: 1.2rem;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+
+    .chatbot-close:hover {
+      opacity: 1;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #fafaf9;
+    }
+
+    .message {
+      max-width: 85%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.bot {
+      background: #f3f2ef;
+      color: var(--text-main);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .message.user {
+      background: var(--primary);
+      color: var(--white);
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .chat-option-btn {
+      background: var(--white);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .chat-option-btn:hover {
+      background: var(--accent);
+      color: var(--white);
+    }
+
+    .chatbot-input-area {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--white);
+    }
+
+    .chatbot-input-area input {
+      flex: 1;
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 12px 18px;
+      font-size: 0.9rem;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .chatbot-input-area input:focus {
+      border-color: var(--primary);
+    }
+
+    .chatbot-send-btn {
+      background: var(--accent);
+      color: var(--white);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .chatbot-send-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .hero-content h1 { font-size: 3.4rem; }
+      .hero-grid { gap: 30px; }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .menu-toggle { display: block; }
+      .header-actions .btn-signin { display: none; }
+      
+      .hero-grid {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .hero-content { max-width: 100%; }
+      .hero-content p { margin-left: auto; margin-right: auto; }
+      .search-wrapper { margin-left: auto; margin-right: auto; }
+      .hero-bottom-row { justify-content: center; }
+      
+      .hero-visual {
+        width: 100%;
+        min-height: 450px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      
+      .curved-video-wrapper {
+        max-width: 500px;
+        border-radius: 80px 0 0 0;
+      }
+      
+      .floating-delivery { left: 0; bottom: 20px; }
+      .floating-rating { right: 0; top: 10px; }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 0 20px; }
+      .hero-content h1 { font-size: 2.6rem; }
+      .hero-content p { font-size: 1rem; }
+      
+      .search-wrapper {
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 12px;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+      }
+      
+      .search-wrapper i { display: none; }
+      
+      .search-input-container {
+        background: var(--white);
+        border: 1px solid var(--border-color);
+        border-radius: 40px;
+        width: 100%;
+        box-shadow: var(--shadow-sm);
+        padding: 14px 20px;
+      }
+      
+      .search-wrapper button {
+        width: 100%;
+        margin-top: 10px;
+        border-radius: 40px;
+      }
+
+      .hero-bottom-row { flex-direction: column; align-items: stretch; }
+      .btn-chat-ai { justify-content: center; }
+      .popular-tags { justify-content: center; margin-top: 10px; }
+      
+      .curved-video-wrapper {
+        border-radius: 60px 0 0 0;
+        aspect-ratio: 1/1.1;
+      }
+      
+      .floating-rating { padding: 10px 14px; }
+      .floating-rating .rating-value { font-size: 1.3rem; }
+      .floating-delivery { padding: 8px 12px; gap: 8px; }
+      .floating-delivery img { width: 32px; height: 32px; }
+      .floating-delivery-text strong { font-size: 0.8rem; }
+      
+      .chatbot-panel { width: 100%; }
+      
+      .trusted-logos { gap: 20px 30px; }
+      .trusted-logos img { height: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floating-rating, .floating-delivery { animation: none; }
+      .typewriter-text::after { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#" class="logo-container">
+        <!-- REPLACE the src below with your real logo image path -->
+        <img src="image/vertttedlogo.jpeg" alt="Vertted Logo" class="logo-img" />
+      </a>
+      
+      <nav class="nav-links">
+        <a href="#">Explore services</a>
+        <a href="#">Freelancers</a>
+        <a href="#">Hire the agency</a>
+        <a href="#">How it works</a>
+      </nav>
+      
+      <div class="header-actions">
+        <button class="btn-signin">Sign in</button>
+        <button class="btn-primary-dark">Join as freelancer</button>
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="container hero-grid">
+      
+      <!-- Left Content -->
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-check-circle"></i> EVERY FREELANCER & REVIEW ADMIN-VERIFIED
+        </div>
+        
+        <h1>Find the <span class="highlight">right talent.</span><br>Make great work happen.</h1>
+        
+        <p>Not just a designer — a Figma specialist for fintech apps. Discover vetted niche freelancers, fast, reliable and trusted.</p>
+        
+        <!-- Search Bar with Typewriter -->
+        <div class="search-wrapper">
+          <i class="fas fa-search"></i>
+          <div class="search-input-container">
+            <span class="typewriter-text" id="typewriter"></span>
+            <input type="text" id="mainSearch" />
+          </div>
+          <button>Search</button>
+        </div>
+        
+        <!-- AI Chat & Popular Services -->
+        <div class="hero-bottom-row">
+          <button class="btn-chat-ai" id="openChatBtn">
+            <i class="fas fa-sparkles"></i> Chat with AI
+          </button>
+          
+          <div class="popular-tags">
+            <span>Popular:</span>
+            <button>Programming & Tech</button>
+            <button>Digital Marketing</button>
+            <button>Video Animation</button>
+            <button>AI Automation</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Visual: Video with Floating Elements -->
+      <div class="hero-visual">
+        <div class="curved-video-wrapper">
+          <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1287&auto=format&fit=crop">
+            <!-- A serene, professional workspace video -->
+            <source src="https://cdn.pixabay.com/video/2020/08/12/47144-450030936_large.mp4" type="video/mp4" />
+          </video>
+        </div>
+        
+        <!-- Floating Rating (Top Right) -->
+        <div class="floating-rating">
+          <div class="rating-value">4.9/5</div>
+          <div class="rating-label">average rating</div>
+        </div>
+        
+        <!-- Floating Delivery (Bottom Left) -->
+        <div class="floating-delivery">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" />
+          <div class="floating-delivery-text">
+            <strong>Amara just delivered</strong>
+            <span><i class="fas fa-star star"></i> 5.0 · verified review</span>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- ===== TRUSTED BY SECTION ===== -->
+  <section class="trusted-by">
+    <div class="container">
+      <div class="trusted-label">Trusted by leading teams</div>
+      <div class="trusted-logos">
+        <!-- Placeholder logos for demonstration. Replace src with actual client logos. -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Amazonsmile_logo.svg/2560px-Amazonsmile_logo.svg.png" alt="Amazon" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/2560px-Netflix_2015_logo.svg.png" alt="Netflix" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png" alt="Microsoft" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Slack_Technologies_Logo.svg/2560px-Slack_Technologies_Logo.svg.png" alt="Slack" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SIDE CHATBOT ===== -->
+  <div class="chatbot-overlay" id="chatOverlay"></div>
+  
+  <div class="chatbot-panel" id="chatPanel">
+    <div class="chatbot-header">
+      <div class="chatbot-header-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="chatbot-header-info">
+        <h3>Vertted AI assistant</h3>
+        <p>AI · replies instantly</p>
+      </div>
+      <button class="chatbot-close" id="closeChatBtn"><i class="fas fa-times"></i></button>
+    </div>
+    
+    <div class="chatbot-messages" id="chatMessages">
+      <!-- Messages injected via JS -->
+    </div>
+    
+    <div class="chatbot-input-area">
+      <input type="text" placeholder="Type a message..." id="chatInput" />
+      <button class="chatbot-send-btn" id="sendChatBtn">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // ==========================================
+      // 1. TYPEWRITER ANIMATION
+      // ==========================================
+      const typewriterElement = document.getElementById('typewriter');
+      const phrases = [
+        'What service do you need?',
+        'Website development',
+        'Digital Marketing',
+        'Video Animation',
+        'AI automation',
+        'App development'
+      ];
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      let typingSpeed = 100;
+
+      function type() {
+        const currentPhrase = phrases[phraseIndex];
+        
+        if (isDeleting) {
+          typewriterElement.textContent = currentPhrase.substring(0, charIndex - 1);
+          charIndex--;
+          typingSpeed = 50; // Faster deletion
+        } else {
+          typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
+          charIndex++;
+          typingSpeed = 100; // Normal typing
+        }
+
+        if (!isDeleting && charIndex === currentPhrase.length) {
+          // Pause at full phrase
+          typingSpeed = 2000;
+          isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          typingSpeed = 500; // Pause before typing next
+        }
+
+        setTimeout(type, typingSpeed);
+      }
+
+      // Start the typewriter
+      setTimeout(type, 1000);
+
+      // Hide typewriter when user starts typing
+      const searchInput = document.getElementById('mainSearch');
+      searchInput.addEventListener('input', () => {
+        if (searchInput.value.length > 0) {
+          typewriterElement.style.display = 'none';
+        } else {
+          typewriterElement.style.display = 'block';
+        }
+      });
+
+      // ==========================================
+      // 2. CHATBOT FUNCTIONALITY
+      // ==========================================
+      const openChatBtn = document.getElementById('openChatBtn');
+      const closeChatBtn = document.getElementById('closeChatBtn');
+      const chatOverlay = document.getElementById('chatOverlay');
+      const chatPanel = document.getElementById('chatPanel');
+      const chatMessages = document.getElementById('chatMessages');
+      const chatInput = document.getElementById('chatInput');
+      const sendChatBtn = document.getElementById('sendChatBtn');
+
+      let chatState = 'initial'; // Tracks conversation flow
+
+      function openChat() {
+        chatPanel.classList.add('active');
+        chatOverlay.classList.add('active');
+        
+        // Reset if it's the first time opening
+        if (chatMessages.children.length === 0) {
+          startConversation();
+        }
+      }
+
+      function closeChat() {
+        chatPanel.classList.remove('active');
+        chatOverlay.classList.remove('active');
+      }
+
+      openChatBtn.addEventListener('click', openChat);
+      closeChatBtn.addEventListener('click', closeChat);
+      chatOverlay.addEventListener('click', closeChat);
+
+      // Add a message to the UI
+      function addMessage(text, sender = 'bot', options = null) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${sender}`;
+        msgDiv.innerHTML = text;
+        
+        if (options && options.length > 0) {
+          const optDiv = document.createElement('div');
+          optDiv.className = 'chat-options';
+          options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'chat-option-btn';
+            btn.textContent = opt;
+            btn.addEventListener('click', () => handleUserSelection(opt));
+            optDiv.appendChild(btn);
+          });
+          msgDiv.appendChild(optDiv);
+        }
+        
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function startConversation() {
+        chatState = 'initial';
+        addMessage(
+          "Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?",
+          'bot',
+          ['A freelancer', 'The agency']
+        );
+      }
+
+      function handleUserSelection(selection) {
+        // Remove options from the last bot message to prevent double-clicking
+        const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
+        if (lastBotMsg) {
+          lastBotMsg.remove();
+        }
+
+        // Add the user's choice as a message
+        addMessage(selection, 'user');
+
+        // Process based on state and selection
+        setTimeout(() => {
+          if (chatState === 'initial') {
+            if (selection === 'A freelancer') {
+              chatState = 'choosing_service';
+              addMessage(
+                "Awesome! Which service: Website & Development, Marketing, or Video & Animation?",
+                'bot',
+                ['Website & Development', 'Marketing', 'Video & Animation']
+              );
+            } else if (selection === 'The agency') {
+              chatState = 'agency_selected';
+              addMessage(
+                "Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.",
+                'bot'
+              );
+              // In a real app, this would trigger a form or email.
+            }
+          } else if (chatState === 'choosing_service') {
+            chatState = 'service_selected';
+            addMessage(
+              "Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.",
+              'bot'
+            );
+            
+            // Optional: Provide a picture if they selected Marketing (as requested in prompt)
+            if (selection === 'Marketing') {
+              const imgMsg = document.createElement('div');
+              imgMsg.className = 'message bot';
+              imgMsg.innerHTML = '<img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=400&auto=format&fit=crop" alt="Marketing Specialist" style="width:100%; border-radius:8px; margin-top:8px;">';
+              chatMessages.appendChild(imgMsg);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+          }
+        }, 600);
+      }
+
+      // Handle typed input
+      function handleTypedMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        // Remove options from the last bot message if they exist
+        const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
+        if (lastBotMsg) {
+          lastBotMsg.remove();
+        }
+
+        addMessage(text, 'user');
+        chatInput.value = '';
+
+        // Simulate AI thinking
+        setTimeout(() => {
+          if (chatState === 'initial') {
+            // If they type instead of clicking, try to guess intent
+            const lower = text.toLowerCase();
+            if (lower.includes('freelancer') || lower.includes('expert')) {
+              handleUserSelection('A freelancer');
+            } else if (lower.includes('agency') || lower.includes('team')) {
+              handleUserSelection('The agency');
+            } else {
+              addMessage(
+                "I can help with that! Are you looking to hire a specific freelancer or the agency?",
+                'bot',
+                ['A freelancer', 'The agency']
+              );
+            }
+          } else {
+            addMessage(
+              "Got it! I've noted that down. Our team will review your request and get back to you shortly.",
+              'bot'
+            );
+          }
+        }, 800);
+      }
+
+      sendChatBtn.addEventListener('click', handleTypedMessage);
+      chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleTypedMessage();
+      });
+      
+    });
+  </script>
+</body>
+</html>
