@@ -58,7 +58,7 @@
       --dark-bg: #0d1627;
     }
 
-    /* ===== HEADER ===== */
+    /* ===== HEADER (NEW LAYOUT) ===== */
     .site-header {
       background: var(--white);
       border-bottom: 1px solid var(--border-color);
@@ -72,40 +72,78 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 20px;
     }
 
     .logo-container {
       display: flex;
       align-items: center;
+      flex-shrink: 0;
     }
 
     .logo-img {
-      height: 70px;
+      height: 60px;
       width: auto;
       object-fit: contain;
     }
 
-    .nav-links {
+    /* Header Search Bar */
+    .header-search-wrapper {
+      flex: 1;
+      max-width: 500px;
       display: flex;
-      gap: 2.4rem;
       align-items: center;
-      font-weight: 500;
-      font-size: 0.92rem;
-      color: var(--text-muted);
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-pill);
+      padding: 4px 4px 4px 20px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s;
+      margin: 0 20px;
     }
 
-    .nav-links a {
-      transition: color 0.2s;
+    .header-search-wrapper:focus-within {
+      box-shadow: var(--shadow-md);
+      border-color: #c9c6c0;
     }
 
-    .nav-links a:hover {
-      color: var(--accent);
+    .header-search-wrapper input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 0.95rem;
+      padding: 10px 12px;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+    }
+
+    .header-search-wrapper input::placeholder {
+      color: #a5a2b0;
+    }
+
+    .header-search-icon-btn {
+      background: var(--primary);
+      color: var(--white);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .header-search-icon-btn:hover {
+      background: var(--primary-dark);
     }
 
     .header-actions {
       display: flex;
       align-items: center;
       gap: 1.2rem;
+      flex-shrink: 0;
     }
 
     .btn-signin {
@@ -113,6 +151,7 @@
       font-size: 0.92rem;
       color: var(--text-main);
       transition: color 0.2s;
+      white-space: nowrap;
     }
 
     .btn-signin:hover {
@@ -127,6 +166,7 @@
       font-weight: 600;
       font-size: 0.9rem;
       transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
     }
 
     .btn-primary-dark:hover {
@@ -281,10 +321,18 @@
       background: var(--accent-hover);
     }
 
+    /* Hero Bottom Row (Updated) */
     .hero-bottom-row {
       display: flex;
       align-items: center;
       gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-bottom-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
@@ -308,6 +356,20 @@
     }
 
     .btn-chat-ai i {
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .chat-hint-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .chat-hint-text i {
       color: var(--accent);
       font-size: 1.1rem;
     }
@@ -511,8 +573,6 @@
       letter-spacing: 0.1em;
       margin-bottom: 12px;
     }
-
-   
 
     .services-header h2 {
       font-family: 'Inter', sans-serif;
@@ -806,7 +866,6 @@
       margin-bottom: 12px;
     }
 
-
     .freelancers-header h2 {
       font-family: 'Inter', sans-serif;
       font-size: 2.8rem;
@@ -867,7 +926,6 @@
       object-fit: cover;
     }
 
-    /* ===== NEW: online indicator wrap (added) ===== */
     .freelancer-avatar-wrap {
       position: relative;
       display: inline-block;
@@ -889,7 +947,6 @@
       0%, 100% { box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3); }
       50% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.12); }
     }
-    /* ===== end online indicator ===== */
 
     .freelancer-info h3 {
       font-family: 'Inter', sans-serif;
@@ -1047,8 +1104,6 @@
       margin-bottom: 20px;
     }
 
-   
-
     .about-content h2 {
       font-family: 'Inter', sans-serif;
       font-size: 3rem;
@@ -1140,8 +1195,6 @@
       margin-bottom: 20px;
     }
 
-    
-
     .stand-for-header h2 {
       font-family: 'Inter', sans-serif;
       font-size: 3.8rem;
@@ -1196,7 +1249,8 @@
       justify-content: flex-end;
     }
 
-    .stand-card.active {
+    /* Changed from .active to :hover */
+    .stand-card:hover {
       flex: 2.5;
     }
 
@@ -1251,7 +1305,8 @@
       margin-top: 0;
     }
 
-    .stand-card.active .card-hidden-content {
+    /* Changed from .active to :hover */
+    .stand-card:hover .card-hidden-content {
       max-height: 300px;
       opacity: 1;
       margin-top: 16px;
@@ -1302,8 +1357,6 @@
       letter-spacing: 0.1em;
       margin-bottom: 20px;
     }
-
-
 
     .how-content h2 {
       font-family: 'Inter', sans-serif;
@@ -1439,8 +1492,6 @@
       letter-spacing: 0.1em;
       margin-bottom: 12px;
     }
-
-
 
     .reviews-header h2 {
       font-family: 'Inter', sans-serif;
@@ -1827,7 +1878,6 @@
       color: var(--white);
     }
 
-    /* ===== NEW: chatbot gig suggestion cards (added) ===== */
     .chat-gig-list {
       display: flex;
       flex-direction: column;
@@ -1882,7 +1932,6 @@
       color: var(--text-muted);
       margin-top: 2px;
     }
-    /* ===== end chatbot gig cards ===== */
 
     .chatbot-input-area {
       padding: 16px 24px;
@@ -1962,7 +2011,6 @@
       z-index: 1;
     }
 
-    /* --- CTA strip --- */
     .vert-footer-cta {
       padding: 70px 0 50px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -1987,7 +2035,6 @@
       color: #f26b21;
       margin-bottom: 14px;
     }
-
 
     .vert-footer-cta h3 {
       font-family: 'Playfair Display', serif;
@@ -2049,7 +2096,6 @@
       transform: translateY(-2px);
     }
 
-    /* --- Ornamental divider --- */
     .vert-footer-ornament {
       display: flex;
       align-items: center;
@@ -2069,7 +2115,6 @@
       font-size: 0.65rem;
     }
 
-    /* --- Main body --- */
     .vert-footer-body {
       padding: 50px 0 60px;
     }
@@ -2100,7 +2145,6 @@
       max-width: 320px;
     }
 
-    /* --- Socials --- */
     .vert-footer-socials {
       display: flex;
       gap: 10px;
@@ -2148,7 +2192,6 @@
       transform: scale(1);
     }
 
-    /* --- Status pill --- */
     .vert-footer-status {
       display: inline-flex;
       align-items: center;
@@ -2176,7 +2219,6 @@
       50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.05); }
     }
 
-    /* --- Columns --- */
     .vert-footer-col h4 {
       font-family: 'Inter', sans-serif;
       font-size: 0.75rem;
@@ -2217,7 +2259,6 @@
     .vert-footer-col ul a:hover { color: #ffffff; }
     .vert-footer-col ul a:hover::after { width: 100%; }
 
-    /* --- Contact list --- */
     .vert-footer-contact-list {
       list-style: none;
       margin-bottom: 24px;
@@ -2248,7 +2289,6 @@
 
     .vert-footer-contact-list li a:hover { color: #f26b21; }
 
-    /* --- Newsletter --- */
     .vert-footer-newsletter {
       padding-top: 20px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
@@ -2316,7 +2356,6 @@
     .vert-footer-newsletter.is-sent .vert-footer-newsletter-row { border-color: #22c55e; }
     .vert-footer-newsletter.is-sent .vert-footer-newsletter-row button { background: #22c55e; }
 
-    /* --- Trust badges --- */
     .vert-footer-trust {
       display: flex;
       gap: 20px;
@@ -2340,7 +2379,6 @@
       font-size: 0.9rem;
     }
 
-    /* --- Bottom bar --- */
     .vert-footer-bottom {
       background: rgba(0, 0, 0, 0.25);
       border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -2374,7 +2412,6 @@
 
     .vert-footer-legal a:hover { color: #f26b21; }
 
-    /* --- Back to top --- */
     .vert-back-to-top {
       position: fixed;
       bottom: 100px;
@@ -2409,7 +2446,6 @@
       transform: translateY(-3px);
     }
 
-    /* --- Responsive (Vertted footer) --- */
     @media (max-width: 1024px) {
       .vert-footer-grid {
         grid-template-columns: 1fr 1fr;
@@ -2538,7 +2574,7 @@
         transition: height 0.5s ease;
       }
 
-      .stand-card.active {
+      .stand-card:hover {
         height: 400px;
       }
 
@@ -2590,7 +2626,6 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      /* Agency Banner Responsive */
       .agency-banner {
         flex-direction: column;
         text-align: center;
@@ -2603,6 +2638,11 @@
       .btn-white-pill, .btn-outline-white-pill {
         width: 100%;
         justify-content: center;
+      }
+      
+      /* Header Responsive */
+      .header-search-wrapper {
+        margin: 0 10px;
       }
     }
 
@@ -2641,6 +2681,11 @@
         align-items: flex-start;
         gap: 16px;
       }
+      
+      /* Header Mobile adjustments */
+      .header-search-wrapper {
+        display: none; /* Hide header search on mobile to save space, keep hero search */
+      }
     }
 
     @media (max-width: 600px) {
@@ -2675,7 +2720,8 @@
       }
 
       .hero-bottom-row { flex-direction: column; align-items: stretch; }
-      .btn-chat-ai { justify-content: center; }
+      .hero-bottom-left { flex-direction: column; align-items: center; }
+      .btn-chat-ai { justify-content: center; width: 100%; }
       .popular-tags { justify-content: center; margin-top: 10px; }
       
       .curved-video-wrapper {
@@ -2729,7 +2775,6 @@
       .reviews-steps-grid { grid-template-columns: 1fr; }
       .reviews-cards-grid { grid-template-columns: 1fr; }
 
-      /* New Sections Mobile */
       .agency-banner { padding: 30px 20px; border-radius: 24px; }
       .agency-content h2 { font-size: 2rem; }
       .agency-content p { font-size: 1rem; }
@@ -2752,23 +2797,24 @@
 </head>
 <body>
 
-  <!-- ===== HEADER ===== -->
+  <!-- ===== HEADER (NEW LAYOUT) ===== -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="#" class="logo-container">
         <img src="image/vertted-logo.jpeg" alt="Vertted Logo" class="logo-img" />
       </a>
       
-      <nav class="nav-links">
-        <a href="#">Explore services</a>
-        <a href="#">Freelancers</a>
-        <a href="#">Hire the agency</a>
-        <a href="#">How it works</a>
-      </nav>
+      <!-- New Header Search Bar -->
+      <div class="header-search-wrapper">
+        <input type="text" placeholder="Search for services..." />
+        <button class="header-search-icon-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
       
       <div class="header-actions">
         <button class="btn-signin">Sign in</button>
-        <button class="btn-primary-dark">Join as freelancer</button>
+        <button class="btn-primary-dark">Hire The Agency</button>
         <button class="menu-toggle"><i class="fas fa-bars"></i></button>
       </div>
     </div>
@@ -2796,10 +2842,17 @@
           <button>Search</button>
         </div>
         
+        <!-- UPDATED Hero Bottom Row -->
         <div class="hero-bottom-row">
-          <button class="btn-chat-ai" id="openChatBtn">
-            <i class="fas fa-sparkles"></i> Chat with AI
-          </button>
+          <div class="hero-bottom-left">
+            <button class="btn-chat-ai" id="openChatBtn">
+              <i class="fas fa-sparkles"></i> Chat with AI
+            </button>
+            <span class="chat-hint-text">
+              <i class="fas fa-comment-dots"></i>
+              Not sure who you need? Let’s figure it out together.
+            </span>
+          </div>
           
           <div class="popular-tags">
             <span>Popular:</span>
@@ -3427,14 +3480,8 @@
           </div>
         </div>
       </div>
-
     </div>
   </footer>
-
-  <!-- BACK TO TOP -->
-  <button class="vert-back-to-top" id="vertBackToTop" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
-  </button>
 
   <!-- ===== FLOATING CHAT WIDGET ===== -->
   <button class="floating-chat-widget" id="floatingChatBtn" aria-label="Chat with AI">
@@ -3472,7 +3519,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       
       // ==========================================
-      // 1. TYPEWRITER ANIMATION (Hero & Bottom)
+      // 1. TYPEWRITER ANIMATION
       // ==========================================
       const phrases = [
         'What service do you need?',
@@ -3486,13 +3533,14 @@
       function initTypewriter(elementId, inputId) {
         const typewriterElement = document.getElementById(elementId);
         const searchInput = document.getElementById(inputId);
+        if (!typewriterElement) return;
+        
         let phraseIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
         let typingSpeed = 100;
 
         function type() {
-          if (!typewriterElement) return;
           const currentPhrase = phrases[phraseIndex];
           
           if (isDeleting) {
@@ -3546,28 +3594,6 @@
       const sendChatBtn = document.getElementById('sendChatBtn');
 
       let chatState = 'initial';
-      let selectedService = '';
-      let selectedTimeline = '';
-      let selectedBudget = '';
-
-      // Chatbot gig suggestions data
-      const chatbotGigs = {
-        'Website & Development': [
-          { name: 'Amara Okafor', role: 'Figma specialist for fintech apps', rating: '4.9', price: 'from $800', img: 'https://randomuser.me/api/portraits/women/44.jpg' },
-          { name: 'Daniel Mensah', role: 'Webflow developer for SaaS brands', rating: '4.8', price: 'from $650', img: 'https://randomuser.me/api/portraits/men/32.jpg' },
-          { name: 'Kwame Adeyemi', role: 'Full-stack developer for startups', rating: '4.9', price: 'from $1,200', img: 'https://randomuser.me/api/portraits/men/75.jpg' }
-        ],
-        'Marketing': [
-          { name: 'Zainab Bello', role: 'TikTok growth marketer for beauty', rating: '4.9', price: 'from $400', img: 'https://randomuser.me/api/portraits/women/68.jpg' },
-          { name: 'Tunde Bakare', role: 'SEO strategist for e-commerce', rating: '4.7', price: 'from $500', img: 'https://randomuser.me/api/portraits/men/85.jpg' },
-          { name: 'Sarah Jenkins', role: 'Content writer for B2B SaaS', rating: '5.0', price: 'from $450', img: 'https://randomuser.me/api/portraits/women/12.jpg' }
-        ],
-        'Video & Animation': [
-          { name: 'Sofia Rossi', role: 'Motion graphics artist for tech', rating: '4.9', price: 'from $700', img: 'https://randomuser.me/api/portraits/women/90.jpg' },
-          { name: 'Marcus Chen', role: 'Video editor & colorist', rating: '4.8', price: 'from $550', img: 'https://randomuser.me/api/portraits/men/22.jpg' },
-          { name: 'Aisha Ibrahim', role: '2D animator & explainer videos', rating: '4.9', price: 'from $600', img: 'https://randomuser.me/api/portraits/women/65.jpg' }
-        ]
-      };
 
       function openChat() {
         chatPanel.classList.add('active');
@@ -3611,35 +3637,11 @@
 
       function startConversation() {
         chatState = 'initial';
-        selectedService = '';
-        selectedTimeline = '';
-        selectedBudget = '';
         addMessage(
           "Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?",
           'bot',
           ['A freelancer', 'The agency']
         );
-      }
-
-      function showGigSuggestions(service) {
-        const gigs = chatbotGigs[service] || chatbotGigs['Website & Development'];
-        const html = `
-          <div style="margin-bottom:10px;">Here are 3 verified specialists for <strong>${service}</strong>, matched to your timeline (${selectedTimeline}) and budget (${selectedBudget}):</div>
-          <div class="chat-gig-list">
-            ${gigs.map(g => `
-              <div class="chat-gig-card">
-                <img src="${g.img}" alt="${g.name}" />
-                <div class="chat-gig-info">
-                  <strong>${g.name}</strong>
-                  <span>${g.role}</span>
-                  <div class="chat-gig-meta">⭐ ${g.rating} · ${g.price}</div>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-          <div style="margin-top:10px;font-size:0.8rem;opacity:0.7;">Click any specialist to view their full profile, or refresh to see more matches.</div>
-        `;
-        addMessage(html, 'bot');
       }
 
       function handleUserSelection(selection) {
@@ -3665,25 +3667,18 @@
               );
             }
           } else if (chatState === 'choosing_service') {
-            selectedService = selection;
-            chatState = 'choosing_timeline';
+            chatState = 'service_selected';
             addMessage(
-              `Great pick! How soon do you need the <strong>${selection}</strong> project completed?`,
-              'bot',
-              ['Within 1 week', '1-2 weeks', '2-4 weeks', 'Flexible']
+              "Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.",
+              'bot'
             );
-          } else if (chatState === 'choosing_timeline') {
-            selectedTimeline = selection;
-            chatState = 'choosing_budget';
-            addMessage(
-              "Got it! What's your approximate budget for this project?",
-              'bot',
-              ['Under $500', '$500 - $1,000', '$1,000 - $5,000', '$5,000+']
-            );
-          } else if (chatState === 'choosing_budget') {
-            selectedBudget = selection;
-            chatState = 'showing_results';
-            showGigSuggestions(selectedService);
+            if (selection === 'Marketing') {
+              const imgMsg = document.createElement('div');
+              imgMsg.className = 'message bot';
+              imgMsg.innerHTML = '<img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=400&auto=format&fit=crop" alt="Marketing Specialist" style="width:100%; border-radius:8px; margin-top:8px;">';
+              chatMessages.appendChild(imgMsg);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
           }
         }, 600);
       }
@@ -3712,33 +3707,6 @@
                 ['A freelancer', 'The agency']
               );
             }
-          } else if (chatState === 'choosing_service') {
-            const lower = text.toLowerCase();
-            if (lower.includes('web') || lower.includes('dev')) {
-              handleUserSelection('Website & Development');
-            } else if (lower.includes('market')) {
-              handleUserSelection('Marketing');
-            } else if (lower.includes('video') || lower.includes('animation')) {
-              handleUserSelection('Video & Animation');
-            } else {
-              addMessage(
-                "Which service would you like? Website & Development, Marketing, or Video & Animation?",
-                'bot',
-                ['Website & Development', 'Marketing', 'Video & Animation']
-              );
-            }
-          } else if (chatState === 'choosing_timeline') {
-            selectedTimeline = text;
-            chatState = 'choosing_budget';
-            addMessage(
-              "Got it! What's your approximate budget for this project?",
-              'bot',
-              ['Under $500', '$500 - $1,000', '$1,000 - $5,000', '$5,000+']
-            );
-          } else if (chatState === 'choosing_budget') {
-            selectedBudget = text;
-            chatState = 'showing_results';
-            showGigSuggestions(selectedService);
           } else {
             addMessage(
               "Got it! I've noted that down. Our team will review your request and get back to you shortly.",
@@ -3860,7 +3828,7 @@
               <div class="freelancer-card-header">
                 <div class="freelancer-avatar-wrap">
                   <img src="${freelancer.img}" alt="${freelancer.name}" class="freelancer-avatar" />
-                  <span class="online-indicator" aria-label="Online"></span>
+                  <span class="online-indicator"></span>
                 </div>
                 <div class="freelancer-info">
                   <h3>${freelancer.name} <i class="fas fa-check-circle verified-badge"></i></h3>
@@ -3889,99 +3857,10 @@
         renderFreelancers(currentStartIndex);
       }, 5000);
 
-      // ==========================================
-      // 5. STAND FOR ACCORDION LOGIC
-      // ==========================================
-      const standCards = document.querySelectorAll('.stand-card');
-      let activeStandIndex = 1;
-      let standInterval;
-
-      function setActiveStandCard(index) {
-        standCards.forEach(card => card.classList.remove('active'));
-        if (standCards[index]) {
-          standCards[index].classList.add('active');
-        }
-        activeStandIndex = index;
-      }
-
-      setActiveStandCard(activeStandIndex);
-
-      function startStandRotation() {
-        standInterval = setInterval(() => {
-          let nextIndex = (activeStandIndex + 1) % standCards.length;
-          setActiveStandCard(nextIndex);
-        }, 7000);
-      }
-
-      startStandRotation();
-
-      standCards.forEach((card, index) => {
-        card.addEventListener('click', () => {
-          if (index !== activeStandIndex) {
-            clearInterval(standInterval);
-            setActiveStandCard(index);
-            startStandRotation();
-          }
-        });
-      });
-
-      const standContainer = document.getElementById('standCardsContainer');
-      if (standContainer) {
-        standContainer.addEventListener('mouseenter', () => clearInterval(standInterval));
-        standContainer.addEventListener('mouseleave', startStandRotation);
-      }
+      // Note: The "What We Stand For" accordion logic has been removed from JS 
+      // and is now handled entirely by CSS :hover pseudo-classes.
 
     });
-  </script>
-
-  <!-- ============================================================
-       VERTTED CUSTOM FOOTER JS
-       ============================================================ -->
-  <script>
-    (function () {
-      /* Newsletter */
-      const newsletter = document.getElementById('vertNewsletter');
-      if (newsletter) {
-        newsletter.addEventListener('submit', function (e) {
-          e.preventDefault();
-          const input = this.querySelector('input[type="email"]');
-          const val = input.value.trim();
-          const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-
-          if (!ok) {
-            input.style.borderColor = '#ef4444';
-            input.focus();
-            return;
-          }
-          input.style.borderColor = '';
-
-          const btn = this.querySelector('button');
-          const original = btn.innerHTML;
-          this.classList.add('is-sent');
-          btn.innerHTML = '<i class="fas fa-check"></i>';
-          input.value = '';
-
-          setTimeout(function () {
-            newsletter.classList.remove('is-sent');
-            btn.innerHTML = original;
-          }, 3500);
-        });
-      }
-
-      /* Back to top */
-      const backToTop = document.getElementById('vertBackToTop');
-      if (backToTop) {
-        const toggle = function () {
-          backToTop.classList.toggle('show', window.scrollY > 700);
-        };
-        window.addEventListener('scroll', toggle, { passive: true });
-        toggle();
-
-        backToTop.addEventListener('click', function () {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-    })();
   </script>
 </body>
 </html>
