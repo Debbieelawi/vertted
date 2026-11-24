@@ -2807,9 +2807,9 @@
       <!-- New Header Search Bar -->
       <div class="header-search-wrapper">
         <input type="text" placeholder="Search for services..." />
-        <button class="header-search-icon-btn">
-          <i class="fas fa-search"></i>
-        </button>
+        <button class="header-search-icon-btn" onclick="redirectToService('headerSearchInput')">
+  <i class="fas fa-search"></i>
+</button>
       </div>
       
       <div class="header-actions">
@@ -2839,7 +2839,7 @@
             <span class="typewriter-text" id="typewriter"></span>
             <input type="text" id="mainSearch" />
           </div>
-          <button>Search</button>
+          <button onclick="redirectToService('mainSearch')">Search</button>
         </div>
         
         <!-- UPDATED Hero Bottom Row -->
@@ -2849,7 +2849,6 @@
               <i class="fas fa-comment-dots"></i> Chat with AI
             </button>
             <span class="chat-hint-text">
-             
               Not sure who you need? Let’s figure it out together.
             </span>
           </div>
@@ -3720,6 +3719,31 @@
       chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') handleTypedMessage();
       });
+
+    
+    
+
+    function redirectToService(inputId) {
+  const input = document.getElementById(inputId);
+  const query = input.value.trim();
+  
+  if (query) {
+    // Redirects to service.html with the query in the URL
+    window.location.href = `service.html?q=${encodeURIComponent(query)}`;
+  } else {
+    // If empty, just go to the service page
+    window.location.href = 'service.html';
+  }
+}
+
+// Allow pressing 'Enter' to search
+document.getElementById('mainSearch').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') redirectToService('mainSearch');
+});
+
+
+
+
 
       // ==========================================
       // 3. INTERACTIVE MAIN SERVICES
