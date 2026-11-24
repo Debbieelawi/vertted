@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore Services — Vertted</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #fafaf9; color: #1a1a24; line-height: 1.5; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== VARIABLES ===== */
+    :root {
+      --primary: #1e2b4f;
+      --primary-dark: #151d36;
+      --accent: #f26b21;
+      --accent-hover: #d95b17;
+      --accent-soft: #fdf2e8;
+      --text-main: #1a1a24;
+      --text-muted: #5e5e6b;
+      --border-color: #e5e3df;
+      --white: #ffffff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+      --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
+      --radius-pill: 50px;
+      --radius-card: 24px;
+      --green-verified: #22c55e;
+      --dark-bg: #0d1627;
+    }
+
+    /* ===== HEADER ===== */
+    .site-header { background: var(--white); border-bottom: 1px solid var(--border-color); padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .logo-container { display: flex; align-items: center; flex-shrink: 0; }
+    .logo-img { height: 60px; width: auto; object-fit: contain; }
+    .header-search-wrapper { flex: 1; max-width: 500px; display: flex; align-items: center; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-pill); padding: 4px 4px 4px 20px; box-shadow: var(--shadow-sm); transition: box-shadow 0.2s; margin: 0 20px; }
+    .header-search-wrapper:focus-within { box-shadow: var(--shadow-md); border-color: #c9c6c0; }
+    .header-search-wrapper input { flex: 1; border: none; outline: none; background: transparent; font-size: 0.95rem; padding: 10px 12px; font-family: 'Inter', sans-serif; color: var(--text-main); }
+    .header-search-wrapper input::placeholder { color: #a5a2b0; }
+    .header-search-icon-btn { background: var(--primary); color: var(--white); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
+    .header-search-icon-btn:hover { background: var(--primary-dark); }
+    .header-actions { display: flex; align-items: center; gap: 1.2rem; flex-shrink: 0; }
+    .btn-signin { font-weight: 600; font-size: 0.92rem; color: var(--text-main); transition: color 0.2s; white-space: nowrap; }
+    .btn-signin:hover { color: var(--accent); }
+    .btn-primary-dark { background: var(--primary); color: var(--white); padding: 10px 24px; border-radius: 40px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
+    .btn-primary-dark:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .menu-toggle { display: none; font-size: 1.4rem; color: var(--primary); }
+
+    /* ===== SERVICE PAGE LAYOUT ===== */
+    .page-header {
+      padding: 60px 0 40px;
+      background: linear-gradient(180deg, #fafaf9 0%, #ffffff 100%);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .page-header h1 { font-family: 'Inter', sans-serif; font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; letter-spacing: -0.02em; }
+    .page-header p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; }
+    
+    .search-results-info {
+      margin-top: 16px;
+      font-size: 0.95rem;
+      color: var(--primary);
+      display: none;
+      font-weight: 500;
+    }
+
+    .marketplace-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; padding: 40px 0 100px; }
+
+    /* ===== FILTERS SIDEBAR ===== */
+    .filters-sidebar { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 24px; height: fit-content; position: sticky; top: 100px; }
+    .filter-group { margin-bottom: 24px; }
+    .filter-group:last-child { margin-bottom: 0; }
+    .filter-title { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .filter-options { display: flex; flex-direction: column; gap: 10px; }
+    .filter-checkbox { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; transition: color 0.2s; }
+    .filter-checkbox:hover { color: var(--primary); }
+    .filter-checkbox input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+
+    /* ===== RESULTS AREA ===== */
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .results-count { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
+    .results-sort { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-muted); }
+    .results-sort select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Inter', sans-serif; color: var(--text-main); background: var(--white); outline: none; cursor: pointer; }
+
+    /* ===== GIG GRID (2 PER ROW) ===== */
+    .gig-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .gig-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; }
+    .gig-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: #d0cdc7; }
+    .gig-cover { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+    .gig-content { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+    .gig-category { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .gig-title { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; line-height: 1.3; flex: 1; }
+    .gig-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    
+    .gig-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .gig-tags span { background: var(--accent-soft); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
+    .gig-tags span.highlighted { background: var(--accent); color: var(--white); border: 1px solid var(--accent); }
+    
+    .gig-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: auto; }
+    .gig-freelancer { display: flex; align-items: center; gap: 12px; }
+    .freelancer-avatar-wrap { position: relative; display: inline-block; flex-shrink: 0; }
+    .freelancer-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+    .online-indicator { position: absolute; bottom: 0px; right: 0px; width: 10px; height: 10px; background: #22c55e; border: 2px solid var(--white); border-radius: 50%; box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3); }
+    .freelancer-info h4 { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+    .freelancer-info .rating { font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+    .freelancer-info .rating i { color: var(--accent); font-size: 0.7rem; }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state { text-align: center; padding: 60px 20px; background: var(--white); border: 1px dashed var(--border-color); border-radius: var(--radius-card); grid-column: 1 / -1; }
+    .empty-state i { font-size: 3rem; color: var(--border-color); margin-bottom: 16px; }
+    .empty-state h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 8px; }
+    .empty-state p { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* ===== FOOTER ===== */
+    .vert-footer { background: var(--dark-bg); color: #e8e6e1; position: relative; overflow: hidden; font-size: 0.9rem; margin-top: 80px; }
+    .vert-footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(242, 107, 33, 0.55), transparent); }
+    .vert-footer::after { content: ''; position: absolute; top: -220px; right: -220px; width: 620px; height: 620px; background: radial-gradient(circle, rgba(242, 107, 33, 0.14), transparent 60%); border-radius: 50%; pointer-events: none; z-index: 0; }
+    .vert-footer-inner { position: relative; z-index: 1; }
+    .vert-footer-cta { padding: 70px 0 50px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+    .vert-footer-cta-inner { display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap; }
+    .vert-footer-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: #f26b21; margin-bottom: 14px; }
+    .vert-footer-cta h3 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.1; color: #ffffff; max-width: 600px; letter-spacing: -0.02em; }
+    .vert-footer-cta h3 em { color: #f26b21; font-style: italic; }
+    .vert-footer-cta-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .vert-footer-btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; border-radius: var(--radius-pill); transition: all 0.3s ease; white-space: nowrap; }
+    .vert-footer-btn i { font-size: 0.95rem; }
+    .vert-footer-btn-solid { background: #f26b21; color: #ffffff; box-shadow: 0 8px 24px rgba(242, 107, 33, 0.28); }
+    .vert-footer-btn-solid:hover { background: #d95b17; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(242, 107, 33, 0.38); }
+    .vert-footer-btn-ghost { background: rgba(255, 255, 255, 0.06); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.15); }
+    .vert-footer-btn-ghost:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+    .vert-footer-ornament { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 30px 0 0; }
+    .vert-footer-ornament span { width: 60px; height: 1px; background: rgba(242, 107, 33, 0.4); }
+    .vert-footer-ornament i { color: #f26b21; font-size: 0.65rem; }
+    .vert-footer-body { padding: 50px 0 60px; }
+    .vert-footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.4fr; gap: 50px; }
+    .vert-footer-brand .vert-footer-logo { display: inline-block; margin-bottom: 20px; }
+    .vert-footer-brand .vert-footer-logo img { height: 42px; width: auto; filter: brightness(0) invert(1); opacity: 0.95; }
+    .vert-footer-tagline { font-size: 0.9rem; line-height: 1.75; color: rgba(255, 255, 255, 0.6); margin-bottom: 24px; max-width: 320px; }
+    .vert-footer-socials { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+    .vert-footer-social { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.7); display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .vert-footer-social::before { content: ''; position: absolute; inset: 0; background: #f26b21; border-radius: 50%; transform: scale(0); transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .vert-footer-social i { position: relative; z-index: 1; }
+    .vert-footer-social:hover { color: #ffffff; border-color: #f26b21; transform: translateY(-3px); }
+    .vert-footer-social:hover::before { transform: scale(1); }
+    .vert-footer-status { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25); border-radius: var(--radius-pill); font-size: 0.75rem; font-weight: 500; color: rgba(255, 255, 255, 0.85); }
+    .vert-footer-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22); animation: vertStatusPulse 2.4s ease-in-out infinite; }
+    @keyframes vertStatusPulse { 0%, 100% { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22); } 50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.05); } }
+    .vert-footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: #f26b21; margin-bottom: 22px; }
+    .vert-footer-col ul { list-style: none; }
+    .vert-footer-col ul li { margin-bottom: 14px; font-size: 0.9rem; }
+    .vert-footer-col ul a { color: rgba(255, 255, 255, 0.7); position: relative; display: inline-block; transition: color 0.25s ease; }
+    .vert-footer-col ul a::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 0; height: 1px; background: #f26b21; transition: width 0.3s ease; }
+    .vert-footer-col ul a:hover { color: #ffffff; }
+    .vert-footer-col ul a:hover::after { width: 100%; }
+    .vert-footer-contact-list { list-style: none; margin-bottom: 24px; }
+    .vert-footer-contact-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.88rem; color: rgba(255, 255, 255, 0.75); margin-bottom: 12px; line-height: 1.5; }
+    .vert-footer-contact-list li i { color: #f26b21; font-size: 0.85rem; margin-top: 3px; flex-shrink: 0; width: 16px; }
+    .vert-footer-contact-list li a { color: rgba(255, 255, 255, 0.75); transition: color 0.2s; }
+    .vert-footer-contact-list li a:hover { color: #f26b21; }
+    .vert-footer-newsletter { padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+    .vert-footer-newsletter label { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: #f26b21; margin-bottom: 12px; }
+    .vert-footer-newsletter-row { display: flex; align-items: stretch; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-pill); overflow: hidden; transition: border-color 0.2s; }
+    .vert-footer-newsletter-row:focus-within { border-color: #f26b21; }
+    .vert-footer-newsletter-row input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 12px 20px; color: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.85rem; }
+    .vert-footer-newsletter-row input::placeholder { color: rgba(255, 255, 255, 0.4); }
+    .vert-footer-newsletter-row button { background: #f26b21; border: 0; color: #ffffff; padding: 0 22px; font-size: 0.9rem; transition: background 0.2s; cursor: pointer; display: flex; align-items: center; }
+    .vert-footer-newsletter-row button:hover { background: #d95b17; }
+    .vert-footer-newsletter-note { font-size: 0.72rem; color: rgba(255, 255, 255, 0.4); margin-top: 10px; letter-spacing: 0.02em; }
+    .vert-footer-trust { display: flex; gap: 20px; flex-wrap: wrap; padding: 30px 0 0; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+    .vert-footer-trust-item { display: inline-flex; align-items: center; gap: 10px; font-size: 0.82rem; color: rgba(255, 255, 255, 0.6); font-weight: 500; }
+    .vert-footer-trust-item i { color: #f26b21; font-size: 0.9rem; }
+    .vert-footer-bottom { background: rgba(0, 0, 0, 0.25); border-top: 1px solid rgba(255, 255, 255, 0.06); padding: 22px 0; }
+    .vert-footer-bottom-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .vert-footer-copy { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); }
+    .vert-footer-legal { list-style: none; display: flex; gap: 24px; }
+    .vert-footer-legal a { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); transition: color 0.2s; }
+    .vert-footer-legal a:hover { color: #f26b21; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .marketplace-layout { grid-template-columns: 1fr; }
+      .filters-sidebar { position: relative; top: 0; display: flex; flex-wrap: wrap; gap: 20px; }
+      .filter-group { flex: 1 1 200px; margin-bottom: 0; }
+    }
+    @media (max-width: 900px) {
+      .header-search-wrapper { display: none; }
+      .nav-links { display: none; }
+      .menu-toggle { display: block; }
+      .header-actions .btn-signin { display: none; }
+    }
+    @media (max-width: 768px) {
+      .gig-grid { grid-template-columns: 1fr; }
+      .page-header h1 { font-size: 2.2rem; }
+      .vert-footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .vert-footer-brand { grid-column: 1 / -1; }
+    }
+    @media (max-width: 600px) {
+      .results-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .vert-footer-cta-inner { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .vert-footer-cta-actions { width: 100%; }
+      .vert-footer-btn { flex: 1; justify-content: center; }
+      .vert-footer-grid { grid-template-columns: 1fr; gap: 36px; }
+      .vert-footer-bottom-inner { flex-direction: column; text-align: center; gap: 14px; }
+      .vert-footer-legal { justify-content: center; flex-wrap: wrap; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-container">
+        <img src="image/vertted-logo.jpeg" alt="Vertted Logo" class="logo-img" />
+      </a>
+      
+      <div class="header-search-wrapper">
+        <input type="text" id="headerSearchInput" placeholder="Search for services..." />
+        <button class="header-search-icon-btn" onclick="handleHeaderSearch()">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      
+      <div class="header-actions">
+        <button class="btn-signin">Sign in</button>
+        <button class="btn-primary-dark">Hire The Agency</button>
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SERVICE PAGE HEADER ===== -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Explore Specialists</h1>
+      <p>Find the exact expert you need. Browse thousands of verified, niche freelancers ready to bring your next project to life.</p>
+      <div id="searchResultsInfo" class="search-results-info"></div>
+    </div>
+  </section>
+
+  <!-- ===== MARKETPLACE LAYOUT ===== -->
+  <div class="container marketplace-layout">
+    
+    <!-- FILTERS SIDEBAR -->
+    <aside class="filters-sidebar">
+      <div class="filter-group">
+        <div class="filter-title">Category</div>
+        <div class="filter-options">
+          <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="Website & Development"> Website & Development</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="Marketing"> Marketing</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="Video & Animation"> Video & Animation</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="AI Automation"> AI Automation</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Budget</div>
+        <div class="filter-options">
+          <label class="filter-checkbox"><input type="checkbox" class="filter-budget" value="0-500"> $0 - $500</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-budget" value="500-1000"> $500 - $1,000</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-budget" value="1000-5000"> $1,000 - $5,000</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-budget" value="5000-999999"> $5,000+</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Rating</div>
+        <div class="filter-options">
+          <label class="filter-checkbox"><input type="checkbox" class="filter-rating" value="5"> 5.0 (Top Rated)</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-rating" value="4.5"> 4.5 & up</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-rating" value="4"> 4.0 & up</label>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-title">Availability</div>
+        <div class="filter-options">
+          <label class="filter-checkbox"><input type="checkbox" class="filter-availability" value="online"> Online Now</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-availability" value="verified"> Verified Profiles</label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RESULTS AREA -->
+    <main>
+      <div class="results-header">
+        <div class="results-count">Showing <span id="gigCount">0</span> gigs</div>
+        <div class="results-sort">
+          <span>Sort by:</span>
+          <select id="sortSelect">
+            <option value="recommended">Recommended</option>
+            <option value="rating">Top Rated</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- GIG GRID CONTAINER -->
+      <div class="gig-grid" id="gigGrid">
+        <!-- Cards injected via JavaScript -->
+      </div>
+    </main>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="vert-footer">
+    <div class="vert-footer-inner">
+      <div class="vert-footer-cta">
+        <div class="container">
+          <div class="vert-footer-cta-inner">
+            <div>
+              <span class="vert-footer-eyebrow">Ready when you are</span>
+              <h3>Let’s build your <em>next great thing.</em></h3>
+            </div>
+            <div class="vert-footer-cta-actions">
+              <a href="mailto:support@vertted.com" class="vert-footer-btn vert-footer-btn-solid">
+                <i class="fas fa-headset"></i> Contact support
+              </a>
+              <a href="#" class="vert-footer-btn vert-footer-btn-ghost">
+                <i class="fas fa-comment-dots"></i> Chat with AI
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vert-footer-ornament">
+        <span></span>
+        <i class="fas fa-asterisk"></i>
+        <span></span>
+      </div>
+
+      <div class="vert-footer-body">
+        <div class="container">
+          <div class="vert-footer-grid">
+            <div class="vert-footer-brand">
+              <a href="index.html" class="vert-footer-logo">
+                <img src="image/vertted-logo.jpeg" alt="Vertted">
+              </a>
+              <p class="vert-footer-tagline">
+                A curated freelance marketplace where verified talent and ambitious teams meet. Every profile is vetted. Every review is human-moderated.
+              </p>
+              <div class="vert-footer-socials">
+                <a href="#" class="vert-footer-social"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-dribbble"></i></a>
+              </div>
+              <div class="vert-footer-status">
+                <span class="vert-footer-status-dot"></span>
+                All systems operational
+              </div>
+            </div>
+
+            <div class="vert-footer-col">
+              <h4>Explore</h4>
+              <ul>
+                <li><a href="#">Explore services</a></li>
+                <li><a href="#">Find freelancers</a></li>
+                <li><a href="#">Hire the agency</a></li>
+                <li><a href="#">How it works</a></li>
+                <li><a href="#">Verified reviews</a></li>
+              </ul>
+            </div>
+
+            <div class="vert-footer-col">
+              <h4>For freelancers</h4>
+              <ul>
+                <li><a href="#">Join as freelancer</a></li>
+                <li><a href="#">Get verified</a></li>
+                <li><a href="#">Build your gig</a></li>
+                <li><a href="#">Freelancer </a></li>
+              </ul>
+            </div>
+
+            <div class="vert-footer-col">
+              <h4>Get in touch</h4>
+              <ul class="vert-footer-contact-list">
+                <li><i class="fas fa-envelope"></i><a href="mailto:support@vertted.com">support@vertted.com</a></li>
+                <li><i class="fas fa-headset"></i><a href="tel:+10000000000">+1 (000) 000-0000</a></li>
+                <li><i class="fab fa-whatsapp"></i><a href="#">WhatsApp support</a></li>
+                <li><i class="fas fa-clock"></i><span>24/7</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="vert-footer-trust">
+            <div class="vert-footer-trust-item"><i class="fas fa-shield-halved"></i> Admin-verified profiles</div>
+            <div class="vert-footer-trust-item"><i class="fas fa-lock"></i> Secure &amp; private by design</div>
+            <div class="vert-footer-trust-item"><i class="fas fa-star"></i> Every review human-moderated</div>
+            <div class="vert-footer-trust-item"><i class="fas fa-bolt"></i> First reply within hours</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vert-footer-bottom">
+        <div class="container">
+          <div class="vert-footer-bottom-inner">
+            <p class="vert-footer-copy">© 2026 Vertted. All rights reserved. Made with care for great work.</p>
+            <ul class="vert-footer-legal">
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Cookies</a></li>
+              <li><a href="#">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== FIREBASE & DATA LOGIC ===== -->
+  <script type="module">
+    // --- Mock Data with Budget & Description ---
+    const mockGigs = [
+      {
+        id: "gig1",
+        title: "I will design a premium fintech app UI/UX in Figma",
+        description: "Looking for a modern, clean, and user-friendly interface for your fintech app? I specialize in Figma designs for banking and financial platforms.",
+        category: "Website & Development",
+        tags: ["Figma", "UI/UX", "Fintech", "Mobile App"],
+        budget: 800,
+        coverImage: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=800&auto=format&fit=crop",
+        freelancer: { name: "Amara Okafor", photo: "https://randomuser.me/api/portraits/women/44.jpg", rating: 4.9, reviews: 132, online: true, verified: true }
+      },
+      {
+        id: "gig2",
+        title: "I will build a high-converting Webflow website for your SaaS",
+        description: "Get a fast, responsive, and SEO-optimized Webflow site for your SaaS business. I handle everything from design to deployment.",
+        category: "Website & Development",
+        tags: ["Webflow", "SaaS", "SEO", "Web Design"],
+        budget: 1500,
+        coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
+        freelancer: { name: "Daniel Mensah", photo: "https://randomuser.me/api/portraits/men/32.jpg", rating: 4.8, reviews: 97, online: false, verified: true }
+      },
+      {
+        id: "gig3",
+        title: "I will create viral TikTok ad creatives for your beauty brand",
+        description: "Stop the scroll with high-energy, engaging TikTok ads. I edit videos specifically for beauty and skincare brands to boost conversions.",
+        category: "Marketing",
+        tags: ["TikTok", "Beauty", "Video Ads", "Social Media"],
+        budget: 350,
+        coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop",
+        freelancer: { name: "Zainab Bello", photo: "https://randomuser.me/api/portraits/women/68.jpg", rating: 4.9, reviews: 176, online: true, verified: true }
+      },
+      {
+        id: "gig4",
+        title: "I will build custom AI chatbots to automate your customer support",
+        description: "Save hours of manual work. I build intelligent AI chatbots integrated with your website to handle customer queries 24/7.",
+        category: "AI Automation",
+        tags: ["AI", "Chatbots", "Automation", "Python"],
+        budget: 2500,
+        coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop",
+        freelancer: { name: "Kenji Tanaka", photo: "https://randomuser.me/api/portraits/men/45.jpg", rating: 4.8, reviews: 67, online: true, verified: true }
+      },
+      {
+        id: "gig5",
+        title: "I will edit your YouTube videos with premium motion graphics",
+        description: "Take your YouTube channel to the next level with professional editing, sound design, and custom motion graphics.",
+        category: "Video & Animation",
+        tags: ["Video Editing", "Motion Graphics", "YouTube", "After Effects"],
+        budget: 400,
+        coverImage: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=800&auto=format&fit=crop",
+        freelancer: { name: "Sofia Rossi", photo: "https://randomuser.me/api/portraits/women/90.jpg", rating: 4.9, reviews: 112, online: false, verified: true }
+      },
+      {
+        id: "gig6",
+        title: "I will write SEO-optimized content for your B2B SaaS blog",
+        description: "Drive organic traffic to your SaaS website with high-quality, researched, and keyword-optimized blog posts.",
+        category: "Marketing",
+        tags: ["Copywriting", "SEO", "B2B", "Content Writing"],
+        budget: 250,
+        coverImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
+        freelancer: { name: "Sarah Jenkins", photo: "https://randomuser.me/api/portraits/women/12.jpg", rating: 5.0, reviews: 203, online: true, verified: true }
+      },
+      {
+        id: "gig7",
+        title: "I will develop a custom Shopify e-commerce store",
+        description: "Get a fully functional, beautifully designed Shopify store that is ready to sell. Includes theme customization and product setup.",
+        category: "Website & Development",
+        tags: ["Shopify", "E-commerce", "Web Development", "Store Setup"],
+        budget: 1200,
+        coverImage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800&auto=format&fit=crop",
+        freelancer: { name: "Kwame Adeyemi", photo: "https://randomuser.me/api/portraits/men/75.jpg", rating: 4.7, reviews: 145, online: true, verified: true }
+      }
+    ];
+
+    // --- State Variables ---
+    let currentSearchQuery = '';
+    let displayGigs = [...mockGigs];
+
+    // --- DOM Elements ---
+    const grid = document.getElementById('gigGrid');
+    const countElement = document.getElementById('gigCount');
+    const searchResultsInfo = document.getElementById('searchResultsInfo');
+    
+    // --- Initialization: Read URL Params ---
+    function init() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+      
+      if (query) {
+        currentSearchQuery = query.toLowerCase().trim();
+        document.getElementById('headerSearchInput').value = query;
+        
+        // Update header text
+        document.querySelector('.page-header h1').textContent = `Results for "${query}"`;
+        searchResultsInfo.style.display = 'block';
+        searchResultsInfo.textContent = `Showing matches for "${query}" in titles, tags, and descriptions.`;
+        
+        // Pre-check the category if the query matches a category exactly
+        const categoryCheckboxes = document.querySelectorAll('.filter-category');
+        categoryCheckboxes.forEach(cb => {
+          if (cb.value.toLowerCase() === currentSearchQuery) {
+            // Optional: auto-check the category filter if the search is exactly the category name
+            // cb.checked = true;
+          }
+        });
+      }
+      
+      applyFilters();
+    }
+
+    // --- Filtering Logic ---
+    function applyFilters() {
+      // 1. Get active filters
+      const selectedCategories = Array.from(document.querySelectorAll('.filter-category:checked')).map(cb => cb.value);
+      const selectedBudgets = Array.from(document.querySelectorAll('.filter-budget:checked')).map(cb => cb.value);
+      const selectedRatings = Array.from(document.querySelectorAll('.filter-rating:checked')).map(cb => parseFloat(cb.value));
+      const selectedAvailability = Array.from(document.querySelectorAll('.filter-availability:checked')).map(cb => cb.value);
+      
+      const sortBy = document.getElementById('sortSelect').value;
+
+      // 2. Filter the array
+      let filtered = mockGigs.filter(gig => {
+        // Search Query Filter
+        if (currentSearchQuery) {
+          const inTitle = gig.title.toLowerCase().includes(currentSearchQuery);
+          const inDesc = gig.description.toLowerCase().includes(currentSearchQuery);
+          const inTags = gig.tags.some(tag => tag.toLowerCase().includes(currentSearchQuery));
+          const inCategory = gig.category.toLowerCase().includes(currentSearchQuery);
+          
+          if (!inTitle && !inDesc && !inTags && !inCategory) return false;
+        }
+
+        // Category Filter
+        if (selectedCategories.length > 0 && !selectedCategories.includes(gig.category)) {
+          return false;
+        }
+
+        // Budget Filter
+        if (selectedBudgets.length > 0) {
+          let matchesBudget = false;
+          for (let range of selectedBudgets) {
+            const [min, max] = range.split('-').map(Number);
+            if (gig.budget >= min && gig.budget <= max) {
+              matchesBudget = true;
+              break;
+            }
+          }
+          if (!matchesBudget) return false;
+        }
+
+        // Rating Filter (If any selected, must match at least one)
+        if (selectedRatings.length > 0) {
+          const maxSelectedRating = Math.max(...selectedRatings);
+          if (gig.freelancer.rating < maxSelectedRating) return false;
+        }
+
+        // Availability Filter
+        if (selectedAvailability.length > 0) {
+          if (selectedAvailability.includes('online') && !gig.freelancer.online) return false;
+          if (selectedAvailability.includes('verified') && !gig.freelancer.verified) return false;
+        }
+
+        return true;
+      });
+
+      // 3. Sort
+      if (sortBy === 'rating') {
+        filtered.sort((a, b) => b.freelancer.rating - a.freelancer.rating);
+      }
+
+      // 4. Render
+      displayGigs = filtered;
+      renderGigs(displayGigs);
+    }
+
+    // --- Render Function ---
+    function renderGigs(gigs) {
+      countElement.textContent = gigs.length;
+      grid.innerHTML = '';
+
+      if (gigs.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-search"></i>
+            <h3>No gigs found</h3>
+            <p>Try adjusting your search terms or filters.</p>
+            <button onclick="window.location.href='service.html'" style="margin-top: 16px; padding: 10px 24px; background: var(--accent); color: white; border-radius: 50px; font-weight: 600;">Clear All Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      gigs.forEach(gig => {
+        const card = document.createElement('div');
+        card.className = 'gig-card';
+        
+        // Highlight matching tags based on search query
+        const tagsHTML = gig.tags.map(tag => {
+          const isHighlighted = currentSearchQuery && tag.toLowerCase().includes(currentSearchQuery);
+          return `<span class="${isHighlighted ? 'highlighted' : ''}">${tag}</span>`;
+        }).join('');
+
+        // Online indicator
+        const onlineDot = gig.freelancer.online 
+          ? `<span class="online-indicator" title="Online now"></span>` 
+          : '';
+
+        card.innerHTML = `
+          <img src="${gig.coverImage}" alt="${gig.title}" class="gig-cover" loading="lazy">
+          <div class="gig-content">
+            <div class="gig-category">${gig.category}</div>
+            <h3 class="gig-title">${gig.title}</h3>
+            <p class="gig-desc">${gig.description}</p>
+            <div class="gig-tags">${tagsHTML}</div>
+            <div class="gig-footer">
+              <div class="gig-freelancer">
+                <div class="freelancer-avatar-wrap">
+                  <img src="${gig.freelancer.photo}" alt="${gig.freelancer.name}" class="freelancer-avatar">
+                  ${onlineDot}
+                </div>
+                <div class="freelancer-info">
+                  <h4>${gig.freelancer.name}</h4>
+                  <div class="rating">
+                    <i class="fas fa-star"></i> ${gig.freelancer.rating} (${gig.freelancer.reviews})
+                  </div>
+                </div>
+              </div>
+              <div class="gig-price">
+                <span style="font-weight: 700; color: var(--primary);">$${gig.budget}</span>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        // Make card clickable (optional, links to a gig page in a real app)
+        card.addEventListener('click', () => {
+          alert(`Navigate to Gig Page for: ${gig.title}`);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // --- Event Listeners ---
+    document.querySelectorAll('.filter-checkbox input').forEach(checkbox => {
+      checkbox.addEventListener('change', applyFilters);
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', applyFilters);
+
+    // Header Search Handler
+    window.handleHeaderSearch = function() {
+      const query = document.getElementById('headerSearchInput').value.trim();
+      if (query) {
+        window.location.href = `service.html?q=${encodeURIComponent(query)}`;
+      } else {
+        window.location.href = `service.html`;
+      }
+    };
+
+    // Allow pressing 'Enter' in header search
+    document.getElementById('headerSearchInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        window.handleHeaderSearch();
+      }
+    });
+
+    // Run init on load
+    init();
+
+  </script>
+</body>
+</html>
