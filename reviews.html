@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reviews — Vertted Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #fafaf9; color: #1a1a24; line-height: 1.5; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    :root {
+      --primary: #1e2b4f; --primary-dark: #151d36;
+      --accent: #f26b21; --accent-hover: #d95b17; --accent-soft: #fdf2e8;
+      --text-main: #1a1a24; --text-muted: #5e5e6b;
+      --border-color: #e5e3df; --white: #fff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,.05);
+      --shadow-md: 0 12px 32px rgba(0,0,0,.08);
+      --radius-pill: 50px; --radius-card: 24px;
+      --green: #22c55e; --red: #ef4444; --amber: #f59e0b; --blue: #4f46e5;
+    }
+
+    /* ===== PORTAL SHELL ===== */
+    .portal-shell { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+    .portal-sidebar {
+      background: var(--primary); color: #fff; padding: 24px 0;
+      position: sticky; top: 0; height: 100vh;
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .portal-brand { padding: 0 24px 24px; border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 16px; }
+    .portal-brand img { height: 40px; filter: brightness(0) invert(1); opacity: .95; }
+    .portal-nav { list-style: none; padding: 0 12px; flex: 1; }
+    .portal-nav li { margin-bottom: 4px; }
+    .portal-nav a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-radius: 12px;
+      font-size: 0.92rem; font-weight: 500;
+      color: rgba(255,255,255,.7); transition: all .2s;
+    }
+    .portal-nav a i { width: 18px; text-align: center; font-size: 0.95rem; }
+    .portal-nav a:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .portal-nav a.active { background: var(--accent); color: #fff; }
+    .portal-nav .badge {
+      margin-left: auto;
+      background: rgba(255,255,255,.15);
+      font-size: .7rem; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .portal-user {
+      padding: 16px 24px; border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .portal-user img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+    .portal-user-info { flex: 1; min-width: 0; }
+    .portal-user-info h4 { font-size: 0.85rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .portal-user-info span { font-size: 0.7rem; color: rgba(255,255,255,.55); }
+    .portal-signout { color: rgba(255,255,255,.5); font-size: .9rem; transition: color .2s; }
+    .portal-signout:hover { color: var(--accent); }
+
+    .portal-main { padding: 32px 40px 80px; max-width: 1300px; width: 100%; }
+    .portal-topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; gap: 20px; flex-wrap: wrap;
+    }
+    .portal-topbar h1 { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+    .portal-topbar p { color: var(--text-muted); font-size: .95rem; margin-top: 4px; }
+
+    /* ===== TABS ===== */
+    .main-tabs {
+      display: flex; gap: 4px; border-bottom: 1px solid var(--border-color);
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+    .main-tab {
+      padding: 14px 24px;
+      font-size: .92rem; font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 3px solid transparent;
+      transition: all .2s;
+      display: inline-flex; align-items: center; gap: 8px;
+      white-space: nowrap;
+    }
+    .main-tab i { font-size: .9rem; }
+    .main-tab:hover { color: var(--primary); }
+    .main-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--accent);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn .25s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ===== STATUS PILLS ===== */
+    .status-pills {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .status-pill {
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: .85rem; font-weight: 600;
+      color: var(--text-muted);
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      transition: all .2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .status-pill:hover { border-color: var(--accent); }
+    .status-pill.active {
+      background: var(--primary); color: #fff; border-color: var(--primary);
+    }
+    .status-pill .count {
+      background: rgba(0,0,0,.06);
+      padding: 1px 8px; border-radius: 20px;
+      font-size: .72rem; font-weight: 700;
+      min-width: 22px; text-align: center;
+    }
+    .status-pill.active .count { background: rgba(255,255,255,.2); }
+
+    /* ===== REVIEW CARDS ===== */
+    .review-list {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .review-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s;
+    }
+    .review-card:hover { box-shadow: var(--shadow-md); }
+    .review-head {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 14px;
+    }
+    .review-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%; object-fit: cover;
+      flex-shrink: 0;
+    }
+    .review-meta { flex: 1; min-width: 0; }
+    .review-name {
+      font-size: .95rem; font-weight: 700;
+      color: var(--primary);
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
+    }
+    .review-sub {
+      font-size: .8rem; color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .review-sub strong { color: var(--text-main); font-weight: 600; }
+    .review-stars {
+      color: var(--accent); font-size: .95rem;
+      letter-spacing: 1px;
+    }
+    .review-stars .off { color: #d1cfc9; }
+    .review-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 12px;
+    }
+    .review-tag {
+      padding: 3px 10px;
+      background: var(--accent-soft); color: var(--accent);
+      border-radius: 20px;
+      font-size: .72rem; font-weight: 600;
+    }
+    .review-text {
+      font-size: .93rem; color: var(--text-main);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .review-status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .review-status-pill.pending  { background: #fff7e6; color: var(--amber); }
+    .review-status-pill.approved { background: #e8f8ee; color: var(--green); }
+    .review-status-pill.hidden   { background: #f3f2ef; color: var(--text-muted); }
+
+    /* Reply area */
+    .review-reply {
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: #fafaf9;
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+    }
+    .review-reply-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .review-reply-header strong {
+      font-size: .78rem; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .04em;
+      font-weight: 700;
+    }
+    .review-reply-header span {
+      font-size: .72rem; color: var(--text-muted);
+    }
+    .review-reply p {
+      font-size: .88rem; color: var(--text-main);
+      line-height: 1.55;
+      white-space: pre-line;
+    }
+    .review-reply-actions {
+      display: flex; gap: 8px;
+      margin-top: 8px;
+    }
+    .reply-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: .82rem; font-weight: 600;
+      background: var(--primary); color: #fff;
+      transition: all .2s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .reply-btn:hover { background: var(--primary-dark); }
+    .reply-btn.ghost {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .reply-btn.ghost:hover { background: #fafaf9; }
+
+    .reply-composer {
+      margin-top: 12px;
+      display: none;
+    }
+    .reply-composer.show { display: block; }
+    .reply-composer textarea {
+      width: 100%;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: .9rem;
+      resize: vertical;
+      min-height: 80px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .reply-composer textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .reply-composer-actions {
+      display: flex; gap: 8px; justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .reviews-empty {
+      background: var(--white);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 60px 30px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .reviews-empty i { font-size: 2.4rem; opacity: .5; margin-bottom: 14px; display: block; }
+    .reviews-empty h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 6px; }
+    .reviews-empty p { font-size: .9rem; }
+
+    /* ===== REVIEW LINKS TAB ===== */
+    .links-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px; gap: 16px; flex-wrap: wrap;
+    }
+    .links-header h2 {
+      font-size: 1.2rem; font-weight: 700; color: var(--primary);
+    }
+    .links-header p { font-size: .88rem; color: var(--text-muted); margin-top: 2px; }
+
+    .btn-create-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px;
+      border-radius: var(--radius-pill);
+      background: var(--accent); color: #fff;
+      font-weight: 600; font-size: .9rem;
+      transition: all .2s;
+    }
+    .btn-create-link:hover { background: var(--accent-hover); }
+
+    .links-list {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .link-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s;
+    }
+    .link-card:hover { box-shadow: var(--shadow-md); }
+    .link-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; margin-bottom: 12px;
+    }
+    .link-title {
+      font-size: .98rem; font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
+    }
+    .link-gig-badge {
+      padding: 2px 10px;
+      background: #eef2ff; color: var(--blue);
+      border-radius: 20px;
+      font-size: .7rem; font-weight: 600;
+    }
+    .link-slug {
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: .78rem; color: var(--text-muted);
+    }
+    .link-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 14px;
+    }
+    .link-tag {
+      padding: 3px 10px;
+      background: #f3f2ef; color: var(--text-main);
+      border-radius: 20px;
+      font-size: .72rem; font-weight: 500;
+    }
+
+    .link-url-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px;
+      background: #fafaf9;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 14px;
+    }
+    .link-url-row input {
+      flex: 1; min-width: 0;
+      background: transparent; border: 0; outline: 0;
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: .82rem;
+      color: var(--text-main);
+      text-overflow: ellipsis;
+    }
+    .copy-btn {
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: var(--primary); color: #fff;
+      font-size: .78rem; font-weight: 600;
+      transition: background .2s;
+      display: inline-flex; align-items: center; gap: 5px;
+      flex-shrink: 0;
+    }
+    .copy-btn:hover { background: var(--primary-dark); }
+    .copy-btn.copied { background: var(--green); }
+
+    .link-stats {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: .82rem; color: var(--text-muted);
+      padding-top: 12px;
+      border-top: 1px solid var(--border-color);
+    }
+    .link-stats span strong {
+      color: var(--primary); font-weight: 700;
+    }
+    .link-actions {
+      display: flex; gap: 8px; margin-left: auto;
+    }
+    .link-action-btn {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .82rem;
+      transition: background .2s;
+    }
+    .link-action-btn.delete {
+      background: #fdeaea; color: var(--red);
+    }
+    .link-action-btn.delete:hover { background: #fbd5d5; }
+
+    .links-empty {
+      background: var(--white);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 60px 30px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .links-empty i { font-size: 2.4rem; opacity: .5; margin-bottom: 14px; display: block; }
+    .links-empty h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 6px; }
+    .links-empty p { font-size: .9rem; }
+
+    /* ===== MODAL ===== */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.5);
+      backdrop-filter: blur(3px);
+      z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; visibility: hidden;
+      transition: all .25s;
+      overflow-y: auto;
+    }
+    .modal-backdrop.show { opacity: 1; visibility: visible; }
+    .modal-panel {
+      background: var(--white);
+      border-radius: var(--radius-card);
+      width: 100%; max-width: 560px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 24px 64px rgba(0,0,0,.18);
+      transform: translateY(-12px);
+      transition: transform .3s;
+      margin: auto;
+    }
+    .modal-backdrop.show .modal-panel { transform: translateY(0); }
+    .modal-header {
+      padding: 22px 26px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .modal-header h2 { font-size: 1.15rem; font-weight: 700; color: var(--primary); }
+    .modal-close {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: #f3f2ef;
+      color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .modal-close:hover { background: #e5e3df; }
+    .modal-body { padding: 22px 26px; display: flex; flex-direction: column; gap: 16px; }
+    .modal-footer {
+      padding: 16px 26px;
+      border-top: 1px solid var(--border-color);
+      display: flex; justify-content: flex-end; gap: 10px;
+    }
+
+    .form-row { display: flex; flex-direction: column; gap: 6px; }
+    .form-row label {
+      font-size: .82rem; font-weight: 600; color: var(--primary);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .form-row label .hint { font-weight: 400; color: var(--text-muted); font-size: .75rem; }
+    .form-input, .form-select {
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: .92rem;
+      color: var(--text-main);
+      background: var(--white);
+      transition: border-color .2s, box-shadow .2s;
+      width: 100%;
+    }
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .form-select { appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235e5e6b' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+
+    .tags-box {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px;
+      background: var(--white);
+      min-height: 48px;
+      transition: border-color .2s, box-shadow .2s;
+      cursor: text;
+    }
+    .tags-box:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .tags-box .tag-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 10px;
+      background: var(--accent-soft); color: var(--accent);
+      border-radius: 20px;
+      font-size: .8rem; font-weight: 500;
+    }
+    .tags-box .tag-chip button {
+      color: var(--accent); font-size: .7rem;
+      opacity: .7; transition: opacity .15s;
+      width: 14px; height: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tags-box .tag-chip button:hover { opacity: 1; }
+    .tags-box input {
+      flex: 1; min-width: 120px;
+      border: 0; outline: 0;
+      padding: 4px 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: .88rem;
+      background: transparent;
+    }
+
+    .btn-primary {
+      padding: 11px 24px;
+      border-radius: var(--radius-pill);
+      background: var(--accent); color: #fff;
+      font-weight: 600; font-size: .9rem;
+      transition: background .2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+    .btn-secondary {
+      padding: 11px 24px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-color);
+      background: var(--white);
+      color: var(--text-main);
+      font-weight: 600; font-size: .9rem;
+      transition: background .2s;
+    }
+    .btn-secondary:hover { background: #fafaf9; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--primary); color: #fff;
+      padding: 14px 22px; border-radius: 12px;
+      font-size: .9rem; font-weight: 500;
+      box-shadow: var(--shadow-md);
+      transform: translateY(120%); opacity: 0;
+      transition: all .3s ease;
+      z-index: 9999;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: var(--green); }
+    .toast.error { background: var(--red); }
+
+    /* Loading */
+    .loading-overlay {
+      position: fixed; inset: 0;
+      background: rgba(250,250,249,.9);
+      backdrop-filter: blur(2px);
+      z-index: 5000;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 14px;
+      color: var(--text-muted); font-size: .95rem;
+    }
+    .loading-overlay .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    .loading-overlay.hidden { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .portal-shell { grid-template-columns: 1fr; }
+      .portal-sidebar {
+        position: fixed; left: 0; top: 0; width: 260px;
+        transform: translateX(-100%);
+        transition: transform .3s; z-index: 1001;
+      }
+      .portal-sidebar.open { transform: translateX(0); }
+      .portal-mobile-toggle {
+        display: flex !important;
+        position: fixed; top: 16px; left: 16px;
+        width: 44px; height: 44px; border-radius: 50%;
+        background: var(--primary); color: #fff;
+        align-items: center; justify-content: center;
+        z-index: 1002; font-size: 1.1rem;
+        box-shadow: var(--shadow-md);
+      }
+      .portal-main { padding: 80px 16px 40px; }
+      .link-top { flex-direction: column; }
+    }
+    .portal-mobile-toggle { display: none; }
+    .sidebar-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.4);
+      z-index: 1000; opacity: 0; visibility: hidden; transition: all .2s;
+    }
+    .sidebar-backdrop.show { opacity: 1; visibility: visible; }
+  </style>
+</head>
+<body>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <span>Loading reviews…</span>
+  </div>
+
+  <button class="portal-mobile-toggle" id="mobileNavToggle"><i class="fas fa-bars"></i></button>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="portal-shell">
+    <aside class="portal-sidebar" id="portalSidebar">
+      <div class="portal-brand">
+        <a href="../index.html"><img src="../image/vertted-logo.jpeg" alt="Vertted" /></a>
+      </div>
+      <ul class="portal-nav">
+        <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+        <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="gigs.html"><i class="fas fa-layer-group"></i> Gigs</a></li>
+        <li><a href="inbox.html"><i class="fas fa-comment-dots"></i> Inbox</a></li>
+        <li><a href="orders.html"><i class="fas fa-shopping-bag"></i> Orders</a></li>
+        <li><a href="reviews.html" class="active"><i class="fas fa-star"></i> Reviews</a></li>
+      </ul>
+      <div class="portal-user">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23e5e3df'/></svg>" id="portalUserAvatar" alt="User" />
+        <div class="portal-user-info">
+          <h4 id="portalUserName">Loading…</h4>
+          <span>Freelancer</span>
+        </div>
+        <button class="portal-signout" id="signOutBtn" title="Sign out"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </aside>
+
+    <main class="portal-main">
+      <div class="portal-topbar">
+        <div>
+          <h1>Reviews</h1>
+          <p>Read what clients say, reply once per review, and create links to request more.</p>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="main-tabs">
+        <button class="main-tab active" data-tab="reviews"><i class="fas fa-star"></i> Reviews</button>
+        <button class="main-tab" data-tab="links"><i class="fas fa-link"></i> Review links</button>
+      </div>
+
+      <!-- ===== TAB: REVIEWS ===== -->
+      <div class="tab-panel active" id="tab-reviews">
+        <div class="status-pills" id="statusPills">
+          <button class="status-pill active" data-status="all">All <span class="count" id="countAll">0</span></button>
+          <button class="status-pill" data-status="pending">Pending <span class="count" id="countPending">0</span></button>
+          <button class="status-pill" data-status="approved">Approved <span class="count" id="countApproved">0</span></button>
+          <button class="status-pill" data-status="hidden">Hidden <span class="count" id="countHidden">0</span></button>
+        </div>
+
+        <div class="review-list" id="reviewList"></div>
+      </div>
+
+      <!-- ===== TAB: LINKS ===== -->
+      <div class="tab-panel" id="tab-links">
+        <div class="links-header">
+          <div>
+            <h2>Review links</h2>
+            <p>Share a link with clients to collect a tagged review.</p>
+          </div>
+          <button class="btn-create-link" id="createLinkBtn">
+            <i class="fas fa-plus"></i> Create link
+          </button>
+        </div>
+        <div class="links-list" id="linksList"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ===== CREATE LINK MODAL ===== -->
+  <div class="modal-backdrop" id="linkModal">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2>Create review link</h2>
+        <button class="modal-close" id="linkModalClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <label>Link label</label>
+          <input type="text" class="form-input" id="linkTitleInput" placeholder="e.g. Fintech UI project — March 2026" maxlength="80" />
+        </div>
+        <div class="form-row">
+          <label>Associated gig <span class="hint">optional</span></label>
+          <select class="form-select" id="linkGigSelect">
+            <option value="">— No specific gig —</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Pre-filled tags <span class="hint"><span id="linkTagCount">0</span> / 8</span></label>
+          <div class="tags-box" id="linkTagsBox">
+            <input type="text" id="linkTagInput" placeholder="Type a tag and press Enter…" />
+          </div>
+          <small style="font-size:.78rem;color:var(--text-muted)">Clients who open the link will see these tags pre-selected.</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="linkCancelBtn">Cancel</button>
+        <button class="btn-primary" id="linkCreateBtn"><i class="fas fa-link"></i> Create link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+  <!-- ===== FIREBASE ===== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import {
+      getFirestore, collection, query, where, orderBy, onSnapshot,
+      doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsL6tQHjXqTK0NTSDgb6SMS_1_ode2whQ",
+      authDomain: "vertted-28f7f.firebaseapp.com",
+      projectId: "vertted-28f7f",
+      storageBucket: "vertted-28f7f.firebasestorage.app",
+      messagingSenderId: "912377837951",
+      appId: "1:912377837951:web:c5550721e51b2a3a5f824a",
+      measurementId: "G-Q4FQ96Q25T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ==========================================
+    // State
+    // ==========================================
+    let currentUser = null;
+    let reviews = [];
+    let links = [];
+    let gigs = [];
+    let activeStatus = 'all';
+    let unsubReviews = null;
+    let unsubLinks = null;
+
+    let linkDraft = { tags: [] };
+
+    const $ = (id) => document.getElementById(id);
+
+    // ==========================================
+    // Helpers
+    // ==========================================
+    const toastEl = $('toast');
+    let toastTimer;
+    function toast(msg, type = 'success') {
+      toastEl.className = `toast ${type}`;
+      $('toastMsg').textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+    }
+    function initialsAvatar(name) {
+      const letter = (name || 'U').trim().charAt(0).toUpperCase();
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
+      return 'data:image/svg+xml;utf8,' + svg;
+    }
+    function escapeHTML(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function formatDate(ts) {
+      if (!ts) return '';
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+    function timeAgo(ts) {
+      if (!ts) return '';
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      const diff = (Date.now() - d.getTime()) / 1000;
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      if (diff < 2592000) return Math.floor(diff / 86400) + 'd ago';
+      return d.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    }
+    function starsHTML(rating) {
+      let out = '';
+      for (let i = 1; i <= 5; i++) {
+        out += i <= rating
+          ? '<i class="fas fa-star"></i>'
+          : '<i class="fas fa-star off"></i>';
+      }
+      return out;
+    }
+    function slugify(s) {
+      return String(s || '').toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 40);
+    }
+    function generateSlugToken() {
+      return Math.random().toString(36).slice(2, 6);
+    }
+    function buildLinkUrl(slug) {
+      // The client-side public review form page. Adjust if you host elsewhere.
+      const base = window.location.origin + window.location.pathname.replace('reviews.html', '');
+      return `${base}review.html?l=${slug}`;
+    }
+
+    // ==========================================
+    // Auth + sidebar
+    // ==========================================
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      currentUser = user;
+      $('portalUserName').textContent = user.displayName || 'Freelancer';
+      $('portalUserAvatar').src = user.photoURL || initialsAvatar(user.displayName);
+
+      await loadGigs();
+      loadReviews();
+      loadLinks();
+    });
+
+    $('signOutBtn').addEventListener('click', async () => {
+      await signOut(auth);
+      window.location.href = 'login.html';
+    });
+    $('mobileNavToggle').addEventListener('click', () => {
+      $('portalSidebar').classList.toggle('open');
+      $('sidebarBackdrop').classList.toggle('show');
+    });
+    $('sidebarBackdrop').addEventListener('click', () => {
+      $('portalSidebar').classList.remove('open');
+      $('sidebarBackdrop').classList.remove('show');
+    });
+
+    // ==========================================
+    // Tabs
+    // ==========================================
+    document.querySelectorAll('.main-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        $('tab-' + tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // ==========================================
+    // Load gigs (for the link dropdown)
+    // ==========================================
+    async function loadGigs() {
+      try {
+        const snap = await getDocs(query(
+          collection(db, 'gigs'),
+          where('ownerUid', '==', currentUser.uid)
+        ));
+        gigs = [];
+        snap.forEach(d => gigs.push({ id: d.id, ...d.data() }));
+        const sel = $('linkGigSelect');
+        sel.innerHTML = `<option value="">— No specific gig —</option>` +
+          gigs.map(g => `<option value="${g.id}">${escapeHTML(g.title || 'Untitled gig')}</option>`).join('');
+      } catch (err) {
+        console.warn('loadGigs', err);
+      }
+    }
+
+    // ==========================================
+    // Load reviews
+    // ==========================================
+    function loadReviews() {
+      if (unsubReviews) unsubReviews();
+      const q = query(
+        collection(db, 'reviews'),
+        where('freelancerUid', '==', currentUser.uid)
+      );
+      unsubReviews = onSnapshot(q, (snap) => {
+        reviews = [];
+        snap.forEach(d => reviews.push({ id: d.id, ...d.data() }));
+        reviews.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+        updateCounts();
+        renderReviews();
+        $('loadingOverlay').classList.add('hidden');
+      }, (err) => {
+        console.error('reviews listener', err);
+        $('loadingOverlay').classList.add('hidden');
+        toast('Could not load reviews', 'error');
+      });
+    }
+
+    function updateCounts() {
+      $('countAll').textContent = reviews.length;
+      $('countPending').textContent = reviews.filter(r => r.status === 'pending').length;
+      $('countApproved').textContent = reviews.filter(r => r.status === 'approved').length;
+      $('countHidden').textContent = reviews.filter(r => r.status === 'hidden').length;
+    }
+
+    // Status pills
+    document.querySelectorAll('.status-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.status-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        activeStatus = pill.dataset.status;
+        renderReviews();
+      });
+    });
+
+    function renderReviews() {
+      const list = $('reviewList');
+      const filtered = activeStatus === 'all'
+        ? reviews
+        : reviews.filter(r => r.status === activeStatus);
+
+      if (filtered.length === 0) {
+        list.innerHTML = `
+          <div class="reviews-empty">
+            <i class="fas fa-star"></i>
+            <h3>${activeStatus === 'all' ? 'No reviews yet' : 'Nothing here'}</h3>
+            <p>${activeStatus === 'all'
+              ? 'Create a review link and share it with a client to get started.'
+              : 'No reviews with this status right now.'}</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = filtered.map(r => reviewCard(r)).join('');
+      filtered.forEach(r => bindReviewCard(r));
+    }
+
+    function reviewCard(r) {
+      const status = r.status || 'pending';
+      const reply = r.reply?.text ? r.reply : null;
+      const tagsHtml = (r.tags || []).map(t => `<span class="review-tag">${escapeHTML(t)}</span>`).join('');
+      const replyHtml = reply
+        ? `<div class="review-reply">
+             <div class="review-reply-header">
+               <strong><i class="fas fa-reply"></i> Your reply</strong>
+               <span>${timeAgo(reply.repliedAt)}</span>
+             </div>
+             <p>${escapeHTML(reply.text)}</p>
+             <div class="review-reply-actions">
+               <button class="reply-btn ghost" data-action="edit-reply">Edit reply</button>
+             </div>
+             <div class="reply-composer" id="replyComposer-${r.id}">
+               <textarea data-reply-input="${r.id}" placeholder="Update your reply…">${escapeHTML(reply.text)}</textarea>
+               <div class="reply-composer-actions">
+                 <button class="btn-secondary" data-action="cancel-reply" style="padding:8px 16px;font-size:.82rem">Cancel</button>
+                 <button class="btn-primary" data-action="save-reply" style="padding:8px 16px;font-size:.82rem">Save reply</button>
+               </div>
+             </div>
+           </div>`
+        : `<div class="review-reply-actions" style="margin-top:10px">
+             <button class="reply-btn" data-action="start-reply"><i class="fas fa-reply"></i> Reply</button>
+           </div>
+           <div class="reply-composer" id="replyComposer-${r.id}">
+             <textarea data-reply-input="${r.id}" placeholder="Write a thoughtful reply to this review…"></textarea>
+             <div class="reply-composer-actions">
+               <button class="btn-secondary" data-action="cancel-reply" style="padding:8px 16px;font-size:.82rem">Cancel</button>
+               <button class="btn-primary" data-action="save-reply" style="padding:8px 16px;font-size:.82rem">Post reply</button>
+             </div>
+           </div>`;
+
+      return `
+        <div class="review-card" data-review-id="${r.id}">
+          <div class="review-head">
+            <img class="review-avatar" src="${r.clientAvatar || initialsAvatar(r.clientName)}" alt="${escapeHTML(r.clientName || 'Client')}" />
+            <div class="review-meta">
+              <div class="review-name">${escapeHTML(r.clientName || 'Client')}
+                <span class="review-status-pill ${status}">${status}</span>
+              </div>
+              <div class="review-sub">
+                ${r.gigTitle ? `On <strong>${escapeHTML(r.gigTitle)}</strong> · ` : ''}
+                ${formatDate(r.createdAt)}
+              </div>
+            </div>
+            <div class="review-stars">${starsHTML(r.rating || 0)}</div>
+          </div>
+          ${tagsHtml ? `<div class="review-tags">${tagsHtml}</div>` : ''}
+          ${r.text ? `<p class="review-text">${escapeHTML(r.text)}</p>` : ''}
+          ${replyHtml}
+        </div>
+      `;
+    }
+
+    function bindReviewCard(r) {
+      const card = document.querySelector(`[data-review-id="${r.id}"]`);
+      if (!card) return;
+
+      const composer = card.querySelector(`#replyComposer-${r.id}`);
+      const textarea = composer?.querySelector('textarea');
+
+      card.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const action = btn.dataset.action;
+          if (action === 'start-reply' || action === 'edit-reply') {
+            composer.classList.add('show');
+            textarea?.focus();
+          } else if (action === 'cancel-reply') {
+            composer.classList.remove('show');
+          } else if (action === 'save-reply') {
+            const text = textarea?.value.trim();
+            if (!text) return toast('Reply cannot be empty', 'error');
+            btn.disabled = true;
+            btn.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px"></span>Saving…`;
+            try {
+              await updateDoc(doc(db, 'reviews', r.id), {
+                reply: { text, repliedAt: serverTimestamp() }
+              });
+              toast('Reply saved', 'success');
+            } catch (err) {
+              console.error(err);
+              toast('Could not save reply', 'error');
+              btn.disabled = false;
+              btn.textContent = 'Save reply';
+            }
+          }
+        });
+      });
+    }
+
+    // ==========================================
+    // Load links
+    // ==========================================
+    function loadLinks() {
+      if (unsubLinks) unsubLinks();
+      const q = query(
+        collection(db, 'reviewLinks'),
+        where('freelancerUid', '==', currentUser.uid)
+      );
+      unsubLinks = onSnapshot(q, (snap) => {
+        links = [];
+        snap.forEach(d => links.push({ id: d.id, ...d.data() }));
+        links.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+        renderLinks();
+      }, (err) => {
+        console.error('links listener', err);
+        toast('Could not load links', 'error');
+      });
+    }
+
+    function renderLinks() {
+      const list = $('linksList');
+      if (links.length === 0) {
+        list.innerHTML = `
+          <div class="links-empty">
+            <i class="fas fa-link"></i>
+            <h3>No review links yet</h3>
+            <p>Create your first link to start collecting tagged reviews.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = links.map(l => {
+        const url = buildLinkUrl(l.slug);
+        const gig = gigs.find(g => g.id === l.gigId);
+        return `
+          <div class="link-card" data-link-id="${l.id}">
+            <div class="link-top">
+              <div>
+                <div class="link-title">
+                  ${escapeHTML(l.title || 'Untitled link')}
+                  ${gig ? `<span class="link-gig-badge"><i class="fas fa-tag"></i> ${escapeHTML(gig.title)}</span>` : ''}
+                </div>
+                <div class="link-slug">${escapeHTML(l.slug || l.id.slice(0, 10))}</div>
+              </div>
+              <div class="link-actions">
+                <button class="link-action-btn delete" data-action="delete"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+            ${(l.tags || []).length ? `<div class="link-tags">${l.tags.map(t => `<span class="link-tag">${escapeHTML(t)}</span>`).join('')}</div>` : ''}
+            <div class="link-url-row">
+              <input type="text" readonly value="${escapeHTML(url)}" id="url-${l.id}" />
+              <button class="copy-btn" data-action="copy"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="link-stats">
+              <span><strong>${l.opens || 0}</strong> opens</span>
+              <span><strong>${l.uses || 0}</strong> uses</span>
+              <span>Created ${formatDate(l.createdAt)}</span>
+              ${l.lastUsedAt ? `<span>Last used ${timeAgo(l.lastUsedAt)}</span>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      list.querySelectorAll('.link-card').forEach(card => {
+        const linkId = card.dataset.linkId;
+        const link = links.find(l => l.id === linkId);
+        if (!link) return;
+
+        card.querySelector('[data-action="copy"]').addEventListener('click', (e) => {
+          copyLink(e.currentTarget, link);
+        });
+
+        card.querySelector('[data-action="delete"]').addEventListener('click', () => {
+          deleteLink(link);
+        });
+      });
+    }
+
+    async function copyLink(btn, link) {
+      const url = buildLinkUrl(link.slug);
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        // Fallback
+        const input = document.getElementById(`url-${link.id}`);
+        if (input) { input.select(); document.execCommand('copy'); }
+      }
+      const original = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = `<i class="fas fa-check"></i> Copied`;
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = original;
+      }, 1800);
+    }
+
+    async function deleteLink(link) {
+      if (!confirm(`Delete this review link? Any existing reviews will remain but the link will stop working.`)) return;
+      try {
+        await deleteDoc(doc(db, 'reviewLinks', link.id));
+        toast('Link deleted', 'success');
+      } catch (err) {
+        console.error(err);
+        toast('Could not delete link', 'error');
+      }
+    }
+
+    // ==========================================
+    // Create link modal
+    // ==========================================
+    function openLinkModal() {
+      linkDraft = { tags: [] };
+      $('linkTitleInput').value = '';
+      $('linkGigSelect').value = '';
+      renderLinkTags();
+      $('linkModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => $('linkTitleInput').focus(), 100);
+    }
+    function closeLinkModal() {
+      $('linkModal').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    $('createLinkBtn').addEventListener('click', openLinkModal);
+    $('linkModalClose').addEventListener('click', closeLinkModal);
+    $('linkCancelBtn').addEventListener('click', closeLinkModal);
+    $('linkModal').addEventListener('click', (e) => {
+      if (e.target.id === 'linkModal') closeLinkModal();
+    });
+
+    // Tag chips
+    function renderLinkTags() {
+      const box = $('linkTagsBox');
+      box.querySelectorAll('.tag-chip').forEach(el => el.remove());
+      const input = $('linkTagInput');
+      linkDraft.tags.forEach((tag, i) => {
+        const chip = document.createElement('span');
+        chip.className = 'tag-chip';
+        chip.innerHTML = `${escapeHTML(tag)} <button type="button">×</button>`;
+        chip.querySelector('button').addEventListener('click', () => {
+          linkDraft.tags.splice(i, 1);
+          renderLinkTags();
+        });
+        box.insertBefore(chip, input);
+      });
+      $('linkTagCount').textContent = linkDraft.tags.length;
+      input.disabled = linkDraft.tags.length >= 8;
+      input.placeholder = linkDraft.tags.length >= 8 ? 'Max 8 tags' : 'Type a tag and press Enter…';
+    }
+    $('linkTagsBox').addEventListener('click', (e) => {
+      if (e.target.tagName !== 'BUTTON') $('linkTagInput').focus();
+    });
+    $('linkTagInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        const val = e.target.value.trim().replace(/,+$/, '').trim();
+        if (!val) return;
+        if (linkDraft.tags.length >= 8) return toast('Max 8 tags', 'error');
+        if (!linkDraft.tags.includes(val)) linkDraft.tags.push(val);
+        e.target.value = '';
+        renderLinkTags();
+        $('linkTagInput').focus();
+      } else if (e.key === 'Backspace' && !e.target.value && linkDraft.tags.length > 0) {
+        linkDraft.tags.pop();
+        renderLinkTags();
+      }
+    });
+
+    $('linkCreateBtn').addEventListener('click', async () => {
+      const title = $('linkTitleInput').value.trim();
+      const gigId = $('linkGigSelect').value;
+      if (!title) return toast('Give the link a label', 'error');
+
+      const btn = $('linkCreateBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px"></span>Creating…`;
+
+      try {
+        const gig = gigs.find(g => g.id === gigId);
+        const baseSlug = slugify(title) || 'review';
+        // Ensure slug uniqueness within this freelancer's links
+        let slug = `${baseSlug}-${generateSlugToken()}`;
+        // Tiny retry loop in case of collision
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const exists = links.find(l => l.slug === slug);
+          if (!exists) break;
+          slug = `${baseSlug}-${generateSlugToken()}`;
+        }
+
+        await addDoc(collection(db, 'reviewLinks'), {
+          freelancerUid: currentUser.uid,
+          title,
+          slug,
+          tags: linkDraft.tags,
+          gigId: gigId || null,
+          gigTitle: gig?.title || null,
+          opens: 0,
+          uses: 0,
+          createdAt: serverTimestamp(),
+          lastOpenedAt: null,
+          lastUsedAt: null
+        });
+
+        toast('Review link created', 'success');
+        closeLinkModal();
+      } catch (err) {
+        console.error(err);
+        toast('Could not create link', 'error');
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fas fa-link"></i> Create link`;
+      }
+    });
+
+    // ==========================================
+    // Cleanup
+    // ==========================================
+    window.addEventListener('beforeunload', () => {
+      unsubReviews?.();
+      unsubLinks?.();
+    });
+  </script>
+</body>
+</html>
