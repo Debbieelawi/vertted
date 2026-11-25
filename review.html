@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leave a review — Vertted</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(242,107,33,.10), transparent 40%),
+        radial-gradient(circle at 90% 100%, rgba(30,43,79,.08), transparent 45%),
+        #fafaf9;
+      color: #1a1a24;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
+
+    :root {
+      --primary: #1e2b4f; --primary-dark: #151d36;
+      --accent: #f26b21; --accent-hover: #d95b17; --accent-soft: #fdf2e8;
+      --text-main: #1a1a24; --text-muted: #5e5e6b;
+      --border-color: #e5e3df; --white: #fff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,.05);
+      --shadow-md: 0 12px 32px rgba(0,0,0,.08);
+      --shadow-lg: 0 24px 64px rgba(0,0,0,.12);
+      --radius-pill: 50px; --radius-card: 24px;
+      --green: #22c55e; --red: #ef4444; --amber: #f59e0b;
+    }
+
+    .rv-shell {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Top brand row */
+    .rv-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; gap: 16px;
+    }
+    .rv-topbar img {
+      height: 44px; width: auto; object-fit: contain;
+    }
+    .rv-topbar .rv-trust {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .78rem; color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+    .rv-topbar .rv-trust i { color: var(--green); font-size: .8rem; }
+
+    /* Main card */
+    .rv-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    /* Loading / invalid / thank‑you bodies */
+    .rv-state {
+      padding: 60px 32px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .rv-state .rv-state-icon {
+      width: 72px; height: 72px;
+      border-radius: 20px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 18px;
+    }
+    .rv-state.loading .rv-state-icon { background: var(--accent-soft); color: var(--accent); }
+    .rv-state.error   .rv-state-icon { background: #fdeaea; color: var(--red); }
+    .rv-state.success .rv-state-icon { background: #e8f8ee; color: var(--green); }
+    .rv-state h2 {
+      font-size: 1.4rem; color: var(--primary);
+      font-weight: 700; margin-bottom: 8px;
+    }
+    .rv-state p {
+      font-size: .93rem; line-height: 1.65;
+      max-width: 440px; margin: 0 auto;
+    }
+    .rv-state .rv-state-actions {
+      display: flex; gap: 10px;
+      justify-content: center; flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .rv-state .rv-state-actions a,
+    .rv-state .rv-state-actions button {
+      padding: 12px 22px;
+      border-radius: var(--radius-pill);
+      font-size: .9rem; font-weight: 600;
+      transition: all .2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .rv-state .rv-state-actions .primary {
+      background: var(--accent); color: #fff;
+    }
+    .rv-state .rv-state-actions .primary:hover { background: var(--accent-hover); }
+    .rv-state .rv-state-actions .ghost {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .rv-state .rv-state-actions .ghost:hover { background: #fafaf9; }
+
+    .rv-spinner {
+      width: 24px; height: 24px;
+      border: 3px solid rgba(242,107,33,.25);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Freelancer header inside the form */
+    .rv-freelancer {
+      padding: 26px 32px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex; align-items: center; gap: 18px;
+      background: linear-gradient(135deg, #fff 0%, var(--accent-soft) 100%);
+    }
+    .rv-freelancer-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--white);
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+    .rv-freelancer-info { flex: 1; min-width: 0; }
+    .rv-freelancer-info .rv-freelancer-eyebrow {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: 3px;
+    }
+    .rv-freelancer-info h1 {
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 3px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .rv-freelancer-info p {
+      font-size: .83rem; color: var(--text-muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .rv-freelancer-gig {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: .72rem; font-weight: 600;
+      color: var(--primary);
+      margin-top: 6px;
+      max-width: 100%;
+    }
+    .rv-freelancer-gig span {
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 320px;
+    }
+
+    /* Form body */
+    .rv-body {
+      padding: 28px 32px 32px;
+      display: flex; flex-direction: column; gap: 26px;
+    }
+
+    /* Star rating */
+    .rv-section-title {
+      font-size: .78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .rv-stars {
+      display: flex; gap: 6px;
+      font-size: 2rem;
+      color: #e5e3df;
+    }
+    .rv-stars button {
+      color: inherit;
+      transition: color .15s, transform .15s;
+      padding: 2px;
+      line-height: 1;
+    }
+    .rv-stars button.active { color: var(--accent); }
+    .rv-stars button:hover { transform: scale(1.1); }
+    .rv-rating-label {
+      font-size: .85rem; color: var(--text-muted);
+      margin-top: 8px; min-height: 1.3em;
+    }
+
+    /* Tag chips */
+    .rv-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .rv-tag {
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: .82rem; font-weight: 500;
+      background: var(--white);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      transition: all .18s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .rv-tag:hover { border-color: var(--accent); color: var(--accent); }
+    .rv-tag.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .rv-tag i { font-size: .7rem; }
+    .rv-tags-custom {
+      display: flex; gap: 8px; margin-top: 10px;
+      align-items: center;
+    }
+    .rv-tags-custom input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: .88rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .rv-tags-custom input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .rv-tags-custom button {
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: var(--primary); color: #fff;
+      font-size: .82rem; font-weight: 600;
+      transition: background .2s;
+    }
+    .rv-tags-custom button:hover { background: var(--primary-dark); }
+    .rv-tag-hint {
+      font-size: .76rem; color: var(--text-muted); margin-top: 8px;
+    }
+
+    /* Textarea */
+    .rv-textarea {
+      width: 100%;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: .93rem;
+      color: var(--text-main);
+      resize: vertical;
+      min-height: 140px;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      line-height: 1.6;
+    }
+    .rv-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .rv-textarea-counter {
+      text-align: right;
+      font-size: .74rem; color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Optional fields */
+    .rv-optional {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .rv-field { display: flex; flex-direction: column; gap: 6px; }
+    .rv-field label {
+      font-size: .82rem; font-weight: 600; color: var(--primary);
+    }
+    .rv-field label .hint {
+      font-weight: 400; color: var(--text-muted); font-size: .75rem;
+    }
+    .rv-field input {
+      padding: 11px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .rv-field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .rv-field-note {
+      font-size: .74rem; color: var(--text-muted); margin-top: 2px;
+    }
+
+    /* Footer + submit */
+    .rv-consent {
+      font-size: .78rem; color: var(--text-muted);
+      line-height: 1.5;
+      padding: 12px 14px;
+      background: #fafaf9;
+      border-radius: 10px;
+      border-left: 3px solid var(--accent);
+    }
+    .rv-submit-row {
+      display: flex; gap: 12px; align-items: center;
+      flex-wrap: wrap;
+    }
+    .rv-submit {
+      flex: 1; min-width: 200px;
+      padding: 14px 24px;
+      border-radius: var(--radius-pill);
+      background: var(--accent);
+      color: #fff;
+      font-size: .95rem; font-weight: 700;
+      transition: background .2s, transform .1s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .rv-submit:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+    .rv-submit:disabled { opacity: .6; cursor: not-allowed; }
+    .rv-submit .rv-spinner { border-color: rgba(255,255,255,.35); border-top-color: #fff; width: 18px; height: 18px; border-width: 2px; }
+    .rv-submit-row .rv-cancel {
+      padding: 14px 22px;
+      border-radius: var(--radius-pill);
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: .9rem; font-weight: 600;
+      transition: background .2s;
+    }
+    .rv-submit-row .rv-cancel:hover { background: #fafaf9; }
+
+    /* Toast */
+    .rv-toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--primary); color: #fff;
+      padding: 14px 22px; border-radius: 12px;
+      font-size: .9rem; font-weight: 500;
+      box-shadow: var(--shadow-md);
+      transform: translateY(120%); opacity: 0;
+      transition: all .3s ease;
+      z-index: 9999;
+      display: flex; align-items: center; gap: 10px;
+      max-width: calc(100vw - 48px);
+    }
+    .rv-toast.show { transform: translateY(0); opacity: 1; }
+    .rv-toast.error { background: var(--red); }
+
+    /* Footer meta */
+    .rv-footnote {
+      text-align: center;
+      margin-top: 26px;
+      font-size: .78rem;
+      color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      flex-wrap: wrap;
+    }
+    .rv-footnote a { color: var(--accent); font-weight: 600; }
+    .rv-footnote .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-muted); opacity: .5; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body { padding: 20px 12px; }
+      .rv-freelancer { padding: 20px; flex-direction: column; text-align: center; }
+      .rv-freelancer-info { text-align: center; }
+      .rv-freelancer-gig span { max-width: 200px; }
+      .rv-body { padding: 22px 20px 26px; }
+      .rv-optional { grid-template-columns: 1fr; }
+      .rv-topbar .rv-trust { display: none; }
+      .rv-stars { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rv-shell">
+
+    <div class="rv-topbar">
+      <a href="../index.html" aria-label="Vertted home">
+        <img src="image/vertted-logo.jpeg" alt="Vertted" onerror="this.src='../image/vertted-logo.jpeg'" />
+      </a>
+      <span class="rv-trust">
+        <i class="fas fa-shield-halved"></i> Trusted reviews · admin‑moderated
+      </span>
+    </div>
+
+    <div class="rv-card" id="rvCard">
+
+      <!-- Loading -->
+      <div class="rv-state loading" id="rvLoading">
+        <div class="rv-state-icon"><span class="rv-spinner"></span></div>
+        <h2>Loading your review link…</h2>
+        <p>Just a moment.</p>
+      </div>
+
+      <!-- Invalid -->
+      <div class="rv-state error" id="rvInvalid" style="display:none;">
+        <div class="rv-state-icon"><i class="fas fa-link-slash"></i></div>
+        <h2>This link isn't valid</h2>
+        <p>The review link you clicked may have been removed or expired. If you'd like to leave a review, ask the freelancer to share a fresh link.</p>
+        <div class="rv-state-actions">
+          <a href="../index.html" class="primary"><i class="fas fa-house"></i> Go to Vertted</a>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div id="rvFormWrap" style="display:none;">
+
+        <div class="rv-freelancer">
+          <img class="rv-freelancer-avatar" id="rvFreelancerAvatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23e5e3df'/></svg>" alt="Freelancer" />
+          <div class="rv-freelancer-info">
+            <div class="rv-freelancer-eyebrow">You're reviewing</div>
+            <h1 id="rvFreelancerName">Freelancer</h1>
+            <p id="rvFreelancerHeadline"></p>
+            <div class="rv-freelancer-gig" id="rvGigBadge" style="display:none;">
+              <i class="fas fa-tag"></i>
+              <span id="rvGigTitle"></span>
+            </div>
+          </div>
+        </div>
+
+        <form class="rv-body" id="rvForm" novalidate>
+
+          <!-- Rating -->
+          <div>
+            <div class="rv-section-title">How would you rate the work? *</div>
+            <div class="rv-stars" id="rvStars" role="radiogroup" aria-label="Rating">
+              <button type="button" data-value="1" aria-label="1 star"><i class="fas fa-star"></i></button>
+              <button type="button" data-value="2" aria-label="2 stars"><i class="fas fa-star"></i></button>
+              <button type="button" data-value="3" aria-label="3 stars"><i class="fas fa-star"></i></button>
+              <button type="button" data-value="4" aria-label="4 stars"><i class="fas fa-star"></i></button>
+              <button type="button" data-value="5" aria-label="5 stars"><i class="fas fa-star"></i></button>
+            </div>
+            <div class="rv-rating-label" id="rvRatingLabel">Tap a star to rate</div>
+          </div>
+
+          <!-- Tags -->
+          <div>
+            <div class="rv-section-title">What did they do well? <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text-muted);">(tap all that apply)</span></div>
+            <div class="rv-tags" id="rvTags"></div>
+            <div class="rv-tags-custom">
+              <input type="text" id="rvCustomTagInput" placeholder="Add your own tag…" maxlength="30" />
+              <button type="button" id="rvAddTagBtn">Add</button>
+            </div>
+            <div class="rv-tag-hint">Tags help other clients find this freelancer for the right reasons.</div>
+          </div>
+
+          <!-- Review text -->
+          <div>
+            <div class="rv-section-title">Your review *</div>
+            <textarea
+              class="rv-textarea"
+              id="rvText"
+              maxlength="1200"
+              placeholder="What was it like working with them? What did they deliver? Would you recommend them to others?"
+            ></textarea>
+            <div class="rv-textarea-counter"><span id="rvTextCount">0</span> / 1200</div>
+          </div>
+
+          <!-- Client info -->
+          <div>
+            <div class="rv-section-title">Your details <span style="text-transform:none;letter-spacing:0;font-weight:400;color:var(--text-muted);">(optional)</span></div>
+            <div class="rv-optional">
+              <div class="rv-field">
+                <label for="rvClientName">Display name</label>
+                <input type="text" id="rvClientName" placeholder="e.g. Nneoma D." maxlength="60" />
+                <div class="rv-field-note">Shown publicly next to your review.</div>
+              </div>
+              <div class="rv-field">
+                <label for="rvClientEmail">Email <span class="hint">private</span></label>
+                <input type="email" id="rvClientEmail" placeholder="you@example.com" maxlength="120" />
+                <div class="rv-field-note">Never shown publicly.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rv-consent">
+            <i class="fas fa-shield-halved" style="color:var(--accent);margin-right:6px"></i>
+            Your review will be reviewed by our team before it goes live. Vertted removes spam and abusive content.
+          </div>
+
+          <div class="rv-submit-row">
+            <button type="submit" class="rv-submit" id="rvSubmitBtn">
+              <i class="fas fa-paper-plane"></i> Submit review
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Thank you -->
+      <div class="rv-state success" id="rvThankYou" style="display:none;">
+        <div class="rv-state-icon"><i class="fas fa-check"></i></div>
+        <h2>Thank you! 🎉</h2>
+        <p>Your review has been submitted for moderation. It usually goes live within a few hours.</p>
+        <div class="rv-state-actions">
+          <a href="../index.html" class="primary"><i class="fas fa-house"></i> Go to Vertted</a>
+          <button type="button" class="ghost" id="rvLeaveAnother"><i class="fas fa-rotate-right"></i> Leave another</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rv-footnote">
+      <a href="../index.html">Vertted</a>
+      <span class="dot"></span>
+      <span>Every review is human-moderated</span>
+      <span class="dot"></span>
+      <a href="#">Report this link</a>
+    </div>
+
+  </div>
+
+  <div class="rv-toast" id="rvToast"><i class="fas fa-exclamation-circle"></i><span id="rvToastMsg"></span></div>
+
+  <!-- ===== FIREBASE ===== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import {
+      getFirestore, collection, query, where, getDocs, limit,
+      doc, getDoc, addDoc, updateDoc, serverTimestamp, increment
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsL6tQHjXqTK0NTSDgb6SMS_1_ode2whQ",
+      authDomain: "vertted-28f7f.firebaseapp.com",
+      projectId: "vertted-28f7f",
+      storageBucket: "vertted-28f7f.firebasestorage.app",
+      messagingSenderId: "912377837951",
+      appId: "1:912377837951:web:c5550721e51b2a3a5f824a",
+      measurementId: "G-Q4FQ96Q25T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const $ = (id) => document.getElementById(id);
+
+    // ==========================================
+    // State
+    // ==========================================
+    let linkDoc = null;      // { id, ...reviewLink data }
+    let freelancer = null;   // { uid, displayName, headline, photoURL }
+    let currentAuthUid = null;
+
+    const STARS_LABELS = {
+      1: 'Poor',
+      2: 'Fair',
+      3: 'Good',
+      4: 'Great',
+      5: 'Excellent'
+    };
+
+    let selectedRating = 0;
+    let selectedTags = [];   // array of strings
+
+    // ==========================================
+    // Toast
+    // ==========================================
+    const toastEl = $('rvToast');
+    let toastTimer;
+    function toast(msg, type = 'error') {
+      toastEl.className = `rv-toast ${type}`;
+      $('rvToastMsg').textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3500);
+    }
+
+    // ==========================================
+    // Initials avatar
+    // ==========================================
+    function initialsAvatar(name) {
+      const letter = (name || 'U').trim().charAt(0).toUpperCase();
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
+      return 'data:image/svg+xml;utf8,' + svg;
+    }
+    function escapeHTML(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+
+    // ==========================================
+    // Track whether the current user is signed in
+    // (used to attach clientUid when possible)
+    // ==========================================
+    onAuthStateChanged(auth, (user) => {
+      currentAuthUid = user?.uid || null;
+    });
+
+    // ==========================================
+    // Boot
+    // ==========================================
+    (async function init() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('l');
+
+      if (!slug) return showInvalid();
+
+      try {
+        const link = await fetchLinkBySlug(slug);
+        if (!link) return showInvalid();
+
+        linkDoc = link;
+        await bumpOpenCount(link.id);
+        await fetchFreelancer(link.freelancerUid);
+        await renderForm();
+      } catch (err) {
+        console.error(err);
+        showInvalid();
+      }
+    })();
+
+    async function fetchLinkBySlug(slug) {
+      const q = query(
+        collection(db, 'reviewLinks'),
+        where('slug', '==', slug),
+        limit(1)
+      );
+      const snap = await getDocs(q);
+      if (snap.empty) return null;
+      const d = snap.docs[0];
+      return { id: d.id, ...d.data() };
+    }
+
+    async function bumpOpenCount(linkId) {
+      try {
+        await updateDoc(doc(db, 'reviewLinks', linkId), {
+          opens: increment(1),
+          lastOpenedAt: serverTimestamp()
+        });
+      } catch (e) {
+        // Non-critical — the form still works
+        console.warn('Could not bump open count', e);
+      }
+    }
+
+    async function fetchFreelancer(uid) {
+      try {
+        const snap = await getDoc(doc(db, 'profiles', uid));
+        if (snap.exists()) {
+          const p = snap.data();
+          freelancer = {
+            uid,
+            displayName: p.displayName || 'A Vertted freelancer',
+            headline: p.headline || '',
+            photoURL: p.photoURL || ''
+          };
+        } else {
+          freelancer = { uid, displayName: 'A Vertted freelancer', headline: '', photoURL: '' };
+        }
+      } catch (e) {
+        console.warn('Profile fetch failed', e);
+        freelancer = { uid, displayName: 'A Vertted freelancer', headline: '', photoURL: '' };
+      }
+    }
+
+    // ==========================================
+    // Screens
+    // ==========================================
+    function showInvalid() {
+      $('rvLoading').style.display = 'none';
+      $('rvInvalid').style.display = 'block';
+      $('rvFormWrap').style.display = 'none';
+      $('rvThankYou').style.display = 'none';
+    }
+    function showForm() {
+      $('rvLoading').style.display = 'none';
+      $('rvInvalid').style.display = 'none';
+      $('rvFormWrap').style.display = 'block';
+      $('rvThankYou').style.display = 'none';
+    }
+    function showThankYou() {
+      $('rvLoading').style.display = 'none';
+      $('rvInvalid').style.display = 'none';
+      $('rvFormWrap').style.display = 'none';
+      $('rvThankYou').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ==========================================
+    // Render form
+    // ==========================================
+    async function renderForm() {
+      // Header
+      $('rvFreelancerAvatar').src = freelancer.photoURL || initialsAvatar(freelancer.displayName);
+      $('rvFreelancerName').textContent = freelancer.displayName;
+      $('rvFreelancerHeadline').textContent = freelancer.headline || '';
+
+      if (linkDoc.gigTitle) {
+        $('rvGigBadge').style.display = 'inline-flex';
+        $('rvGigTitle').textContent = linkDoc.gigTitle;
+      }
+
+      // Pre-fill tags from link
+      const linkTags = linkDoc.tags || [];
+      selectedTags = [...linkTags];
+
+      // Render tag chips
+      renderTags();
+
+      showForm();
+    }
+
+    // ==========================================
+    // Tags UI
+    // ==========================================
+    function renderTags() {
+      const wrap = $('rvTags');
+      const allTags = Array.from(new Set([
+        ...(linkDoc?.tags || []),
+        ...selectedTags
+      ]));
+
+      wrap.innerHTML = allTags.map(tag => {
+        const active = selectedTags.includes(tag);
+        return `<button type="button" class="rv-tag ${active ? 'active' : ''}" data-tag="${escapeHTML(tag)}">
+          ${active ? '<i class="fas fa-check"></i>' : ''} ${escapeHTML(tag)}
+        </button>`;
+      }).join('');
+
+      wrap.querySelectorAll('.rv-tag').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tag = btn.dataset.tag;
+          const idx = selectedTags.indexOf(tag);
+          if (idx >= 0) selectedTags.splice(idx, 1);
+          else selectedTags.push(tag);
+          renderTags();
+        });
+      });
+    }
+
+    $('rvAddTagBtn').addEventListener('click', () => {
+      const val = $('rvCustomTagInput').value.trim();
+      if (!val) return;
+      if (selectedTags.length >= 8) return toast('You can pick up to 8 tags');
+      if (!selectedTags.includes(val)) selectedTags.push(val);
+      $('rvCustomTagInput').value = '';
+      renderTags();
+    });
+    $('rvCustomTagInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ',') {
+        e.preventDefault();
+        $('rvAddTagBtn').click();
+      }
+    });
+
+    // ==========================================
+    // Stars
+    // ==========================================
+    $('rvStars').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-value]');
+      if (!btn) return;
+      selectedRating = parseInt(btn.dataset.value, 10);
+      updateStarsUI();
+    });
+    $('rvStars').addEventListener('mouseover', (e) => {
+      const btn = e.target.closest('button[data-value]');
+      if (!btn) return;
+      hoverStars(parseInt(btn.dataset.value, 10));
+    });
+    $('rvStars').addEventListener('mouseleave', () => {
+      updateStarsUI();
+    });
+
+    function updateStarsUI() {
+      document.querySelectorAll('#rvStars button').forEach(b => {
+        b.classList.toggle('active', parseInt(b.dataset.value, 10) <= selectedRating);
+      });
+      $('rvRatingLabel').textContent = selectedRating
+        ? `${selectedRating} of 5 · ${STARS_LABELS[selectedRating]}`
+        : 'Tap a star to rate';
+    }
+    function hoverStars(n) {
+      document.querySelectorAll('#rvStars button').forEach(b => {
+        b.classList.toggle('active', parseInt(b.dataset.value, 10) <= n);
+      });
+      $('rvRatingLabel').textContent = `${n} of 5 · ${STARS_LABELS[n]}`;
+    }
+
+    // ==========================================
+    // Textarea counter
+    // ==========================================
+    $('rvText').addEventListener('input', (e) => {
+      $('rvTextCount').textContent = e.target.value.length;
+    });
+
+    // ==========================================
+    // Submit
+    // ==========================================
+    $('rvForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const text = $('rvText').value.trim();
+      const clientName = $('rvClientName').value.trim() || 'Anonymous';
+      const clientEmail = $('rvClientEmail').value.trim();
+
+      if (!selectedRating) return toast('Please pick a rating');
+      if (text.length < 20) return toast('Your review should be at least 20 characters');
+
+      const btn = $('rvSubmitBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="rv-spinner"></span><span>Submitting…</span>`;
+
+      try {
+        // 1. Create the review doc
+        await addDoc(collection(db, 'reviews'), {
+          freelancerUid: linkDoc.freelancerUid,
+          clientUid: currentAuthUid || null,
+          clientName,
+          clientAvatar: initialsAvatar(clientName),
+          clientEmail: clientEmail || null,
+          gigId: linkDoc.gigId || null,
+          gigTitle: linkDoc.gigTitle || null,
+          rating: selectedRating,
+          text,
+          tags: selectedTags,
+          linkId: linkDoc.id,
+          status: 'pending',
+          reply: null,
+          createdAt: serverTimestamp()
+        });
+
+        // 2. Bump link.uses + lastUsedAt
+        try {
+          await updateDoc(doc(db, 'reviewLinks', linkDoc.id), {
+            uses: increment(1),
+            lastUsedAt: serverTimestamp()
+          });
+        } catch (e) {
+          console.warn('Could not bump use count', e);
+        }
+
+        showThankYou();
+      } catch (err) {
+        console.error(err);
+        toast('Could not submit review — please try again');
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fas fa-paper-plane"></i> Submit review`;
+      }
+    });
+
+    // ==========================================
+    // "Leave another" reset
+    // ==========================================
+    $('rvLeaveAnother').addEventListener('click', () => {
+      selectedRating = 0;
+      selectedTags = [...(linkDoc.tags || [])];
+      $('rvText').value = '';
+      $('rvTextCount').textContent = '0';
+      $('rvClientName').value = '';
+      $('rvClientEmail').value = '';
+      updateStarsUI();
+      renderTags();
+      showForm();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

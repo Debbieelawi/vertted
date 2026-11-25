@@ -59,22 +59,131 @@
     .portal-signout { color: rgba(255,255,255,.5); font-size: .9rem; transition: color .2s; }
     .portal-signout:hover { color: var(--accent); }
 
-    .portal-main { padding: 32px 40px 80px; max-width: 1300px; width: 100%; }
+    .portal-main { padding: 32px 40px 80px; max-width: 1400px; width: 100%; }
     .portal-topbar {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 28px; gap: 20px; flex-wrap: wrap;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 24px; gap: 20px; flex-wrap: wrap;
     }
     .portal-topbar h1 { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
-    .portal-topbar p { color: var(--text-muted); font-size: .95rem; margin-top: 4px; }
+    .portal-topbar p { color: var(--text-muted); font-size: .95rem; margin-top: 4px; max-width: 560px; }
+    .btn-new-gig {
+      background: var(--accent); color: #fff;
+      padding: 12px 24px; border-radius: var(--radius-pill);
+      font-weight: 600; font-size: .9rem;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background .2s, transform .1s;
+      flex-shrink: 0;
+    }
+    .btn-new-gig:hover { background: var(--accent-hover); transform: translateY(-1px); }
 
-    /* ===== SLOTS GRID ===== */
-    .slots-grid {
+    /* ===== FILTER BAR ===== */
+    .filter-bar {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 22px;
+      display: flex; gap: 12px; align-items: center;
+      flex-wrap: wrap;
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-search {
+      flex: 1; min-width: 220px;
+      position: relative;
+    }
+    .filter-search input {
+      width: 100%;
+      padding: 10px 14px 10px 38px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      font-family: 'Inter', sans-serif;
+      font-size: .88rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      background: #fafaf9;
+    }
+    .filter-search input:focus {
+      border-color: var(--primary);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .filter-search .search-icon {
+      position: absolute;
+      left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: .85rem;
+      pointer-events: none;
+    }
+    .filter-status-select {
+      padding: 10px 36px 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      font-family: 'Inter', sans-serif;
+      font-size: .88rem;
+      background: #fafaf9;
+      color: var(--text-main);
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235e5e6b' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      transition: border-color .2s, background-color .2s;
+    }
+    .filter-status-select:focus {
+      border-color: var(--primary);
+      background-color: var(--white);
+    }
+    .filter-count {
+      font-size: .82rem; color: var(--text-muted);
+      margin-left: auto; padding-right: 4px;
+      white-space: nowrap;
+    }
+    .filter-count strong { color: var(--primary); }
+
+    /* ===== CATEGORY CHIPS ===== */
+    .category-scroller {
+      display: flex; gap: 8px;
+      overflow-x: auto;
+      margin-bottom: 22px;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .category-scroller::-webkit-scrollbar { height: 4px; }
+    .category-scroller::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+    .cat-chip {
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-size: .82rem; font-weight: 600;
+      color: var(--text-muted);
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      transition: all .2s;
+      white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 6px;
+      flex-shrink: 0;
+    }
+    .cat-chip:hover { border-color: var(--accent); color: var(--primary); }
+    .cat-chip.active {
+      background: var(--primary); color: #fff; border-color: var(--primary);
+    }
+    .cat-chip .count {
+      font-size: .7rem; font-weight: 700;
+      background: rgba(0,0,0,.06);
+      padding: 1px 7px; border-radius: 20px;
+      min-width: 18px; text-align: center;
+    }
+    .cat-chip.active .count { background: rgba(255,255,255,.2); }
+
+    /* ===== GIGS GRID ===== */
+    .gigs-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 20px;
     }
 
-    .slot-card {
+    .gig-card {
       background: var(--white);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-card);
@@ -82,113 +191,156 @@
       box-shadow: var(--shadow-sm);
       transition: transform .2s, box-shadow .2s, border-color .2s;
       display: flex; flex-direction: column;
-      min-height: 260px;
     }
-    .slot-card:hover {
-      transform: translateY(-2px);
+    .gig-card:hover {
+      transform: translateY(-3px);
       box-shadow: var(--shadow-md);
       border-color: #d0cdc7;
     }
-
-    /* Filled slot */
-    .slot-cover {
-      width: 100%; height: 140px;
-      object-fit: cover;
+    .gig-card-cover-wrap {
+      position: relative;
+      aspect-ratio: 16/9;
       background: #f3f2ef;
+      overflow: hidden;
+    }
+    .gig-card-cover-wrap img,
+    .gig-card-cover-wrap video {
+      width: 100%; height: 100%;
+      object-fit: cover;
       display: block;
     }
-    .slot-body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
-    .slot-cat {
+    .gig-card-cover-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      font-size: 2rem;
+    }
+    .gig-card-status {
+      position: absolute;
+      top: 12px; left: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em;
+      backdrop-filter: blur(6px);
+      background: rgba(255,255,255,.92);
+      color: var(--primary);
+      border: 1px solid var(--border-color);
+    }
+    .gig-card-status.live    { background: #e8f8ee; color: #166534; border-color: #bbf7d0; }
+    .gig-card-status.paused  { background: #fff7e6; color: #b45309; border-color: #fde68a; }
+    .gig-card-status.draft   { background: #f3f2ef; color: var(--text-muted); border-color: var(--border-color); }
+
+    .gig-card-body {
+      padding: 18px;
+      display: flex; flex-direction: column;
+      flex: 1; gap: 12px;
+    }
+    .gig-card-cat {
       font-size: .7rem; font-weight: 700;
       text-transform: uppercase; letter-spacing: .06em;
       color: var(--accent);
-      margin-bottom: 6px;
     }
-    .slot-title {
+    .gig-card-title {
       font-size: 1rem; font-weight: 700;
       color: var(--primary);
-      margin-bottom: 8px;
       line-height: 1.3;
-      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
-    .slot-tags {
-      display: flex; gap: 6px; flex-wrap: wrap;
-      margin-bottom: 12px;
+    .gig-card-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
     }
-    .slot-tag {
+    .gig-card-tag {
       font-size: .7rem; font-weight: 500;
-      padding: 2px 8px;
+      padding: 3px 9px;
       background: var(--accent-soft); color: var(--accent);
       border-radius: 20px;
     }
-    .slot-stats {
+    .gig-card-more-tag {
+      font-size: .7rem; font-weight: 700;
+      padding: 3px 9px;
+      background: #f3f2ef; color: var(--text-muted);
+      border-radius: 20px;
+    }
+    .gig-card-stats {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 8px; padding-top: 12px;
+      gap: 8px;
+      padding-top: 12px;
       border-top: 1px solid var(--border-color);
-      margin-bottom: 12px;
+      margin-top: auto;
     }
-    .slot-stat {
-      text-align: center;
-    }
-    .slot-stat-value {
+    .gig-card-stat { text-align: center; }
+    .gig-card-stat-value {
       font-size: .95rem; font-weight: 700;
       color: var(--primary);
       line-height: 1;
     }
-    .slot-stat-label {
-      font-size: .68rem; color: var(--text-muted);
+    .gig-card-stat-label {
+      font-size: .66rem; color: var(--text-muted);
       text-transform: uppercase; letter-spacing: .04em;
       margin-top: 4px;
     }
-    .slot-actions {
+    .gig-card-actions {
       display: flex; gap: 8px;
     }
-    .slot-btn {
+    .gig-btn {
       flex: 1;
-      padding: 8px 12px;
+      padding: 9px 12px;
       border-radius: var(--radius-pill);
       font-size: .82rem; font-weight: 600;
       display: inline-flex; align-items: center; justify-content: center;
       gap: 6px;
       transition: all .2s;
     }
-    .slot-btn.edit {
-      background: var(--primary); color: var(--white);
+    .gig-btn.edit {
+      background: var(--primary); color: #fff;
     }
-    .slot-btn.edit:hover { background: var(--primary-dark); }
-    .slot-btn.delete {
+    .gig-btn.edit:hover { background: var(--primary-dark); }
+    .gig-btn.delete {
       background: #fdeaea; color: var(--red);
       flex: 0 0 auto;
     }
-    .slot-btn.delete:hover { background: #fbd5d5; }
+    .gig-btn.delete:hover { background: #fbd5d5; }
 
-    /* Empty slot */
-    .slot-empty {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 40px 20px; text-align: center;
+    /* Empty state */
+    .empty-state {
+      background: var(--white);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 70px 30px;
+      text-align: center;
       color: var(--text-muted);
-      cursor: pointer;
-      transition: background .2s;
+      grid-column: 1 / -1;
     }
-    .slot-empty:hover { background: var(--accent-soft); }
-    .slot-empty .slot-icon {
-      width: 56px; height: 56px; border-radius: 16px;
+    .empty-state .empty-icon {
+      width: 72px; height: 72px;
+      border-radius: 20px;
       background: var(--accent-soft);
       color: var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.4rem; margin-bottom: 14px;
-      transition: background .2s;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 16px;
     }
-    .slot-empty:hover .slot-icon { background: var(--white); }
-    .slot-empty h4 { font-size: .95rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
-    .slot-empty p { font-size: .82rem; }
-    .slot-empty .slot-cat-label {
-      font-size: .7rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .06em;
-      color: var(--accent);
-      margin-bottom: 12px;
+    .empty-state h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 6px; }
+    .empty-state p { font-size: .92rem; margin-bottom: 20px; max-width: 420px; margin-left: auto; margin-right: auto; }
+    .empty-state .btn-new-gig { margin: 0 auto; }
+
+    /* Filtered empty */
+    .filtered-empty {
+      background: var(--white);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 60px 30px;
+      text-align: center;
+      color: var(--text-muted);
+      grid-column: 1 / -1;
     }
+    .filtered-empty i { font-size: 2rem; opacity: .5; margin-bottom: 12px; display: block; }
+    .filtered-empty h3 { font-size: 1rem; color: var(--primary); margin-bottom: 4px; }
+    .filtered-empty p { font-size: .88rem; }
 
     /* ===== EDITOR MODAL ===== */
     .editor-backdrop {
@@ -238,7 +390,6 @@
       display: flex; flex-direction: column; gap: 20px;
     }
 
-    /* form primitives (shared with profile.html) */
     .form-row { display: flex; flex-direction: column; gap: 6px; }
     .form-row label {
       font-size: .82rem; font-weight: 600; color: var(--primary);
@@ -362,7 +513,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* FAQs repeater */
+    /* FAQs */
     .faq-item {
       padding: 14px;
       background: #fafaf9;
@@ -470,7 +621,7 @@
     .toast.success { background: var(--green); }
     .toast.error { background: var(--red); }
 
-    /* Loading + empty */
+    /* Loading */
     .loading-overlay {
       position: fixed; inset: 0;
       background: rgba(250,250,249,.9);
@@ -507,10 +658,16 @@
         z-index: 1002; font-size: 1.1rem;
         box-shadow: var(--shadow-md);
       }
-      .portal-main { padding: 80px 20px 40px; }
+      .portal-main { padding: 80px 16px 40px; }
       .editor-backdrop { padding: 20px 12px; }
       .editor-body { padding: 20px; }
       .editor-header, .editor-footer { padding: 18px 20px; }
+      .portal-topbar { flex-direction: column; align-items: stretch; }
+    }
+    @media (max-width: 600px) {
+      .gigs-grid { grid-template-columns: 1fr; }
+      .filter-bar { padding: 12px; }
+      .filter-count { width: 100%; text-align: right; margin-left: 0; }
     }
     .portal-mobile-toggle { display: none; }
     .sidebar-backdrop {
@@ -557,12 +714,31 @@
       <div class="portal-topbar">
         <div>
           <h1>Your gigs</h1>
-          <p>One gig per service category. Click an empty slot to publish your first offer in that category.</p>
+          <p>Create as many gigs as you want. Group them by category, or publish in the same category more than once — it's up to you.</p>
         </div>
+        <button class="btn-new-gig" id="newGigBtn"><i class="fas fa-plus"></i> New gig</button>
       </div>
 
-      <!-- Slots grid -->
-      <div class="slots-grid" id="slotsGrid"></div>
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <div class="filter-search">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="gigSearch" placeholder="Search your gigs by title or tag…" />
+        </div>
+        <select class="filter-status-select" id="statusFilter">
+          <option value="all">All statuses</option>
+          <option value="live">Live</option>
+          <option value="draft">Draft</option>
+          <option value="paused">Paused</option>
+        </select>
+        <span class="filter-count" id="filterCount">—</span>
+      </div>
+
+      <!-- Category chips -->
+      <div class="category-scroller" id="categoryChips"></div>
+
+      <!-- Gigs grid -->
+      <div class="gigs-grid" id="gigsGrid"></div>
     </main>
   </div>
 
@@ -578,10 +754,9 @@
       </div>
 
       <div class="editor-body">
-        <!-- Category -->
         <div class="form-row">
-          <label>Category <span class="hint">locked once gig is created</span></label>
-          <select class="form-select" id="editorCategory" disabled>
+          <label>Category</label>
+          <select class="form-select" id="editorCategory">
             <option value="">Select category</option>
             <option value="Website & Development">Website &amp; Development</option>
             <option value="Marketing">Marketing</option>
@@ -592,19 +767,16 @@
           </select>
         </div>
 
-        <!-- Title -->
         <div class="form-row">
           <label>Title <span class="hint" id="titleCount">0 / 80</span></label>
           <input type="text" class="form-input" id="editorTitleInput" maxlength="80" placeholder="I will design a premium fintech app UI/UX in Figma" />
         </div>
 
-        <!-- Description -->
         <div class="form-row">
           <label>Description <span class="hint" id="descCount">0 / 1200</span></label>
           <textarea class="form-textarea" id="editorDescription" rows="6" maxlength="1200" placeholder="What's included, your process, deliverables, revisions..."></textarea>
         </div>
 
-        <!-- Tags -->
         <div class="form-row">
           <label>Tags <span class="hint"><span id="tagCount">0</span> / 8</span></label>
           <div class="tags-box" id="tagsBox">
@@ -613,7 +785,6 @@
           <small class="form-hint">Press Enter or comma to add. Click × to remove.</small>
         </div>
 
-        <!-- Cover -->
         <div class="form-row">
           <label>Cover <span class="hint">image or video</span></label>
           <div class="cover-type-toggle" id="coverTypeToggle">
@@ -629,14 +800,12 @@
           </div>
         </div>
 
-        <!-- FAQs -->
         <div class="form-row">
           <label>FAQs <span class="hint">optional but recommended</span></label>
           <div id="faqList"></div>
           <button type="button" class="add-btn" id="addFaqBtn"><i class="fas fa-plus"></i> Add FAQ</button>
         </div>
 
-        <!-- Status -->
         <div class="form-row">
           <label>Status</label>
           <select class="form-select" id="editorStatus">
@@ -670,7 +839,7 @@
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import {
       getFirestore, collection, query, where, onSnapshot,
-      doc, setDoc, updateDoc, deleteDoc, getDocs, serverTimestamp
+      doc, setDoc, updateDoc, deleteDoc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import {
       getStorage, ref as storageRef, uploadBytesResumable,
@@ -693,18 +862,43 @@
     const storage = getStorage(app);
 
     const CATEGORIES = [
-      { key: 'Website & Development', icon: 'fa-laptop-code',     label: 'Website & Development' },
-      { key: 'Marketing',             icon: 'fa-bullhorn',        label: 'Marketing' },
-      { key: 'Video & Animation',     icon: 'fa-video',           label: 'Video & Animation' },
-      { key: 'Design & Creative',     icon: 'fa-palette',         label: 'Design & Creative' },
-      { key: 'AI Automation',         icon: 'fa-robot',           label: 'AI Automation' },
-      { key: 'Writing & Translation', icon: 'fa-pen-fancy',       label: 'Writing & Translation' }
+      'Website & Development',
+      'Marketing',
+      'Video & Animation',
+      'Design & Creative',
+      'AI Automation',
+      'Writing & Translation'
     ];
+
+    // ==========================================
+    // State
+    // ==========================================
+    let currentUser = null;
+    let gigs = [];              // all gigs owned by current user
+    let unsubGigs = null;
+
+    // Filters
+    let filterCategory = 'all';
+    let filterStatus = 'all';
+    let filterSearch = '';
+
+    // Editor state
+    let editing = {
+      mode: 'create',           // 'create' | 'edit'
+      gigId: null,
+      category: '',
+      tags: [],
+      coverUrl: '',
+      coverType: 'image',
+      coverStoragePath: '',
+      faqs: []
+    };
+
+    const $ = (id) => document.getElementById(id);
 
     // ==========================================
     // Helpers
     // ==========================================
-    const $ = (id) => document.getElementById(id);
     const toastEl = $('toast');
     let toastTimer;
     function toast(msg, type = 'success') {
@@ -719,30 +913,18 @@
       const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
       return 'data:image/svg+xml;utf8,' + svg;
     }
-    const slugify = (s) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    const conv = (orders, clicks, impressions) => {
+    const slugify = (s) => String(s || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    function escapeHTML(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function escapeAttr(s) {
+      return String(s ?? '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
+    function conv(orders, clicks, impressions) {
       const denom = clicks || impressions;
       return denom > 0 ? ((orders / denom) * 100).toFixed(1) + '%' : '—';
-    };
-
-    // ==========================================
-    // State
-    // ==========================================
-    let currentUser = null;
-    let gigsByCategory = {};        // { category: gigDoc }
-    let unsubGigs = null;
-
-    // Editor state
-    let editing = {
-      mode: 'create',               // 'create' | 'edit'
-      gigId: null,                  // Firestore doc id (null for new)
-      category: '',
-      tags: [],
-      coverUrl: '',
-      coverType: 'image',
-      coverStoragePath: '',
-      faqs: []
-    };
+    }
+    const STATUS_LABEL = { live: 'Live', draft: 'Draft', paused: 'Paused' };
 
     // ==========================================
     // Auth + sidebar
@@ -756,7 +938,7 @@
       $('portalUserName').textContent = user.displayName || 'Freelancer';
       $('portalUserAvatar').src = user.photoURL || initialsAvatar(user.displayName);
 
-      await loadGigs();
+      loadGigs();
     });
 
     $('signOutBtn').addEventListener('click', async () => {
@@ -775,16 +957,19 @@
     // ==========================================
     // Load gigs (realtime)
     // ==========================================
-    async function loadGigs() {
+    function loadGigs() {
       if (unsubGigs) unsubGigs();
-      const q = query(collection(db, 'gigs'), where('ownerUid', '==', currentUser.uid));
+      const q = query(
+        collection(db, 'gigs'),
+        where('ownerUid', '==', currentUser.uid)
+      );
       unsubGigs = onSnapshot(q, (snap) => {
-        gigsByCategory = {};
-        snap.forEach(d => {
-          const g = { id: d.id, ...d.data() };
-          gigsByCategory[g.category] = g;
-        });
-        renderSlots();
+        gigs = [];
+        snap.forEach(d => gigs.push({ id: d.id, ...d.data() }));
+        // Sort newest first
+        gigs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+        renderCategoryChips();
+        renderGigs();
         $('loadingOverlay').classList.add('hidden');
       }, (err) => {
         console.error('gigs listener', err);
@@ -794,97 +979,171 @@
     }
 
     // ==========================================
-    // Render slot cards
+    // Category chips
     // ==========================================
-    function renderSlots() {
-      const grid = $('slotsGrid');
-      grid.innerHTML = '';
+    function renderCategoryChips() {
+      const wrap = $('categoryChips');
+      const allChip = `
+        <button class="cat-chip ${filterCategory === 'all' ? 'active' : ''}" data-cat="all">
+          All gigs <span class="count">${gigs.length}</span>
+        </button>
+      `;
 
-      CATEGORIES.forEach(cat => {
-        const gig = gigsByCategory[cat.key];
-        if (gig) {
-          grid.appendChild(makeFilledSlot(cat, gig));
-        } else {
-          grid.appendChild(makeEmptySlot(cat));
-        }
+      const seen = new Set(gigs.map(g => g.category).filter(Boolean));
+      const userChips = CATEGORIES
+        .filter(c => seen.has(c))
+        .map(c => {
+          const n = gigs.filter(g => g.category === c).length;
+          return `<button class="cat-chip ${filterCategory === c ? 'active' : ''}" data-cat="${escapeAttr(c)}">
+            ${escapeHTML(c)} <span class="count">${n}</span>
+          </button>`;
+        }).join('');
+
+      wrap.innerHTML = allChip + userChips;
+
+      wrap.querySelectorAll('.cat-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          filterCategory = chip.dataset.cat;
+          renderCategoryChips();
+          renderGigs();
+        });
       });
     }
 
-    function makeEmptySlot(cat) {
-      const card = document.createElement('div');
-      card.className = 'slot-card';
-      card.innerHTML = `
-        <div class="slot-empty" data-cat="${cat.key}">
-          <div class="slot-cat-label">${cat.label}</div>
-          <div class="slot-icon"><i class="fas ${cat.icon}"></i></div>
-          <h4>Create a gig in this category</h4>
-          <p>One slot available</p>
-        </div>
-      `;
-      card.querySelector('.slot-empty').addEventListener('click', () => openEditor('create', cat.key, null));
-      return card;
+    // ==========================================
+    // Filters
+    // ==========================================
+    $('gigSearch').addEventListener('input', (e) => {
+      filterSearch = e.target.value.trim().toLowerCase();
+      renderGigs();
+    });
+    $('statusFilter').addEventListener('change', (e) => {
+      filterStatus = e.target.value;
+      renderGigs();
+    });
+
+    // ==========================================
+    // Render gigs
+    // ==========================================
+    function renderGigs() {
+      const grid = $('gigsGrid');
+
+      let filtered = gigs.slice();
+
+      if (filterCategory !== 'all') {
+        filtered = filtered.filter(g => g.category === filterCategory);
+      }
+      if (filterStatus !== 'all') {
+        filtered = filtered.filter(g => g.status === filterStatus);
+      }
+      if (filterSearch) {
+        filtered = filtered.filter(g => {
+          const inTitle = (g.title || '').toLowerCase().includes(filterSearch);
+          const inTags = (g.tags || []).some(t => t.toLowerCase().includes(filterSearch));
+          return inTitle || inTags;
+        });
+      }
+
+      // Count
+      $('filterCount').innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${gigs.length}</strong>`;
+
+      // Empty states
+      if (gigs.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-layer-group"></i></div>
+            <h3>Create your first gig</h3>
+            <p>Every gig is a new way for clients to find you. Create as many as you like — there's no limit.</p>
+            <button class="btn-new-gig" id="emptyNewGigBtn"><i class="fas fa-plus"></i> New gig</button>
+          </div>
+        `;
+        $('emptyNewGigBtn')?.addEventListener('click', () => openEditor('create', null));
+        return;
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="filtered-empty">
+            <i class="fas fa-search"></i>
+            <h3>No gigs match these filters</h3>
+            <p>Try a different category, status, or search term.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(g => gigCard(g)).join('');
+
+      // Bind per-card
+      filtered.forEach(g => {
+        const card = grid.querySelector(`[data-gig-id="${g.id}"]`);
+        if (!card) return;
+        card.querySelector('[data-action="edit"]').addEventListener('click', () => openEditor('edit', g));
+        card.querySelector('[data-action="delete"]').addEventListener('click', () => deleteGig(g));
+      });
     }
 
-    function makeFilledSlot(cat, gig) {
-      const card = document.createElement('div');
-      card.className = 'slot-card';
-      const coverEl = gig.coverUrl
-        ? (gig.coverType === 'video'
-            ? `<video class="slot-cover" src="${gig.coverUrl}" muted></video>`
-            : `<img class="slot-cover" src="${gig.coverUrl}" alt="${gig.title}" />`)
-        : `<div class="slot-cover" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted)"><i class="fas ${cat.icon}" style="font-size:2rem"></i></div>`;
+    function gigCard(g) {
+      const status = g.status || 'draft';
+      const tagSlice = (g.tags || []).slice(0, 3);
+      const tagMore = (g.tags || []).length > 3 ? `<span class="gig-card-more-tag">+${g.tags.length - 3}</span>` : '';
 
-      const tags = (gig.tags || []).slice(0, 4).map(t => `<span class="slot-tag">${escapeHTML(t)}</span>`).join('');
-      const more = (gig.tags || []).length > 4 ? `<span class="slot-tag">+${gig.tags.length - 4}</span>` : '';
-      const statusPill = gig.status === 'live'
-        ? `<span style="font-size:.7rem;padding:2px 8px;border-radius:20px;background:#e8f8ee;color:var(--green);font-weight:600">Live</span>`
-        : gig.status === 'paused'
-          ? `<span style="font-size:.7rem;padding:2px 8px;border-radius:20px;background:#fff7e6;color:var(--amber);font-weight:600">Paused</span>`
-          : `<span style="font-size:.7rem;padding:2px 8px;border-radius:20px;background:#f3f2ef;color:var(--text-muted);font-weight:600">Draft</span>`;
+      let coverHtml;
+      if (g.coverUrl && g.coverType === 'video') {
+        coverHtml = `<video src="${g.coverUrl}" muted playsinline></video>`;
+      } else if (g.coverUrl) {
+        coverHtml = `<img src="${g.coverUrl}" alt="${escapeAttr(g.title)}" />`;
+      } else {
+        coverHtml = `<div class="gig-card-cover-placeholder"><i class="fas fa-image"></i></div>`;
+      }
 
-      card.innerHTML = `
-        ${coverEl}
-        <div class="slot-body">
-          <div class="slot-cat">${cat.label} ${statusPill}</div>
-          <div class="slot-title">${escapeHTML(gig.title || 'Untitled gig')}</div>
-          <div class="slot-tags">${tags}${more}</div>
-          <div class="slot-stats">
-            <div class="slot-stat">
-              <div class="slot-stat-value">${(gig.impressions || 0).toLocaleString()}</div>
-              <div class="slot-stat-label">Views</div>
-            </div>
-            <div class="slot-stat">
-              <div class="slot-stat-value">${(gig.clicks || 0).toLocaleString()}</div>
-              <div class="slot-stat-label">Clicks</div>
-            </div>
-            <div class="slot-stat">
-              <div class="slot-stat-value">${conv(gig.orders || 0, gig.clicks || 0, gig.impressions || 0)}</div>
-              <div class="slot-stat-label">Conv.</div>
-            </div>
+      return `
+        <div class="gig-card" data-gig-id="${g.id}">
+          <div class="gig-card-cover-wrap">
+            ${coverHtml}
+            <span class="gig-card-status ${status}">${STATUS_LABEL[status] || status}</span>
           </div>
-          <div class="slot-actions">
-            <button class="slot-btn edit" data-action="edit"><i class="fas fa-pen"></i> Edit</button>
-            <button class="slot-btn delete" data-action="delete" title="Delete gig"><i class="fas fa-trash"></i></button>
+          <div class="gig-card-body">
+            <div class="gig-card-cat">${escapeHTML(g.category || '—')}</div>
+            <div class="gig-card-title">${escapeHTML(g.title || 'Untitled gig')}</div>
+            ${tagSlice.length ? `
+              <div class="gig-card-tags">
+                ${tagSlice.map(t => `<span class="gig-card-tag">${escapeHTML(t)}</span>`).join('')}
+                ${tagMore}
+              </div>` : ''}
+            <div class="gig-card-stats">
+              <div class="gig-card-stat">
+                <div class="gig-card-stat-value">${(g.impressions || 0).toLocaleString()}</div>
+                <div class="gig-card-stat-label">Views</div>
+              </div>
+              <div class="gig-card-stat">
+                <div class="gig-card-stat-value">${(g.clicks || 0).toLocaleString()}</div>
+                <div class="gig-card-stat-label">Clicks</div>
+              </div>
+              <div class="gig-card-stat">
+                <div class="gig-card-stat-value">${conv(g.orders || 0, g.clicks || 0, g.impressions || 0)}</div>
+                <div class="gig-card-stat-label">Conv.</div>
+              </div>
+            </div>
+            <div class="gig-card-actions">
+              <button class="gig-btn edit" data-action="edit"><i class="fas fa-pen"></i> Edit</button>
+              <button class="gig-btn delete" data-action="delete" title="Delete gig"><i class="fas fa-trash"></i></button>
+            </div>
           </div>
         </div>
       `;
-      card.querySelector('[data-action="edit"]').addEventListener('click', () => openEditor('edit', cat.key, gig));
-      card.querySelector('[data-action="delete"]').addEventListener('click', () => deleteGig(gig));
-      return card;
-    }
-
-    function escapeHTML(s) {
-      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     }
 
     // ==========================================
     // Editor open / close
     // ==========================================
-    function openEditor(mode, category, gig) {
+    $('newGigBtn').addEventListener('click', () => openEditor('create', null));
+
+    function openEditor(mode, gig) {
       editing = {
         mode,
         gigId: gig?.id || null,
-        category,
+        category: gig?.category || '',
         tags: gig?.tags ? [...gig.tags] : [],
         coverUrl: gig?.coverUrl || '',
         coverType: gig?.coverType || 'image',
@@ -897,30 +1156,21 @@
         ? 'Fill in the details below. You can save as draft and refine later.'
         : 'Update your gig. Changes go live immediately when you save.';
 
-      // Category (locked)
-      $('editorCategory').value = category;
-      $('editorCategory').disabled = true;
+      $('editorCategory').value = editing.category || '';
+      $('editorCategory').disabled = false;   // category is now editable in both modes
 
-      // Fields
       $('editorTitleInput').value = gig?.title || '';
       $('editorDescription').value = gig?.description || '';
       $('editorStatus').value = gig?.status || 'draft';
 
-      // Counters
       updateCounter('editorTitleInput', 'titleCount', 80);
       updateCounter('editorDescription', 'descCount', 1200);
 
-      // Tags
       renderTags();
-
-      // Cover
       setCoverType(editing.coverType);
       renderCoverPreview();
-
-      // FAQs
       renderFaqs();
 
-      // Show
       $('editorBackdrop').classList.add('show');
       document.body.style.overflow = 'hidden';
     }
@@ -935,7 +1185,6 @@
       if (e.target.id === 'editorBackdrop') closeEditor();
     });
 
-    // Counters
     function updateCounter(inputId, countId, max) {
       const inp = $(inputId);
       const el = $(countId);
@@ -950,7 +1199,6 @@
     // ==========================================
     function renderTags() {
       const box = $('tagsBox');
-      // Remove existing chips
       box.querySelectorAll('.tag-chip').forEach(el => el.remove());
       const input = $('tagInput');
 
@@ -966,9 +1214,7 @@
       });
       $('tagCount').textContent = editing.tags.length;
       input.disabled = editing.tags.length >= 8;
-      input.placeholder = editing.tags.length >= 8
-        ? 'Max 8 tags'
-        : 'Type a tag and press Enter…';
+      input.placeholder = editing.tags.length >= 8 ? 'Max 8 tags' : 'Type a tag and press Enter…';
     }
 
     $('tagsBox').addEventListener('click', (e) => {
@@ -1013,6 +1259,7 @@
     $('coverInput').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) uploadCover(file);
+      e.target.value = '';
     });
 
     $('coverDropzone').addEventListener('dragover', (e) => {
@@ -1035,7 +1282,10 @@
     function renderCoverPreview() {
       const wrap = $('coverPreviewWrap');
       wrap.innerHTML = '';
-      if (!editing.coverUrl) return;
+      if (!editing.coverUrl) {
+        $('coverDropzone').style.display = '';
+        return;
+      }
       const el = document.createElement('div');
       el.className = 'cover-preview';
       el.innerHTML = editing.coverType === 'video'
@@ -1068,7 +1318,9 @@
       if (isVideo && editing.coverType !== 'video') setCoverType('video');
       if (!isVideo && editing.coverType !== 'image') setCoverType('image');
 
-      const catSlug = slugify(editing.category);
+      // Category slug in the path is best-effort — the editor might not
+      // have category yet, so we fall back to 'misc'.
+      const catSlug = slugify($('editorCategory').value || 'misc') || 'misc';
       const path = `gigs/${currentUser.uid}/${catSlug}/${Date.now()}_${file.name}`;
       const ref = storageRef(storage, path);
       const task = uploadBytesResumable(ref, file);
@@ -1131,9 +1383,6 @@
       });
       return el;
     }
-    function escapeAttr(s) {
-      return String(s ?? '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-    }
     $('addFaqBtn').addEventListener('click', () => {
       editing.faqs.push({ q: '', a: '' });
       renderFaqs();
@@ -1145,15 +1394,15 @@
     $('editorSaveBtn').addEventListener('click', async () => {
       if (!currentUser) return;
 
+      const category = $('editorCategory').value;
       const title = $('editorTitleInput').value.trim();
       const description = $('editorDescription').value.trim();
       const status = $('editorStatus').value;
 
+      if (!category) return toast('Please choose a category', 'error');
       if (!title || title.length < 5) return toast('Title must be at least 5 characters', 'error');
       if (!description || description.length < 20) return toast('Description must be at least 20 characters', 'error');
-      if (!editing.category) return toast('Category is required', 'error');
 
-      // Clean faqs (drop empty rows)
       const cleanFaqs = editing.faqs.filter(f => (f.q || '').trim() && (f.a || '').trim());
 
       const saveBtn = $('editorSaveBtn');
@@ -1163,7 +1412,7 @@
       try {
         const basePayload = {
           ownerUid: currentUser.uid,
-          category: editing.category,
+          category,
           title,
           description,
           tags: editing.tags,
@@ -1221,7 +1470,7 @@
     // Cleanup
     // ==========================================
     window.addEventListener('beforeunload', () => {
-      if (unsubGigs) unsubGigs();
+      unsubGigs?.();
     });
   </script>
 </body>
