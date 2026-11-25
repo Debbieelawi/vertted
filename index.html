@@ -2804,12 +2804,12 @@
         <img src="image/vertted-logo.jpeg" alt="Vertted Logo" class="logo-img" />
       </a>
       
-      <!-- New Header Search Bar -->
+      <!-- FIXED: Added ID to input and type="button" -->
       <div class="header-search-wrapper">
-        <input type="text" placeholder="Search for services..." />
-        <button class="header-search-icon-btn" onclick="redirectToService('headerSearchInput')">
-  <i class="fas fa-search"></i>
-</button>
+        <input type="text" id="headerSearchInput" placeholder="Search for services..." />
+        <button type="button" class="header-search-icon-btn" onclick="redirectToService('headerSearchInput')">
+          <i class="fas fa-search"></i>
+        </button>
       </div>
       
       <div class="header-actions">
@@ -2833,13 +2833,14 @@
         
         <p>Explore a network of valuable, virtuous and verified talents. Find the right people to turn your ideas into reality.</p>
         
+        <!-- FIXED: Added type="button" -->
         <div class="search-wrapper">
           <i class="fas fa-search"></i>
           <div class="search-input-container">
             <span class="typewriter-text" id="typewriter"></span>
             <input type="text" id="mainSearch" />
           </div>
-          <button onclick="redirectToService('mainSearch')">Search</button>
+          <button type="button" onclick="redirectToService('mainSearch')">Search</button>
         </div>
         
         <!-- UPDATED Hero Bottom Row -->
@@ -2928,7 +2929,7 @@
                 <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Specialist">
                 <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Specialist">
               </div>
-              <a href="service" class="featured-browse">Browse <i class="fas fa-arrow-right"></i></a>
+              <a href="service.html" class="featured-browse">Browse <i class="fas fa-arrow-right"></i></a>
             </div>
           </div>
         </div>
@@ -3334,13 +3335,14 @@
       <h2>Your Access to Vertted global talent.</h2>
       <p>Connect with trusted professionals, who turns your business goals into reality.</p>
       
+      <!-- FIXED: Added type="button" and onclick -->
       <div class="search-wrapper centered-search">
         <i class="fas fa-search"></i>
         <div class="search-input-container">
           <span class="typewriter-text" id="typewriterBottom"></span>
           <input type="text" id="bottomSearch" />
         </div>
-        <button>Explore Services</button>
+        <button type="button" onclick="redirectToService('bottomSearch')">Explore Services</button>
       </div>
     </div>
   </section>
@@ -3514,276 +3516,288 @@
     </div>
   </div>
 
+  <!-- ===== JAVASCRIPT ===== -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      
-      // ==========================================
-      // 1. TYPEWRITER ANIMATION
-      // ==========================================
-      const phrases = [
-        'What service do you need?',
-        'Website development',
-        'Digital Marketing',
-        'Video Animation',
-        'AI automation',
-        'App development'
-      ];
-
-      function initTypewriter(elementId, inputId) {
-        const typewriterElement = document.getElementById(elementId);
-        const searchInput = document.getElementById(inputId);
-        if (!typewriterElement) return;
-        
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        let typingSpeed = 100;
-
-        function type() {
-          const currentPhrase = phrases[phraseIndex];
-          
-          if (isDeleting) {
-            typewriterElement.textContent = currentPhrase.substring(0, charIndex - 1);
-            charIndex--;
-            typingSpeed = 50;
-          } else {
-            typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
-            charIndex++;
-            typingSpeed = 100;
-          }
-
-          if (!isDeleting && charIndex === currentPhrase.length) {
-            typingSpeed = 2000;
-            isDeleting = true;
-          } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            typingSpeed = 500;
-          }
-
-          setTimeout(type, typingSpeed);
-        }
-
-        setTimeout(type, 1000);
-
-        if (searchInput) {
-          searchInput.addEventListener('input', () => {
-            if (searchInput.value.length > 0) {
-              typewriterElement.style.display = 'none';
-            } else {
-              typewriterElement.style.display = 'block';
-            }
-          });
-        }
-      }
-
-      initTypewriter('typewriter', 'mainSearch');
-      initTypewriter('typewriterBottom', 'bottomSearch');
-
-      // ==========================================
-      // 2. CHATBOT FUNCTIONALITY
-      // ==========================================
-      const openChatBtn = document.getElementById('openChatBtn');
-      const floatingChatBtn = document.getElementById('floatingChatBtn');
-      const closeChatBtn = document.getElementById('closeChatBtn');
-      const chatOverlay = document.getElementById('chatOverlay');
-      const chatPanel = document.getElementById('chatPanel');
-      const chatMessages = document.getElementById('chatMessages');
-      const chatInput = document.getElementById('chatInput');
-      const sendChatBtn = document.getElementById('sendChatBtn');
-
-      let chatState = 'initial';
-
-      function openChat() {
-        chatPanel.classList.add('active');
-        chatOverlay.classList.add('active');
-        if (chatMessages.children.length === 0) {
-          startConversation();
-        }
-      }
-
-      function closeChat() {
-        chatPanel.classList.remove('active');
-        chatOverlay.classList.remove('active');
-      }
-
-      openChatBtn.addEventListener('click', openChat);
-      floatingChatBtn.addEventListener('click', openChat);
-      closeChatBtn.addEventListener('click', closeChat);
-      chatOverlay.addEventListener('click', closeChat);
-
-      function addMessage(text, sender = 'bot', options = null) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${sender}`;
-        msgDiv.innerHTML = text;
-        
-        if (options && options.length > 0) {
-          const optDiv = document.createElement('div');
-          optDiv.className = 'chat-options';
-          options.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.className = 'chat-option-btn';
-            btn.textContent = opt;
-            btn.addEventListener('click', () => handleUserSelection(opt));
-            optDiv.appendChild(btn);
-          });
-          msgDiv.appendChild(optDiv);
-        }
-        
-        chatMessages.appendChild(msgDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
-
-      function startConversation() {
-        chatState = 'initial';
-        addMessage(
-          "Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?",
-          'bot',
-          ['A freelancer', 'The agency']
-        );
-      }
-
-      function handleUserSelection(selection) {
-        const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
-        if (lastBotMsg) lastBotMsg.remove();
-
-        addMessage(selection, 'user');
-
-        setTimeout(() => {
-          if (chatState === 'initial') {
-            if (selection === 'A freelancer') {
-              chatState = 'choosing_service';
-              addMessage(
-                "Awesome! Which service: Website & Development, Marketing, or Video & Animation?",
-                'bot',
-                ['Website & Development', 'Marketing', 'Video & Animation']
-              );
-            } else if (selection === 'The agency') {
-              chatState = 'agency_selected';
-              addMessage(
-                "Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.",
-                'bot'
-              );
-            }
-          } else if (chatState === 'choosing_service') {
-            chatState = 'service_selected';
-            addMessage(
-              "Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.",
-              'bot'
-            );
-            if (selection === 'Marketing') {
-              const imgMsg = document.createElement('div');
-              imgMsg.className = 'message bot';
-              imgMsg.innerHTML = '<img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=400&auto=format&fit=crop" alt="Marketing Specialist" style="width:100%; border-radius:8px; margin-top:8px;">';
-              chatMessages.appendChild(imgMsg);
-              chatMessages.scrollTop = chatMessages.scrollHeight;
-            }
-          }
-        }, 600);
-      }
-
-      function handleTypedMessage() {
-        const text = chatInput.value.trim();
-        if (!text) return;
-
-        const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
-        if (lastBotMsg) lastBotMsg.remove();
-
-        addMessage(text, 'user');
-        chatInput.value = '';
-
-        setTimeout(() => {
-          if (chatState === 'initial') {
-            const lower = text.toLowerCase();
-            if (lower.includes('freelancer') || lower.includes('expert')) {
-              handleUserSelection('A freelancer');
-            } else if (lower.includes('agency') || lower.includes('team')) {
-              handleUserSelection('The agency');
-            } else {
-              addMessage(
-                "I can help with that! Are you looking to hire a specific freelancer or the agency?",
-                'bot',
-                ['A freelancer', 'The agency']
-              );
-            }
-          } else {
-            addMessage(
-              "Got it! I've noted that down. Our team will review your request and get back to you shortly.",
-              'bot'
-            );
-          }
-        }, 800);
-      }
-
-      sendChatBtn.addEventListener('click', handleTypedMessage);
-      chatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleTypedMessage();
-      });
-
-    
-    
-
+    // ==========================================
+    // 1. SEARCH REDIRECT FUNCTION (NEWLY ADDED)
+    // ==========================================
     function redirectToService(inputId) {
-  const input = document.getElementById(inputId);
-  const query = input.value.trim();
-  
-  if (query) {
-    // Redirects to service.html with the query in the URL
-    window.location.href = `service.html?q=${encodeURIComponent(query)}`;
-  } else {
-    // If empty, just go to the service page
-    window.location.href = 'service.html';
-  }
-}
+      const inputElement = document.getElementById(inputId);
+      if (!inputElement) return;
+      
+      const query = inputElement.value.trim();
+      
+      if (query) {
+        // Redirect to service.html with the query parameter
+        window.location.href = `service.html?q=${encodeURIComponent(query)}`;
+      } else {
+        // If empty, just go to the service page
+        window.location.href = 'service.html';
+      }
+    }
 
-// Allow pressing 'Enter' to search
-document.getElementById('mainSearch').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') redirectToService('mainSearch');
-});
+    // ==========================================
+    // 2. ENTER KEY LISTENERS FOR SEARCH
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInputs = ['headerSearchInput', 'mainSearch', 'bottomSearch'];
 
-
-
-
-
-      // ==========================================
-      // 3. INTERACTIVE MAIN SERVICES
-      // ==========================================
-      const serviceData = {
-        web: {
-          title: 'Website & Development',
-          icon: 'fa-code',
-          bgImage: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000&auto=format&fit=crop',
-          tags: ['UI/UX design', 'WordPress', 'Webflow', 'Shopify']
-        },
-        marketing: {
-          title: 'Marketing',
-          icon: 'fa-bullhorn',
-          bgImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop',
-          tags: ['Social media', 'SEO', 'Paid ads', 'Email']
-        },
-        video: {
-          title: 'Video & Animation',
-          icon: 'fa-video',
-          bgImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1000&auto=format&fit=crop',
-          tags: ['Video editing', 'Motion graphics', 'Explainers', 'Reels']
-        },
-        ai: {
-          title: 'AI Automation',
-          icon: 'fa-robot',
-          bgImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop',
-          tags: ['AI integration', 'Chatbots', 'Workflow automation', 'Prompt engineering']
+      searchInputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              redirectToService(id);
+            }
+          });
         }
-      };
+      });
+    });
 
-      const featuredCard = document.getElementById('featuredCard');
-      const featuredContent = document.getElementById('featuredContent');
-      const featuredIcon = document.getElementById('featuredIcon');
-      const featuredTitle = document.getElementById('featuredTitle');
-      const featuredTags = document.getElementById('featuredTags');
-      const smallCards = document.querySelectorAll('.service-small-card');
+    // ==========================================
+    // 3. EXISTING SCRIPTS (Typewriter, Chatbot, etc.)
+    // ==========================================
+    // (Assuming your existing scripts for typewriter, chat, and cards 
+    // are below here and haven't been altered by this change.)
+    
+    // --- TYPEWRITER ---
+    const phrases = [
+      'What service do you need?',
+      'Website development',
+      'Digital Marketing',
+      'Video Animation',
+      'AI automation',
+      'App development'
+    ];
 
+    function initTypewriter(elementId, inputId) {
+      const typewriterElement = document.getElementById(elementId);
+      const searchInput = document.getElementById(inputId);
+      if (!typewriterElement) return;
+      
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      let typingSpeed = 100;
+
+      function type() {
+        const currentPhrase = phrases[phraseIndex];
+        
+        if (isDeleting) {
+          typewriterElement.textContent = currentPhrase.substring(0, charIndex - 1);
+          charIndex--;
+          typingSpeed = 50;
+        } else {
+          typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
+          charIndex++;
+          typingSpeed = 100;
+        }
+
+        if (!isDeleting && charIndex === currentPhrase.length) {
+          typingSpeed = 2000;
+          isDeleting = true;
+        } else if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          typingSpeed = 500;
+        }
+
+        setTimeout(type, typingSpeed);
+      }
+
+      setTimeout(type, 1000);
+
+      if (searchInput) {
+        searchInput.addEventListener('input', () => {
+          if (searchInput.value.length > 0) {
+            typewriterElement.style.display = 'none';
+          } else {
+            typewriterElement.style.display = 'block';
+          }
+        });
+      }
+    }
+
+    initTypewriter('typewriter', 'mainSearch');
+    initTypewriter('typewriterBottom', 'bottomSearch');
+
+    // --- CHATBOT ---
+    const openChatBtn = document.getElementById('openChatBtn');
+    const floatingChatBtn = document.getElementById('floatingChatBtn');
+    const closeChatBtn = document.getElementById('closeChatBtn');
+    const chatOverlay = document.getElementById('chatOverlay');
+    const chatPanel = document.getElementById('chatPanel');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const sendChatBtn = document.getElementById('sendChatBtn');
+
+    let chatState = 'initial';
+
+    function openChat() {
+      chatPanel.classList.add('active');
+      chatOverlay.classList.add('active');
+      if (chatMessages.children.length === 0) {
+        startConversation();
+      }
+    }
+
+    function closeChat() {
+      chatPanel.classList.remove('active');
+      chatOverlay.classList.remove('active');
+    }
+
+    if (openChatBtn) openChatBtn.addEventListener('click', openChat);
+    if (floatingChatBtn) floatingChatBtn.addEventListener('click', openChat);
+    if (closeChatBtn) closeChatBtn.addEventListener('click', closeChat);
+    if (chatOverlay) chatOverlay.addEventListener('click', closeChat);
+
+    function addMessage(text, sender = 'bot', options = null) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message ${sender}`;
+      msgDiv.innerHTML = text;
+      
+      if (options && options.length > 0) {
+        const optDiv = document.createElement('div');
+        optDiv.className = 'chat-options';
+        options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'chat-option-btn';
+          btn.textContent = opt;
+          btn.addEventListener('click', () => handleUserSelection(opt));
+          optDiv.appendChild(btn);
+        });
+        msgDiv.appendChild(optDiv);
+      }
+      
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function startConversation() {
+      chatState = 'initial';
+      addMessage(
+        "Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?",
+        'bot',
+        ['A freelancer', 'The agency']
+      );
+    }
+
+    function handleUserSelection(selection) {
+      const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
+      if (lastBotMsg) lastBotMsg.remove();
+
+      addMessage(selection, 'user');
+
+      setTimeout(() => {
+        if (chatState === 'initial') {
+          if (selection === 'A freelancer') {
+            chatState = 'choosing_service';
+            addMessage(
+              "Awesome! Which service: Website & Development, Marketing, or Video & Animation?",
+              'bot',
+              ['Website & Development', 'Marketing', 'Video & Animation']
+            );
+          } else if (selection === 'The agency') {
+            chatState = 'agency_selected';
+            addMessage(
+              "Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.",
+              'bot'
+            );
+          }
+        } else if (chatState === 'choosing_service') {
+          chatState = 'service_selected';
+          addMessage(
+            "Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.",
+            'bot'
+          );
+          if (selection === 'Marketing') {
+            const imgMsg = document.createElement('div');
+            imgMsg.className = 'message bot';
+            imgMsg.innerHTML = '<img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=400&auto=format&fit=crop" alt="Marketing Specialist" style="width:100%; border-radius:8px; margin-top:8px;">';
+            chatMessages.appendChild(imgMsg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+        }
+      }, 600);
+    }
+
+    function handleTypedMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
+      if (lastBotMsg) lastBotMsg.remove();
+
+      addMessage(text, 'user');
+      chatInput.value = '';
+
+      setTimeout(() => {
+        if (chatState === 'initial') {
+          const lower = text.toLowerCase();
+          if (lower.includes('freelancer') || lower.includes('expert')) {
+            handleUserSelection('A freelancer');
+          } else if (lower.includes('agency') || lower.includes('team')) {
+            handleUserSelection('The agency');
+          } else {
+            addMessage(
+              "I can help with that! Are you looking to hire a specific freelancer or the agency?",
+              'bot',
+              ['A freelancer', 'The agency']
+            );
+          }
+        } else {
+          addMessage(
+            "Got it! I've noted that down. Our team will review your request and get back to you shortly.",
+            'bot'
+          );
+        }
+      }, 800);
+    }
+
+    if (sendChatBtn) sendChatBtn.addEventListener('click', handleTypedMessage);
+    if (chatInput) chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleTypedMessage();
+    });
+
+    // --- MAIN SERVICES INTERACTION ---
+    const serviceData = {
+      web: {
+        title: 'Website & Development',
+        icon: 'fa-code',
+        bgImage: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1000&auto=format&fit=crop',
+        tags: ['UI/UX design', 'WordPress', 'Webflow', 'Shopify']
+      },
+      marketing: {
+        title: 'Marketing',
+        icon: 'fa-bullhorn',
+        bgImage: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop',
+        tags: ['Social media', 'SEO', 'Paid ads', 'Email']
+      },
+      video: {
+        title: 'Video & Animation',
+        icon: 'fa-video',
+        bgImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1000&auto=format&fit=crop',
+        tags: ['Video editing', 'Motion graphics', 'Explainers', 'Reels']
+      },
+      ai: {
+        title: 'AI Automation',
+        icon: 'fa-robot',
+        bgImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop',
+        tags: ['AI integration', 'Chatbots', 'Workflow automation', 'Prompt engineering']
+      }
+    };
+
+    const featuredCard = document.getElementById('featuredCard');
+    const featuredContent = document.getElementById('featuredContent');
+    const featuredIcon = document.getElementById('featuredIcon');
+    const featuredTitle = document.getElementById('featuredTitle');
+    const featuredTags = document.getElementById('featuredTags');
+    const smallCards = document.querySelectorAll('.service-small-card');
+
+    if (featuredCard) {
       featuredCard.style.backgroundImage = `url(${serviceData.ai.bgImage})`;
-      document.querySelector('.service-small-card[data-service="ai"]').classList.add('active');
+      document.querySelector('.service-small-card[data-service="ai"]')?.classList.add('active');
 
       smallCards.forEach(card => {
         card.addEventListener('click', (e) => {
@@ -3818,73 +3832,70 @@ document.getElementById('mainSearch').addEventListener('keypress', function(e) {
           }
         });
       });
+    }
 
-      // ==========================================
-      // 4. FREELANCER ROTATION LOGIC
-      // ==========================================
-      const freelancers = [
-        { name: 'Amara Okafor', role: 'Figma specialist for fintech apps', rating: '4.9', reviews: '132', tags: ['Figma', 'UI/UX', 'Fintech'], img: 'https://randomuser.me/api/portraits/women/44.jpg' },
-        { name: 'Daniel Mensah', role: 'Webflow developer for SaaS brands', rating: '4.8', reviews: '97', tags: ['Webflow', 'SaaS', 'SEO'], img: 'https://randomuser.me/api/portraits/men/32.jpg' },
-        { name: 'Zainab Bello', role: 'TikTok growth marketer for beauty', rating: '4.9', reviews: '176', tags: ['TikTok', 'Beauty', 'Ads'], img: 'https://randomuser.me/api/portraits/women/68.jpg' },
-        { name: 'Kwame Adeyemi', role: 'Full-stack developer for startups', rating: '4.9', reviews: '210', tags: ['React', 'Node.js', 'AWS'], img: 'https://randomuser.me/api/portraits/men/75.jpg' },
-        { name: 'Chloe Dubois', role: 'Brand designer for luxury fashion', rating: '5.0', reviews: '84', tags: ['Branding', 'Illustrator', 'Fashion'], img: 'https://randomuser.me/api/portraits/women/65.jpg' },
-        { name: 'Tunde Bakare', role: 'SEO strategist for e-commerce', rating: '4.7', reviews: '145', tags: ['SEO', 'E-commerce', 'Analytics'], img: 'https://randomuser.me/api/portraits/men/85.jpg' },
-        { name: 'Sofia Rossi', role: 'Motion graphics artist for tech', rating: '4.9', reviews: '112', tags: ['After Effects', 'Motion', '3D'], img: 'https://randomuser.me/api/portraits/women/90.jpg' },
-        { name: 'Kenji Tanaka', role: 'AI prompt engineer for automation', rating: '4.8', reviews: '67', tags: ['AI', 'Python', 'Automation'], img: 'https://randomuser.me/api/portraits/men/45.jpg' },
-        { name: 'Sarah Jenkins', role: 'Content writer for B2B SaaS', rating: '5.0', reviews: '203', tags: ['Copywriting', 'SaaS', 'B2B'], img: 'https://randomuser.me/api/portraits/women/12.jpg' }
-      ];
+    // --- FREELANCERS ROTATION ---
+    const freelancers = [
+      { name: 'Amara Okafor', role: 'Figma specialist for fintech apps', rating: '4.9', reviews: '132', tags: ['Figma', 'UI/UX', 'Fintech'], img: 'https://randomuser.me/api/portraits/women/44.jpg' },
+      { name: 'Daniel Mensah', role: 'Webflow developer for SaaS brands', rating: '4.8', reviews: '97', tags: ['Webflow', 'SaaS', 'SEO'], img: 'https://randomuser.me/api/portraits/men/32.jpg' },
+      { name: 'Zainab Bello', role: 'TikTok growth marketer for beauty', rating: '4.9', reviews: '176', tags: ['TikTok', 'Beauty', 'Ads'], img: 'https://randomuser.me/api/portraits/women/68.jpg' },
+      { name: 'Kwame Adeyemi', role: 'Full-stack developer for startups', rating: '4.9', reviews: '210', tags: ['React', 'Node.js', 'AWS'], img: 'https://randomuser.me/api/portraits/men/75.jpg' },
+      { name: 'Chloe Dubois', role: 'Brand designer for luxury fashion', rating: '5.0', reviews: '84', tags: ['Branding', 'Illustrator', 'Fashion'], img: 'https://randomuser.me/api/portraits/women/65.jpg' },
+      { name: 'Tunde Bakare', role: 'SEO strategist for e-commerce', rating: '4.7', reviews: '145', tags: ['SEO', 'E-commerce', 'Analytics'], img: 'https://randomuser.me/api/portraits/men/85.jpg' },
+      { name: 'Sofia Rossi', role: 'Motion graphics artist for tech', rating: '4.9', reviews: '112', tags: ['After Effects', 'Motion', '3D'], img: 'https://randomuser.me/api/portraits/women/90.jpg' },
+      { name: 'Kenji Tanaka', role: 'AI prompt engineer for automation', rating: '4.8', reviews: '67', tags: ['AI', 'Python', 'Automation'], img: 'https://randomuser.me/api/portraits/men/45.jpg' },
+      { name: 'Sarah Jenkins', role: 'Content writer for B2B SaaS', rating: '5.0', reviews: '203', tags: ['Copywriting', 'SaaS', 'B2B'], img: 'https://randomuser.me/api/portraits/women/12.jpg' }
+    ];
 
-      const freelancersGrid = document.getElementById('freelancersGrid');
-      let currentStartIndex = 0;
+    const freelancersGrid = document.getElementById('freelancersGrid');
+    let currentStartIndex = 0;
 
-      function renderFreelancers(startIndex) {
-        freelancersGrid.style.opacity = '0';
+    function renderFreelancers(startIndex) {
+      if (!freelancersGrid) return;
+      
+      freelancersGrid.style.opacity = '0';
+      
+      setTimeout(() => {
+        freelancersGrid.innerHTML = '';
         
-        setTimeout(() => {
-          freelancersGrid.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+          const freelancer = freelancers[(startIndex + i) % freelancers.length];
           
-          for (let i = 0; i < 3; i++) {
-            const freelancer = freelancers[(startIndex + i) % freelancers.length];
-            
-            const card = document.createElement('div');
-            card.className = 'freelancer-card';
-            card.innerHTML = `
-              <div class="freelancer-card-header">
-                <div class="freelancer-avatar-wrap">
-                  <img src="${freelancer.img}" alt="${freelancer.name}" class="freelancer-avatar" />
-                  <span class="online-indicator"></span>
-                </div>
-                <div class="freelancer-info">
-                  <h3>${freelancer.name} <i class="fas fa-check-circle verified-badge"></i></h3>
-                  <p>${freelancer.role}</p>
-                </div>
+          const card = document.createElement('div');
+          card.className = 'freelancer-card';
+          card.innerHTML = `
+            <div class="freelancer-card-header">
+              <div class="freelancer-avatar-wrap">
+                <img src="${freelancer.img}" alt="${freelancer.name}" class="freelancer-avatar" />
+                <span class="online-indicator"></span>
               </div>
-              <div class="freelancer-rating">
-                <i class="fas fa-star star"></i> ${freelancer.rating} <span>(${freelancer.reviews} verified reviews)</span>
+              <div class="freelancer-info">
+                <h3>${freelancer.name} <i class="fas fa-check-circle verified-badge"></i></h3>
+                <p>${freelancer.role}</p>
               </div>
-              <div class="freelancer-tags">
-                ${freelancer.tags.map(tag => `<span>${tag}</span>`).join('')}
-              </div>
-              <button class="btn-contact">Contact</button>
-            `;
-            freelancersGrid.appendChild(card);
-          }
-          
-          freelancersGrid.style.opacity = '1';
-        }, 400);
-      }
+            </div>
+            <div class="freelancer-rating">
+              <i class="fas fa-star star"></i> ${freelancer.rating} <span>(${freelancer.reviews} verified reviews)</span>
+            </div>
+            <div class="freelancer-tags">
+              ${freelancer.tags.map(tag => `<span>${tag}</span>`).join('')}
+            </div>
+            <button class="btn-contact">Contact</button>
+          `;
+          freelancersGrid.appendChild(card);
+        }
+        
+        freelancersGrid.style.opacity = '1';
+      }, 400);
+    }
 
+    renderFreelancers(currentStartIndex);
+
+    setInterval(() => {
+      currentStartIndex = (currentStartIndex + 3) % freelancers.length;
       renderFreelancers(currentStartIndex);
+    }, 5000);
 
-      setInterval(() => {
-        currentStartIndex = (currentStartIndex + 3) % freelancers.length;
-        renderFreelancers(currentStartIndex);
-      }, 5000);
-
-      // Note: The "What We Stand For" accordion logic has been removed from JS 
-      // and is now handled entirely by CSS :hover pseudo-classes.
-
-    });
   </script>
 </body>
 </html>

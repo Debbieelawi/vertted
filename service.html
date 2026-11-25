@@ -49,7 +49,7 @@
     .header-search-wrapper:focus-within { box-shadow: var(--shadow-md); border-color: #c9c6c0; }
     .header-search-wrapper input { flex: 1; border: none; outline: none; background: transparent; font-size: 0.95rem; padding: 10px 12px; font-family: 'Inter', sans-serif; color: var(--text-main); }
     .header-search-wrapper input::placeholder { color: #a5a2b0; }
-    .header-search-icon-btn { background: var(--primary); color: var(--white); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
+    .header-search-icon-btn { background: var(--primary); color: var(--white); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; cursor: pointer; }
     .header-search-icon-btn:hover { background: var(--primary-dark); }
     .header-actions { display: flex; align-items: center; gap: 1.2rem; flex-shrink: 0; }
     .btn-signin { font-weight: 600; font-size: 0.92rem; color: var(--text-main); transition: color 0.2s; white-space: nowrap; }
@@ -59,21 +59,12 @@
     .menu-toggle { display: none; font-size: 1.4rem; color: var(--primary); }
 
     /* ===== SERVICE PAGE LAYOUT ===== */
-    .page-header {
-      padding: 60px 0 40px;
-      background: linear-gradient(180deg, #fafaf9 0%, #ffffff 100%);
-      border-bottom: 1px solid var(--border-color);
-    }
+    .page-header { padding: 60px 0 40px; background: linear-gradient(180deg, #fafaf9 0%, #ffffff 100%); border-bottom: 1px solid var(--border-color); }
     .page-header h1 { font-family: 'Inter', sans-serif; font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; letter-spacing: -0.02em; }
     .page-header p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; }
     
-    .search-results-info {
-      margin-top: 16px;
-      font-size: 0.95rem;
-      color: var(--primary);
-      display: none;
-      font-weight: 500;
-    }
+    .search-results-info { margin-top: 16px; font-size: 0.95rem; color: var(--primary); display: none; font-weight: 500; background: var(--accent-soft); padding: 10px 16px; border-radius: 8px; border: 1px solid #f2c7a7; width: fit-content; }
+    .search-results-info button { background: var(--accent); color: white; border: none; padding: 4px 12px; border-radius: 12px; margin-left: 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
 
     .marketplace-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; padding: 40px 0 100px; }
 
@@ -120,7 +111,9 @@
     .empty-state { text-align: center; padding: 60px 20px; background: var(--white); border: 1px dashed var(--border-color); border-radius: var(--radius-card); grid-column: 1 / -1; }
     .empty-state i { font-size: 3rem; color: var(--border-color); margin-bottom: 16px; }
     .empty-state h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 8px; }
-    .empty-state p { color: var(--text-muted); font-size: 0.95rem; }
+    .empty-state p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+    .empty-state button { background: var(--accent); color: white; padding: 10px 24px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .empty-state button:hover { background: var(--accent-hover); }
 
     /* ===== FOOTER ===== */
     .vert-footer { background: var(--dark-bg); color: #e8e6e1; position: relative; overflow: hidden; font-size: 0.9rem; margin-top: 80px; }
@@ -226,8 +219,9 @@
       </a>
       
       <div class="header-search-wrapper">
+        <!-- Added id and type="button" to fix mobile click -->
         <input type="text" id="headerSearchInput" placeholder="Search for services..." />
-        <button class="header-search-icon-btn" onclick="handleHeaderSearch()">
+        <button type="button" class="header-search-icon-btn" onclick="handleHeaderSearch()">
           <i class="fas fa-search"></i>
         </button>
       </div>
@@ -245,7 +239,12 @@
     <div class="container">
       <h1>Explore Specialists</h1>
       <p>Find the exact expert you need. Browse thousands of verified, niche freelancers ready to bring your next project to life.</p>
-      <div id="searchResultsInfo" class="search-results-info"></div>
+      
+      <!-- Search Results Info Box -->
+      <div id="searchResultsInfo" class="search-results-info">
+        <span id="searchInfoText"></span>
+        <button type="button" onclick="clearSearch()">Clear Search</button>
+      </div>
     </div>
   </section>
 
@@ -423,7 +422,7 @@
 
   <!-- ===== FIREBASE & DATA LOGIC ===== -->
   <script type="module">
-    // --- Mock Data with Budget & Description ---
+    // --- Mock Data ---
     const mockGigs = [
       {
         id: "gig1",
@@ -487,10 +486,10 @@
       },
       {
         id: "gig7",
-        title: "I will develop a custom Shopify e-commerce store",
-        description: "Get a fully functional, beautifully designed Shopify store that is ready to sell. Includes theme customization and product setup.",
+        title: "I will develop a custom WordPress e-commerce store",
+        description: "Get a fully functional, beautifully designed WordPress WooCommerce store that is ready to sell. Includes theme customization and product setup.",
         category: "Website & Development",
-        tags: ["Shopify", "E-commerce", "Web Development", "Store Setup"],
+        tags: ["WordPress", "E-commerce", "Web Development", "Store Setup"],
         budget: 1200,
         coverImage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800&auto=format&fit=crop",
         freelancer: { name: "Kwame Adeyemi", photo: "https://randomuser.me/api/portraits/men/75.jpg", rating: 4.7, reviews: 145, online: true, verified: true }
@@ -499,35 +498,42 @@
 
     // --- State Variables ---
     let currentSearchQuery = '';
-    let displayGigs = [...mockGigs];
-
+    let extractedKeywords = [];
+    
     // --- DOM Elements ---
     const grid = document.getElementById('gigGrid');
     const countElement = document.getElementById('gigCount');
     const searchResultsInfo = document.getElementById('searchResultsInfo');
+    const searchInfoText = document.getElementById('searchInfoText');
     
+    // --- Helper: Tokenize and filter search query ---
+    function getKeywords(query) {
+      const stopWords = ['a', 'an', 'the', 'for', 'my', 'i', 'will', 'need', 'want', 'to', 'and', 'in', 'on', 'with', 'of', 'is', 'are', 'do', 'does', 'can', 'you', 'me', 'we', 'us', 'our', 'your'];
+      return query.toLowerCase()
+        .replace(/[^\w\s]/g, '') // Remove punctuation
+        .split(/\s+/) // Split by spaces
+        .filter(word => word.length > 1 && !stopWords.includes(word)); // Remove short and stop words
+    }
+
     // --- Initialization: Read URL Params ---
     function init() {
       const urlParams = new URLSearchParams(window.location.search);
       const query = urlParams.get('q');
       
       if (query) {
-        currentSearchQuery = query.toLowerCase().trim();
+        currentSearchQuery = query;
+        extractedKeywords = getKeywords(query);
+        
         document.getElementById('headerSearchInput').value = query;
         
         // Update header text
         document.querySelector('.page-header h1').textContent = `Results for "${query}"`;
-        searchResultsInfo.style.display = 'block';
-        searchResultsInfo.textContent = `Showing matches for "${query}" in titles, tags, and descriptions.`;
         
-        // Pre-check the category if the query matches a category exactly
-        const categoryCheckboxes = document.querySelectorAll('.filter-category');
-        categoryCheckboxes.forEach(cb => {
-          if (cb.value.toLowerCase() === currentSearchQuery) {
-            // Optional: auto-check the category filter if the search is exactly the category name
-            // cb.checked = true;
-          }
-        });
+        if (extractedKeywords.length > 0) {
+          searchInfoText.textContent = `Showing matches for: ${extractedKeywords.join(', ')}`;
+          searchResultsInfo.style.display = 'flex';
+          searchResultsInfo.style.alignItems = 'center';
+        }
       }
       
       applyFilters();
@@ -544,15 +550,22 @@
       const sortBy = document.getElementById('sortSelect').value;
 
       // 2. Filter the array
-      let filtered = mockGigs.filter(gig => {
-        // Search Query Filter
-        if (currentSearchQuery) {
-          const inTitle = gig.title.toLowerCase().includes(currentSearchQuery);
-          const inDesc = gig.description.toLowerCase().includes(currentSearchQuery);
-          const inTags = gig.tags.some(tag => tag.toLowerCase().includes(currentSearchQuery));
-          const inCategory = gig.category.toLowerCase().includes(currentSearchQuery);
+      let filtered = mockGigs.map(gig => {
+        // Calculate search score
+        let searchScore = 0;
+        if (extractedKeywords.length > 0) {
+          const searchableText = `${gig.title} ${gig.description} ${gig.category} ${gig.tags.join(' ')}`.toLowerCase();
           
-          if (!inTitle && !inDesc && !inTags && !inCategory) return false;
+          extractedKeywords.forEach(kw => {
+            if (searchableText.includes(kw)) searchScore++;
+          });
+        }
+
+        return { ...gig, searchScore };
+      }).filter(gig => {
+        // Search Query Filter (Must match at least 1 keyword if query exists)
+        if (extractedKeywords.length > 0 && gig.searchScore === 0) {
+          return false;
         }
 
         // Category Filter
@@ -573,7 +586,7 @@
           if (!matchesBudget) return false;
         }
 
-        // Rating Filter (If any selected, must match at least one)
+        // Rating Filter (If any selected, must match the highest selected)
         if (selectedRatings.length > 0) {
           const maxSelectedRating = Math.max(...selectedRatings);
           if (gig.freelancer.rating < maxSelectedRating) return false;
@@ -591,11 +604,13 @@
       // 3. Sort
       if (sortBy === 'rating') {
         filtered.sort((a, b) => b.freelancer.rating - a.freelancer.rating);
+      } else if (currentSearchQuery) {
+        // If there's a search query, sort by search relevance first
+        filtered.sort((a, b) => b.searchScore - a.searchScore);
       }
 
       // 4. Render
-      displayGigs = filtered;
-      renderGigs(displayGigs);
+      renderGigs(filtered);
     }
 
     // --- Render Function ---
@@ -609,7 +624,7 @@
             <i class="fas fa-search"></i>
             <h3>No gigs found</h3>
             <p>Try adjusting your search terms or filters.</p>
-            <button onclick="window.location.href='service.html'" style="margin-top: 16px; padding: 10px 24px; background: var(--accent); color: white; border-radius: 50px; font-weight: 600;">Clear All Filters</button>
+            <button type="button" onclick="window.location.href='service.html'">Clear All Filters</button>
           </div>
         `;
         return;
@@ -619,9 +634,10 @@
         const card = document.createElement('div');
         card.className = 'gig-card';
         
-        // Highlight matching tags based on search query
+        // Highlight matching tags
         const tagsHTML = gig.tags.map(tag => {
-          const isHighlighted = currentSearchQuery && tag.toLowerCase().includes(currentSearchQuery);
+          // Check if any extracted keyword matches the tag
+          const isHighlighted = extractedKeywords.some(kw => tag.toLowerCase().includes(kw));
           return `<span class="${isHighlighted ? 'highlighted' : ''}">${tag}</span>`;
         }).join('');
 
@@ -657,7 +673,6 @@
           </div>
         `;
         
-        // Make card clickable (optional, links to a gig page in a real app)
         card.addEventListener('click', () => {
           alert(`Navigate to Gig Page for: ${gig.title}`);
         });
@@ -673,7 +688,12 @@
 
     document.getElementById('sortSelect').addEventListener('change', applyFilters);
 
-    // Header Search Handler
+    // Clear Search
+    window.clearSearch = function() {
+      window.location.href = 'service.html';
+    };
+
+    // Header Search Handler (Fixed Mobile Click)
     window.handleHeaderSearch = function() {
       const query = document.getElementById('headerSearchInput').value.trim();
       if (query) {
