@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Vertted Portal</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* ===== BASE (matches Vertted design system) ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #fafaf9; color: #1a1a24; line-height: 1.5; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    :root {
+      --primary: #1e2b4f; --primary-dark: #151d36;
+      --accent: #f26b21; --accent-hover: #d95b17; --accent-soft: #fdf2e8;
+      --text-main: #1a1a24; --text-muted: #5e5e6b;
+      --border-color: #e5e3df; --white: #fff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,.05);
+      --shadow-md: 0 12px 32px rgba(0,0,0,.08);
+      --radius-pill: 50px; --radius-card: 24px;
+      --green: #22c55e; --red: #ef4444; --amber: #f59e0b;
+    }
+
+    /* ===== PORTAL SHELL ===== */
+    .portal-shell {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .portal-sidebar {
+      background: var(--primary);
+      color: #fff;
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .portal-brand {
+      padding: 0 24px 24px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      margin-bottom: 16px;
+    }
+    .portal-brand img { height: 40px; filter: brightness(0) invert(1); opacity: .95; }
+    .portal-nav { list-style: none; padding: 0 12px; flex: 1; }
+    .portal-nav li { margin-bottom: 4px; }
+    .portal-nav a {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-radius: 12px;
+      font-size: 0.92rem; font-weight: 500;
+      color: rgba(255,255,255,.7);
+      transition: all .2s;
+    }
+    .portal-nav a i { width: 18px; text-align: center; font-size: 0.95rem; }
+    .portal-nav a:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .portal-nav a.active { background: var(--accent); color: #fff; }
+    .portal-nav .badge {
+      margin-left: auto;
+      background: rgba(255,255,255,.15);
+      font-size: .7rem; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .portal-nav a.active .badge { background: rgba(255,255,255,.25); }
+    .portal-user {
+      padding: 16px 24px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .portal-user img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+    .portal-user-info { flex: 1; min-width: 0; }
+    .portal-user-info h4 { font-size: 0.85rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .portal-user-info span { font-size: 0.7rem; color: rgba(255,255,255,.55); }
+    .portal-signout {
+      color: rgba(255,255,255,.5);
+      font-size: .9rem;
+      transition: color .2s;
+    }
+    .portal-signout:hover { color: var(--accent); }
+
+    /* Main area */
+    .portal-main {
+      padding: 32px 40px 60px;
+      max-width: 1400px;
+      width: 100%;
+    }
+    .portal-topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 32px; gap: 20px; flex-wrap: wrap;
+    }
+    .portal-topbar h1 {
+      font-size: 1.8rem; font-weight: 700; color: var(--primary);
+    }
+    .portal-topbar p { color: var(--text-muted); font-size: .95rem; margin-top: 4px; }
+    .btn-cta {
+      background: var(--accent); color: #fff;
+      padding: 12px 24px; border-radius: var(--radius-pill);
+      font-weight: 600; font-size: .9rem;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background .2s, transform .1s;
+    }
+    .btn-cta:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+    /* Stat cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s;
+    }
+    .stat-card:hover { box-shadow: var(--shadow-md); }
+    .stat-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .stat-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      background: var(--accent-soft); color: var(--accent);
+    }
+    .stat-label { font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); line-height: 1; }
+    .stat-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 6px; }
+
+    /* Two-column content */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .panel-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px;
+    }
+    .panel-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .panel-header a { font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+
+    /* Gig performance table */
+    .perf-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .perf-table th {
+      text-align: left; padding: 10px 8px;
+      font-size: .72rem; text-transform: uppercase; letter-spacing: .05em;
+      color: var(--text-muted); border-bottom: 1px solid var(--border-color);
+      font-weight: 700;
+    }
+    .perf-table td { padding: 14px 8px; border-bottom: 1px solid var(--border-color); }
+    .perf-table tr:last-child td { border-bottom: none; }
+    .perf-table .gig-name { font-weight: 600; color: var(--primary); }
+    .perf-table .gig-cat { font-size: .75rem; color: var(--text-muted); }
+    .perf-table .conv { font-weight: 700; color: var(--green); }
+    .perf-table .conv.low { color: var(--amber); }
+    .perf-table .conv.zero { color: var(--red); }
+    .empty-row td { text-align: center; color: var(--text-muted); padding: 30px 8px; font-style: italic; }
+
+    /* Profile strength */
+    .strength-wrap { display: flex; align-items: center; gap: 20px; margin-bottom: 18px; }
+    .strength-ring {
+      --val: 0;
+      width: 90px; height: 90px; border-radius: 50%;
+      background: conic-gradient(var(--accent) calc(var(--val) * 1%), #f0efec 0);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; flex-shrink: 0;
+    }
+    .strength-ring::before {
+      content: ''; position: absolute; inset: 8px;
+      background: var(--white); border-radius: 50%;
+    }
+    .strength-val { position: relative; font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+    .strength-val small { font-size: .7rem; color: var(--text-muted); font-weight: 400; }
+    .strength-text h3 { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .strength-text p { font-size: .85rem; color: var(--text-muted); line-height: 1.5; }
+
+    .strength-tips { list-style: none; margin-top: 8px; }
+    .strength-tips li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .85rem; color: var(--text-main);
+      padding: 8px 0; border-bottom: 1px dashed var(--border-color);
+    }
+    .strength-tips li:last-child { border-bottom: none; }
+    .strength-tips i { color: var(--accent); margin-top: 3px; font-size: .8rem; }
+
+    /* Activity list */
+    .activity-list { list-style: none; }
+    .activity-item {
+      display: flex; gap: 14px;
+      padding: 14px 0; border-bottom: 1px solid var(--border-color);
+      transition: background .2s;
+      border-radius: 8px;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-item:hover { background: #fafaf9; }
+    .activity-avatar {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+      flex-shrink: 0;
+    }
+    .activity-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: .95rem;
+    }
+    .activity-body { flex: 1; min-width: 0; }
+    .activity-body h4 { font-size: .9rem; font-weight: 600; color: var(--primary); margin-bottom: 2px; }
+    .activity-body p { font-size: .82rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .activity-time { font-size: .72rem; color: var(--text-muted); white-space: nowrap; }
+
+    .badge-pill {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 20px; font-size: .7rem; font-weight: 600;
+    }
+    .badge-pill.new { background: var(--accent-soft); color: var(--accent); }
+    .badge-pill.active { background: #e8f8ee; color: var(--green); }
+    .badge-pill.done { background: #eef2ff; color: #4f46e5; }
+    .badge-pill.pending { background: #fff7e6; color: var(--amber); }
+
+    /* Loading + empty */
+    .skeleton {
+      background: linear-gradient(90deg, #f0efec 0%, #e5e3df 50%, #f0efec 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .skeleton-line { height: 14px; margin-bottom: 8px; }
+    .hidden { display: none !important; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--primary); color: #fff;
+      padding: 14px 22px; border-radius: 12px;
+      font-size: .9rem; font-weight: 500;
+      box-shadow: var(--shadow-md);
+      transform: translateY(120%); opacity: 0;
+      transition: all .3s ease;
+      z-index: 9999;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.error { background: var(--red); }
+    .toast.success { background: var(--green); }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .content-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .portal-shell { grid-template-columns: 1fr; }
+      .portal-sidebar {
+        position: fixed; left: 0; top: 0;
+        width: 260px; transform: translateX(-100%);
+        transition: transform .3s; z-index: 1001;
+      }
+      .portal-sidebar.open { transform: translateX(0); }
+      .portal-mobile-toggle {
+        display: flex !important;
+        position: fixed; top: 16px; left: 16px;
+        width: 44px; height: 44px; border-radius: 50%;
+        background: var(--primary); color: #fff;
+        align-items: center; justify-content: center;
+        z-index: 1002; font-size: 1.1rem;
+        box-shadow: var(--shadow-md);
+      }
+      .portal-main { padding: 80px 20px 40px; }
+    }
+    @media (max-width: 600px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .portal-topbar { flex-direction: column; align-items: flex-start; }
+    }
+    .portal-mobile-toggle { display: none; }
+    .sidebar-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.4);
+      z-index: 1000; opacity: 0; visibility: hidden; transition: all .2s;
+    }
+    .sidebar-backdrop.show { opacity: 1; visibility: visible; }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile nav toggle -->
+  <button class="portal-mobile-toggle" id="mobileNavToggle"><i class="fas fa-bars"></i></button>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="portal-shell">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="portal-sidebar" id="portalSidebar">
+      <div class="portal-brand">
+        <a href="../index.html"><img src="../image/vertted-logo.jpeg" alt="Vertted" /></a>
+      </div>
+      <ul class="portal-nav">
+        <li><a href="dashboard.html" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+        <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+        <li><a href="gigs.html"><i class="fas fa-layer-group"></i> Gigs</a></li>
+        <li><a href="inbox.html"><i class="fas fa-comment-dots"></i> Inbox <span class="badge" id="navMsgBadge">0</span></a></li>
+        <li><a href="orders.html"><i class="fas fa-shopping-bag"></i> Orders <span class="badge" id="navOrderBadge">0</span></a></li>
+        <li><a href="reviews.html"><i class="fas fa-star"></i> Reviews</a></li>
+      </ul>
+      <div class="portal-user" id="portalUser">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23e5e3df'/></svg>" id="portalUserAvatar" alt="User" />
+        <div class="portal-user-info">
+          <h4 id="portalUserName">Loading…</h4>
+          <span id="portalUserRole">Freelancer</span>
+        </div>
+        <button class="portal-signout" id="signOutBtn" title="Sign out"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <main class="portal-main">
+
+      <div class="portal-topbar">
+        <div>
+          <h1 id="greetingTitle">Welcome back</h1>
+          <p id="greetingSub">Here's what's happening with your business today.</p>
+        </div>
+        <a href="gigs.html" class="btn-cta"><i class="fas fa-plus"></i> New gig</a>
+      </div>
+
+      <!-- Loading overlay -->
+      <div id="loadingState">
+        <div class="stats-grid">
+          <div class="stat-card"><div class="skeleton skeleton-line" style="width:40%"></div><div class="skeleton skeleton-line" style="width:70%;height:28px;margin-top:16px"></div></div>
+          <div class="stat-card"><div class="skeleton skeleton-line" style="width:40%"></div><div class="skeleton skeleton-line" style="width:70%;height:28px;margin-top:16px"></div></div>
+          <div class="stat-card"><div class="skeleton skeleton-line" style="width:40%"></div><div class="skeleton skeleton-line" style="width:70%;height:28px;margin-top:16px"></div></div>
+          <div class="stat-card"><div class="skeleton skeleton-line" style="width:40%"></div><div class="skeleton skeleton-line" style="width:70%;height:28px;margin-top:16px"></div></div>
+        </div>
+      </div>
+
+      <!-- Real content -->
+      <div id="dashboardContent" class="hidden">
+
+        <!-- Stat cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-head">
+              <span class="stat-label">New messages</span>
+              <span class="stat-icon"><i class="fas fa-comment-dots"></i></span>
+            </div>
+            <div class="stat-value" id="statMessages">0</div>
+            <div class="stat-hint" id="statMessagesHint">No unread</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-head">
+              <span class="stat-label">Active orders</span>
+              <span class="stat-icon" style="background:#e8f8ee;color:var(--green)"><i class="fas fa-shopping-bag"></i></span>
+            </div>
+            <div class="stat-value" id="statOrders">0</div>
+            <div class="stat-hint" id="statOrdersHint">Across all gigs</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-head">
+              <span class="stat-label">Profile views</span>
+              <span class="stat-icon" style="background:#eef2ff;color:#4f46e5"><i class="fas fa-eye"></i></span>
+            </div>
+            <div class="stat-value" id="statViews">0</div>
+            <div class="stat-hint">Last 30 days</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-head">
+              <span class="stat-label">Contact leads</span>
+              <span class="stat-icon" style="background:#fff7e6;color:var(--amber)"><i class="fas fa-user-plus"></i></span>
+            </div>
+            <div class="stat-value" id="statLeads">0</div>
+            <div class="stat-hint" id="statLeadsHint">People who reached out</div>
+          </div>
+        </div>
+
+        <!-- Content grid -->
+        <div class="content-grid">
+
+          <!-- Left: gig performance -->
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Gig performance</h2>
+              <a href="gigs.html">Manage gigs →</a>
+            </div>
+            <table class="perf-table">
+              <thead>
+                <tr>
+                  <th>Gig</th>
+                  <th style="text-align:right">Impressions</th>
+                  <th style="text-align:right">Clicks</th>
+                  <th style="text-align:right">Conversion</th>
+                </tr>
+              </thead>
+              <tbody id="perfTableBody">
+                <tr class="empty-row"><td colspan="4">No gigs yet. <a href="gigs.html" style="color:var(--accent);font-weight:600">Create your first →</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Right: profile strength -->
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Profile strength</h2>
+              <a href="profile.html">Edit →</a>
+            </div>
+            <div class="strength-wrap">
+              <div class="strength-ring" id="strengthRing" style="--val:0">
+                <span class="strength-val"><span id="strengthVal">0</span><small>%</small></span>
+              </div>
+              <div class="strength-text">
+                <h3 id="strengthTitle">Getting started</h3>
+                <p id="strengthSub">Complete these steps to rank higher and get discovered.</p>
+              </div>
+            </div>
+            <ul class="strength-tips" id="strengthTips">
+              <li><i class="fas fa-circle-notch"></i> Loading suggestions…</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Recent activity -->
+        <div class="content-grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Recent messages</h2>
+              <a href="inbox.html">Open inbox →</a>
+            </div>
+            <ul class="activity-list" id="messagesList">
+              <li class="empty-row" style="text-align:center;padding:30px 0;color:var(--text-muted);font-style:italic">No messages yet.</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Recent orders</h2>
+              <a href="orders.html">All orders →</a>
+            </div>
+            <ul class="activity-list" id="ordersList">
+              <li class="empty-row" style="text-align:center;padding:30px 0;color:var(--text-muted);font-style:italic">No orders yet.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+  <!-- ===== FIREBASE ===== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import {
+      getAuth, onAuthStateChanged, signOut
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, collection, query, where, orderBy,
+      limit, onSnapshot, updateDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // ---- Firebase config (from your project) ----
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsL6tQHjXqTK0NTSDgb6SMS_1_ode2whQ",
+      authDomain: "vertted-28f7f.firebaseapp.com",
+      projectId: "vertted-28f7f",
+      storageBucket: "vertted-28f7f.firebasestorage.app",
+      messagingSenderId: "912377837951",
+      appId: "1:912377837951:web:c5550721e51b2a3a5f824a",
+      measurementId: "G-Q4FQ96Q25T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    // ---- UI helpers ----
+    const $ = (id) => document.getElementById(id);
+    const toastEl = $('toast');
+    let toastTimer;
+    function toast(msg, type = 'success') {
+      toastEl.className = `toast ${type}`;
+      $('toastMsg').textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
+    }
+    const initialsAvatar = (name) => {
+      const letter = (name || 'U').trim().charAt(0).toUpperCase();
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
+      return 'data:image/svg+xml;utf8,' + svg;
+    };
+    const timeAgo = (ts) => {
+      if (!ts) return '';
+      const date = ts.toDate ? ts.toDate() : new Date(ts);
+      const diff = (Date.now() - date.getTime()) / 1000;
+      if (diff < 60) return 'just now';
+      if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+      return Math.floor(diff / 86400) + 'd ago';
+    };
+
+    // ---- Sidebar mobile ----
+    $('mobileNavToggle').addEventListener('click', () => {
+      $('portalSidebar').classList.toggle('open');
+      $('sidebarBackdrop').classList.toggle('show');
+    });
+    $('sidebarBackdrop').addEventListener('click', () => {
+      $('portalSidebar').classList.remove('open');
+      $('sidebarBackdrop').classList.remove('show');
+    });
+
+    // ---- Sign out ----
+    $('signOutBtn').addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      } catch (err) {
+        toast('Could not sign out', 'error');
+      }
+    });
+
+    // ---- Auth gate + data load ----
+    let unsubMessages, unsubOrders;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // No user: go to login (build this page next)
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Load profile
+      const profileRef = doc(db, 'profiles', user.uid);
+      let profileSnap = await getDoc(profileRef);
+      let profile = profileSnap.exists() ? profileSnap.data() : {};
+
+      // If no profile doc yet, seed a minimal one so the dashboard is usable
+      if (!profileSnap.exists()) {
+        await updateDoc(profileRef, {
+          displayName: user.displayName || user.email?.split('@')[0] || 'Freelancer',
+          photoURL: user.photoURL || '',
+          online: true,
+          profileStrength: 10,
+          stats: { profileViews: 0, contactLeads: 0 }
+        }).catch(() => {});
+        profile = { displayName: user.displayName || 'Freelancer', photoURL: '', online: true, profileStrength: 10, stats: { profileViews: 0, contactLeads: 0 } };
+      }
+
+      // Populate user
+      $('portalUserName').textContent = profile.displayName || 'Freelancer';
+      $('portalUserAvatar').src = profile.photoURL || initialsAvatar(profile.displayName);
+      $('greetingTitle').textContent = `Welcome back, ${(profile.displayName || '').split(' ')[0] || 'there'} 👋`;
+
+      // Stat cards
+      $('statViews').textContent = profile.stats?.profileViews ?? 0;
+      $('statLeads').textContent = profile.stats?.contactLeads ?? 0;
+
+      // ---- Realtime: unread messages ----
+      // threads where participants contains uid, unreadBy[uid] > 0
+      const threadsRef = collection(db, 'threads');
+      const tq = query(threadsRef, where('participants', 'array-contains', user.uid));
+      unsubMessages = onSnapshot(tq, (snap) => {
+        let unread = 0;
+        const recent = [];
+        snap.forEach(d => {
+          const data = d.data();
+          const u = data.unreadBy?.[user.uid] || 0;
+          unread += u;
+          recent.push({ id: d.id, ...data });
+        });
+        recent.sort((a, b) => (b.lastMessageAt?.seconds || 0) - (a.lastMessageAt?.seconds || 0));
+
+        $('statMessages').textContent = unread;
+        $('statMessagesHint').textContent = unread > 0 ? `${unread} unread` : 'All caught up';
+        $('navMsgBadge').textContent = unread;
+        $('navMsgBadge').style.display = unread > 0 ? 'inline-block' : 'none';
+
+        // Render recent 4
+        const list = $('messagesList');
+        if (recent.length === 0) {
+          list.innerHTML = `<li style="text-align:center;padding:30px 0;color:var(--text-muted);font-style:italic">No messages yet.</li>`;
+        } else {
+          list.innerHTML = recent.slice(0, 4).map(t => {
+            const otherName = t.otherName || 'Client';
+            return `
+              <li class="activity-item" onclick="window.location.href='inbox.html?thread=${t.id}'" style="cursor:pointer">
+                <img class="activity-avatar" src="${t.otherAvatar || initialsAvatar(otherName)}" alt="${otherName}" />
+                <div class="activity-body">
+                  <h4>${otherName}</h4>
+                  <p>${t.lastMessage || ''}</p>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+                  <span class="activity-time">${timeAgo(t.lastMessageAt)}</span>
+                  ${(t.unreadBy?.[user.uid] || 0) > 0 ? `<span class="badge-pill new">${t.unreadBy[user.uid]} new</span>` : ''}
+                </div>
+              </li>`;
+          }).join('');
+        }
+      }, (err) => {
+        console.warn('threads listener:', err);
+      });
+
+      // ---- Realtime: orders ----
+      const ordersRef = collection(db, 'orders');
+      const oq = query(ordersRef, where('freelancerUid', '==', user.uid), orderBy('createdAt', 'desc'), limit(20));
+      unsubOrders = onSnapshot(oq, (snap) => {
+        const active = [];
+        const all = [];
+        snap.forEach(d => {
+          const o = { id: d.id, ...d.data() };
+          all.push(o);
+          if (['active', 'in_progress', 'revision', 'pending'].includes(o.status)) active.push(o);
+        });
+
+        $('statOrders').textContent = active.length;
+        $('statOrdersHint').textContent = all.length > 0 ? `${all.length} total` : 'No orders yet';
+        $('navOrderBadge').textContent = active.length;
+        $('navOrderBadge').style.display = active.length > 0 ? 'inline-block' : 'none';
+
+        const list = $('ordersList');
+        if (all.length === 0) {
+          list.innerHTML = `<li style="text-align:center;padding:30px 0;color:var(--text-muted);font-style:italic">No orders yet.</li>`;
+        } else {
+          const badgeClass = (s) => ({
+            active: 'active', in_progress: 'active',
+            pending: 'pending', revision: 'pending',
+            delivered: 'done', completed: 'done'
+          }[s] || 'pending');
+          list.innerHTML = all.slice(0, 4).map(o => `
+            <li class="activity-item" onclick="window.location.href='orders.html?order=${o.id}'" style="cursor:pointer">
+              <div class="activity-icon" style="background:var(--accent-soft);color:var(--accent)">
+                <i class="fas fa-shopping-bag"></i>
+              </div>
+              <div class="activity-body">
+                <h4>${o.title || 'Order'}</h4>
+                <p>${o.clientName || 'Client'} · $${o.amount ?? 0}</p>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+                <span class="activity-time">${timeAgo(o.createdAt)}</span>
+                <span class="badge-pill ${badgeClass(o.status)}">${(o.status || 'pending').replace('_',' ')}</span>
+              </div>
+            </li>
+          `).join('');
+        }
+      }, (err) => {
+        // Index may not exist yet — show hint, don't crash
+        console.warn('orders listener:', err);
+        $('statOrdersHint').textContent = 'Add Firestore index (see console)';
+      });
+
+      // ---- Realtime: gigs performance ----
+      const gigsRef = collection(db, 'gigs');
+      const gq = query(gigsRef, where('ownerUid', '==', user.uid));
+      onSnapshot(gq, (snap) => {
+        const tbody = $('perfTableBody');
+        if (snap.empty) {
+          tbody.innerHTML = `<tr class="empty-row"><td colspan="4">No gigs yet. <a href="gigs.html" style="color:var(--accent);font-weight:600">Create your first →</a></td></tr>`;
+          return;
+        }
+        const rows = [];
+        snap.forEach(d => {
+          const g = d.data();
+          const imp = g.impressions || 0;
+          const clk = g.clicks || 0;
+          const ord = g.orders || 0;
+          const denom = clk || imp;
+          const conv = denom > 0 ? (ord / denom) * 100 : 0;
+          const cls = conv === 0 ? 'zero' : conv < 2 ? 'low' : '';
+          rows.push(`
+            <tr>
+              <td>
+                <div class="gig-name">${g.title || 'Untitled gig'}</div>
+                <div class="gig-cat">${g.category || ''}</div>
+              </td>
+              <td style="text-align:right">${imp.toLocaleString()}</td>
+              <td style="text-align:right">${clk.toLocaleString()}</td>
+              <td style="text-align:right" class="conv ${cls}">${conv.toFixed(1)}%</td>
+            </tr>`);
+        });
+        tbody.innerHTML = rows.join('');
+      });
+
+      // ---- Profile strength ----
+      const pct = profile.profileStrength ?? 10;
+      $('strengthRing').style.setProperty('--val', pct);
+      $('strengthVal').textContent = pct;
+      const tips = [];
+      if (pct >= 90) {
+        $('strengthTitle').textContent = 'Looking great ✨';
+        $('strengthSub').textContent = 'Your profile is fully set up — keep it fresh.';
+      } else if (pct >= 60) {
+        $('strengthTitle').textContent = 'Almost there';
+        $('strengthSub').textContent = 'A few final touches will unlock full visibility.';
+      } else {
+        $('strengthTitle').textContent = 'Getting started';
+        $('strengthSub').textContent = 'Complete these steps to rank higher and get discovered.';
+      }
+      if (!profile.photoURL) tips.push('Add a profile photo (clients trust faces).');
+      if (!profile.headline) tips.push('Write a short headline describing your service.');
+      if (!profile.introVideoUrl) tips.push('Upload a 30-second intro video.');
+      if (!profile.certifications || (profile.certifications && profile.certifications.length === 0)) tips.push('Add at least one certification.');
+      if (!profile.whatsapp) tips.push('Add WhatsApp so clients can reach you fast.');
+      if (tips.length === 0) tips.push('Nicely done — you\'re all set!');
+      $('strengthTips').innerHTML = tips.map(t => `<li><i class="fas fa-arrow-right"></i> ${t}</li>`).join('');
+
+      // Reveal
+      $('loadingState').classList.add('hidden');
+      $('dashboardContent').classList.remove('hidden');
+    });
+
+    // Cleanup on unload
+    window.addEventListener('beforeunload', () => {
+      unsubMessages?.();
+      unsubOrders?.();
+    });
+  </script>
+</body>
+</html>

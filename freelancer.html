@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freelancer Profile — Vertted</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #fafaf9; color: #1a1a24; line-height: 1.5; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== VARIABLES ===== */
+    :root {
+      --primary: #1e2b4f;
+      --primary-dark: #151d36;
+      --accent: #f26b21;
+      --accent-hover: #d95b17;
+      --accent-soft: #fdf2e8;
+      --text-main: #1a1a24;
+      --text-muted: #5e5e6b;
+      --border-color: #e5e3df;
+      --white: #ffffff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+      --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
+      --shadow-lg: 0 24px 64px rgba(0,0,0,0.12);
+      --radius-pill: 50px;
+      --radius-card: 24px;
+      --green-verified: #22c55e;
+      --dark-bg: #0d1627;
+    }
+
+    /* ===== HEADER ===== */
+    .site-header { background: var(--white); border-bottom: 1px solid var(--border-color); padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .logo-container { display: flex; align-items: center; flex-shrink: 0; }
+    .logo-img { height: 60px; width: auto; object-fit: contain; }
+    .header-search-wrapper { flex: 1; max-width: 500px; display: flex; align-items: center; background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-pill); padding: 4px 4px 4px 20px; box-shadow: var(--shadow-sm); transition: box-shadow 0.2s; margin: 0 20px; }
+    .header-search-wrapper:focus-within { box-shadow: var(--shadow-md); border-color: #c9c6c0; }
+    .header-search-wrapper input { flex: 1; border: none; outline: none; background: transparent; font-size: 0.95rem; padding: 10px 12px; font-family: 'Inter', sans-serif; color: var(--text-main); }
+    .header-search-wrapper input::placeholder { color: #a5a2b0; }
+    .header-search-icon-btn { background: var(--primary); color: var(--white); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; cursor: pointer; }
+    .header-search-icon-btn:hover { background: var(--primary-dark); }
+    .header-actions { display: flex; align-items: center; gap: 1.2rem; flex-shrink: 0; }
+    .btn-signin { font-weight: 600; font-size: 0.92rem; color: var(--text-main); transition: color 0.2s; white-space: nowrap; }
+    .btn-signin:hover { color: var(--accent); }
+    .btn-primary-dark { background: var(--primary); color: var(--white); padding: 10px 24px; border-radius: 40px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s, transform 0.1s; white-space: nowrap; }
+    .btn-primary-dark:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .menu-toggle { display: none; font-size: 1.4rem; color: var(--primary); }
+
+    /* ===== PROFILE PAGE LAYOUT ===== */
+    .profile-header-section {
+      background: linear-gradient(180deg, #fafaf9 0%, #ffffff 100%);
+      border-bottom: 1px solid var(--border-color);
+      padding: 60px 0;
+    }
+
+    .profile-header-grid {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .profile-info-col {
+      flex: 1 1 60%;
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+    }
+
+    .profile-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .profile-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--white);
+      box-shadow: var(--shadow-md);
+    }
+
+    .online-dot-large {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      background: #22c55e;
+      border: 4px solid var(--white);
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
+    }
+
+    .profile-text h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile-text h1 i {
+      color: var(--green-verified);
+      font-size: 1.8rem;
+    }
+
+    .profile-headline {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .profile-socials {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .profile-socials a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 1rem;
+      transition: all 0.2s;
+      background: var(--white);
+    }
+
+    .profile-socials a:hover {
+      background: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .profile-stats-row {
+      display: flex;
+      gap: 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      flex-wrap: wrap;
+    }
+
+    .profile-stats-row span {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .profile-contact-col {
+      flex: 1 1 40%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .contact-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      padding: 32px;
+      box-shadow: var(--shadow-md);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .contact-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .contact-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .btn-contact-large {
+      width: 100%;
+      padding: 16px 0;
+      background: var(--accent);
+      color: var(--white);
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.2s, transform 0.1s;
+      margin-bottom: 16px;
+    }
+
+    .btn-contact-large:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .contact-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+    }
+
+    /* ===== MAIN CONTENT GRID ===== */
+    .profile-main-section {
+      padding: 60px 0 100px;
+    }
+
+    .profile-layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .content-section {
+      margin-bottom: 50px;
+    }
+
+    .section-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title i {
+      color: var(--accent);
+      font-size: 1.3rem;
+    }
+
+    /* Intro Video */
+    .intro-video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      background: #d9d6d0;
+    }
+
+    .intro-video-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.8;
+    }
+
+    .video-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: var(--accent);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      cursor: pointer;
+      box-shadow: 0 8px 32px rgba(242, 107, 33, 0.4);
+      transition: transform 0.2s, background 0.2s;
+      padding-left: 6px;
+    }
+
+    .video-play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+      background: var(--accent-hover);
+    }
+
+    /* Portfolio Grid */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .portfolio-item {
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 4/3;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    .portfolio-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .portfolio-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .portfolio-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      opacity: 0;
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+      transition: opacity 0.3s;
+    }
+
+    .portfolio-item:hover .portfolio-overlay {
+      opacity: 1;
+    }
+
+    .portfolio-overlay span {
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* Gigs */
+    .gigs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .gig-card-horizontal {
+      display: flex;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .gig-card-horizontal:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #d0cdc7;
+    }
+
+    .gig-card-horizontal img {
+      width: 200px;
+      height: 140px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .gig-card-horizontal-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .gig-category-small {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .gig-card-horizontal h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    /* Job History */
+    .timeline {
+      border-left: 2px solid var(--border-color);
+      padding-left: 24px;
+      margin-left: 8px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 32px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -33px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 3px solid var(--accent);
+    }
+
+    .timeline-date {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .timeline-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .timeline-company {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Certifications */
+    .cert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .cert-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cert-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .cert-info h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .cert-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Reviews */
+    .reviews-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .review-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .review-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .review-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .review-author-info h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .review-author-info span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .review-stars {
+      color: var(--accent);
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .review-text {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    /* ===== CHATBOT ===== */
+    .floating-chat-widget { position: fixed; bottom: 32px; right: 32px; width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.6rem; box-shadow: 0 8px 32px rgba(242, 107, 33, 0.4); cursor: pointer; z-index: 998; transition: transform 0.2s, background 0.2s; }
+    .floating-chat-widget:hover { transform: translateY(-4px); background: var(--accent-hover); }
+    .chatbot-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.2); backdrop-filter: blur(2px); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
+    .chatbot-overlay.active { opacity: 1; visibility: visible; }
+    .chatbot-panel { position: fixed; top: 0; right: 0; height: 100%; width: 420px; max-width: 100vw; background: var(--white); box-shadow: -10px 0 40px rgba(0,0,0,0.1); z-index: 1000; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s ease-out; }
+    .chatbot-panel.active { transform: translateX(0); }
+    .chatbot-header { background: var(--primary); color: var(--white); padding: 20px 24px; display: flex; align-items: center; gap: 14px; }
+    .chatbot-header-avatar { width: 40px; height: 40px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .chatbot-header-info h3 { font-size: 1.1rem; font-weight: 600; font-family: 'Inter', sans-serif; }
+    .chatbot-header-info p { font-size: 0.75rem; opacity: 0.8; }
+    .chatbot-close { margin-left: auto; color: var(--white); font-size: 1.2rem; opacity: 0.7; transition: opacity 0.2s; }
+    .chatbot-close:hover { opacity: 1; }
+    .chatbot-messages { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: #fafaf9; }
+    .message { max-width: 85%; padding: 14px 18px; border-radius: 16px; font-size: 0.92rem; line-height: 1.5; animation: slideIn 0.3s ease-out; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .message.bot { background: #f3f2ef; color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .message.user { background: var(--primary); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
+    .chat-options { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .chat-option-btn { background: var(--white); border: 1px solid var(--accent); color: var(--accent); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; }
+    .chat-option-btn:hover { background: var(--accent); color: var(--white); }
+    .chatbot-input-area { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; background: var(--white); }
+    .chatbot-input-area input { flex: 1; border: 1px solid var(--border-color); border-radius: 24px; padding: 12px 18px; font-size: 0.9rem; outline: none; font-family: 'Inter', sans-serif; }
+    .chatbot-input-area input:focus { border-color: var(--primary); }
+    .chatbot-send-btn { background: var(--accent); color: var(--white); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .chatbot-send-btn:hover { background: var(--accent-hover); }
+
+    /* ===== FOOTER ===== */
+    .vert-footer { background: var(--dark-bg); color: #e8e6e1; position: relative; overflow: hidden; font-size: 0.9rem; margin-top: 80px; }
+    .vert-footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(242, 107, 33, 0.55), transparent); }
+    .vert-footer::after { content: ''; position: absolute; top: -220px; right: -220px; width: 620px; height: 620px; background: radial-gradient(circle, rgba(242, 107, 33, 0.14), transparent 60%); border-radius: 50%; pointer-events: none; z-index: 0; }
+    .vert-footer-inner { position: relative; z-index: 1; }
+    .vert-footer-cta { padding: 70px 0 50px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+    .vert-footer-cta-inner { display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap; }
+    .vert-footer-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: #f26b21; margin-bottom: 14px; }
+    .vert-footer-cta h3 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 600; line-height: 1.1; color: #ffffff; max-width: 600px; letter-spacing: -0.02em; }
+    .vert-footer-cta h3 em { color: #f26b21; font-style: italic; }
+    .vert-footer-cta-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .vert-footer-btn { display: inline-flex; align-items: center; gap: 10px; padding: 16px 28px; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; border-radius: var(--radius-pill); transition: all 0.3s ease; white-space: nowrap; }
+    .vert-footer-btn i { font-size: 0.95rem; }
+    .vert-footer-btn-solid { background: #f26b21; color: #ffffff; box-shadow: 0 8px 24px rgba(242, 107, 33, 0.28); }
+    .vert-footer-btn-solid:hover { background: #d95b17; transform: translateY(-2px); box-shadow: 0 12px 32px rgba(242, 107, 33, 0.38); }
+    .vert-footer-btn-ghost { background: rgba(255, 255, 255, 0.06); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.15); }
+    .vert-footer-btn-ghost:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.3); transform: translateY(-2px); }
+    .vert-footer-ornament { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 30px 0 0; }
+    .vert-footer-ornament span { width: 60px; height: 1px; background: rgba(242, 107, 33, 0.4); }
+    .vert-footer-ornament i { color: #f26b21; font-size: 0.65rem; }
+    .vert-footer-body { padding: 50px 0 60px; }
+    .vert-footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.4fr; gap: 50px; }
+    .vert-footer-brand .vert-footer-logo { display: inline-block; margin-bottom: 20px; }
+    .vert-footer-brand .vert-footer-logo img { height: 42px; width: auto; filter: brightness(0) invert(1); opacity: 0.95; }
+    .vert-footer-tagline { font-size: 0.9rem; line-height: 1.75; color: rgba(255, 255, 255, 0.6); margin-bottom: 24px; max-width: 320px; }
+    .vert-footer-socials { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+    .vert-footer-social { width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.7); display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem; transition: all 0.3s ease; position: relative; overflow: hidden; }
+    .vert-footer-social::before { content: ''; position: absolute; inset: 0; background: #f26b21; border-radius: 50%; transform: scale(0); transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .vert-footer-social i { position: relative; z-index: 1; }
+    .vert-footer-social:hover { color: #ffffff; border-color: #f26b21; transform: translateY(-3px); }
+    .vert-footer-social:hover::before { transform: scale(1); }
+    .vert-footer-status { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; background: rgba(34, 197, 94, 0.08); border: 1px solid rgba(34, 197, 94, 0.25); border-radius: var(--radius-pill); font-size: 0.75rem; font-weight: 500; color: rgba(255, 255, 255, 0.85); }
+    .vert-footer-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22); animation: vertStatusPulse 2.4s ease-in-out infinite; }
+    @keyframes vertStatusPulse { 0%, 100% { box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.22); } 50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.05); } }
+    .vert-footer-col h4 { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: #f26b21; margin-bottom: 22px; }
+    .vert-footer-col ul { list-style: none; }
+    .vert-footer-col ul li { margin-bottom: 14px; font-size: 0.9rem; }
+    .vert-footer-col ul a { color: rgba(255, 255, 255, 0.7); position: relative; display: inline-block; transition: color 0.25s ease; }
+    .vert-footer-col ul a::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 0; height: 1px; background: #f26b21; transition: width 0.3s ease; }
+    .vert-footer-col ul a:hover { color: #ffffff; }
+    .vert-footer-col ul a:hover::after { width: 100%; }
+    .vert-footer-contact-list { list-style: none; margin-bottom: 24px; }
+    .vert-footer-contact-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 0.88rem; color: rgba(255, 255, 255, 0.75); margin-bottom: 12px; line-height: 1.5; }
+    .vert-footer-contact-list li i { color: #f26b21; font-size: 0.85rem; margin-top: 3px; flex-shrink: 0; width: 16px; }
+    .vert-footer-contact-list li a { color: rgba(255, 255, 255, 0.75); transition: color 0.2s; }
+    .vert-footer-contact-list li a:hover { color: #f26b21; }
+    .vert-footer-newsletter { padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+    .vert-footer-newsletter label { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: #f26b21; margin-bottom: 12px; }
+    .vert-footer-newsletter-row { display: flex; align-items: stretch; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-pill); overflow: hidden; transition: border-color 0.2s; }
+    .vert-footer-newsletter-row:focus-within { border-color: #f26b21; }
+    .vert-footer-newsletter-row input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 12px 20px; color: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.85rem; }
+    .vert-footer-newsletter-row input::placeholder { color: rgba(255, 255, 255, 0.4); }
+    .vert-footer-newsletter-row button { background: #f26b21; border: 0; color: #ffffff; padding: 0 22px; font-size: 0.9rem; transition: background 0.2s; cursor: pointer; display: flex; align-items: center; }
+    .vert-footer-newsletter-row button:hover { background: #d95b17; }
+    .vert-footer-newsletter-note { font-size: 0.72rem; color: rgba(255, 255, 255, 0.4); margin-top: 10px; letter-spacing: 0.02em; }
+    .vert-footer-trust { display: flex; gap: 20px; flex-wrap: wrap; padding: 30px 0 0; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+    .vert-footer-trust-item { display: inline-flex; align-items: center; gap: 10px; font-size: 0.82rem; color: rgba(255, 255, 255, 0.6); font-weight: 500; }
+    .vert-footer-trust-item i { color: #f26b21; font-size: 0.9rem; }
+    .vert-footer-bottom { background: rgba(0, 0, 0, 0.25); border-top: 1px solid rgba(255, 255, 255, 0.06); padding: 22px 0; }
+    .vert-footer-bottom-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .vert-footer-copy { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); }
+    .vert-footer-legal { list-style: none; display: flex; gap: 24px; }
+    .vert-footer-legal a { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); transition: color 0.2s; }
+    .vert-footer-legal a:hover { color: #f26b21; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .profile-layout-grid { grid-template-columns: 1fr; }
+      .profile-header-grid { flex-direction: column; }
+      .profile-contact-col { justify-content: flex-start; }
+      .contact-card { max-width: 100%; }
+      .vert-footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .vert-footer-brand { grid-column: 1 / -1; }
+    }
+    @media (max-width: 900px) {
+      .header-search-wrapper { display: none; }
+      .menu-toggle { display: block; }
+      .header-actions .btn-signin { display: none; }
+      .profile-info-col { flex-direction: column; align-items: center; text-align: center; }
+      .profile-text h1 { justify-content: center; }
+      .profile-socials { justify-content: center; }
+      .profile-stats-row { justify-content: center; }
+    }
+    @media (max-width: 768px) {
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .gig-card-horizontal { flex-direction: column; }
+      .gig-card-horizontal img { width: 100%; height: 180px; }
+      .vert-footer-cta-inner { flex-direction: column; align-items: flex-start; gap: 24px; }
+      .vert-footer-cta-actions { width: 100%; }
+      .vert-footer-btn { flex: 1; justify-content: center; }
+      .vert-footer-grid { grid-template-columns: 1fr; gap: 36px; }
+      .vert-footer-bottom-inner { flex-direction: column; text-align: center; gap: 14px; }
+      .vert-footer-legal { justify-content: center; flex-wrap: wrap; gap: 16px; }
+    }
+    @media (max-width: 600px) {
+      .floating-chat-widget { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 1.3rem; }
+      .profile-avatar { width: 120px; height: 120px; }
+      .profile-text h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-container">
+        <img src="image/vertted-logo.jpeg" alt="Vertted Logo" class="logo-img" />
+      </a>
+      <div class="header-search-wrapper">
+        <input type="text" id="headerSearchInput" placeholder="Search for services..." />
+        <button type="button" class="header-search-icon-btn" onclick="handleHeaderSearch()">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <div class="header-actions">
+        <button class="btn-signin">Sign in</button>
+        <button class="btn-primary-dark">Hire The Agency</button>
+        <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== PROFILE HEADER ===== -->
+  <section class="profile-header-section">
+    <div class="container">
+      <div class="profile-header-grid">
+        <div class="profile-info-col">
+          <div class="profile-avatar-wrap">
+            <img src="" alt="Freelancer" class="profile-avatar" id="freelancerAvatar" />
+            <span class="online-dot-large" id="freelancerOnlineDot"></span>
+          </div>
+          <div class="profile-text">
+            <h1 id="freelancerName">Loading… <i class="fas fa-check-circle"></i></h1>
+            <p class="profile-headline" id="freelancerHeadline"></p>
+            <div class="profile-socials" id="freelancerSocials">
+              <!-- injected via JS -->
+            </div>
+            <div class="profile-stats-row">
+              <div><i class="fas fa-star" style="color: var(--accent);"></i> <span id="freelancerRating">—</span> Rating</div>
+              <div><i class="fas fa-check-circle" style="color: var(--green-verified);"></i> <span id="freelancerReviewsCount">—</span> Reviews</div>
+              <div><i class="fas fa-map-marker-alt" style="color: var(--text-muted);"></i> <span id="freelancerLocation">—</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-contact-col">
+          <div class="contact-card">
+            <h3 id="contactCardTitle">Work with this freelancer</h3>
+            <p id="contactCardBlurb">Send a message to discuss your project requirements and get a custom offer.</p>
+            <button class="btn-contact-large" onclick="document.getElementById('floatingChatBtn').click()">Contact Me</button>
+            <div class="contact-meta">
+              <span id="contactReplyTime">Usually replies in 2 hours</span>
+              <span id="contactLanguages">English</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="profile-main-section">
+    <div class="container profile-layout-grid">
+
+      <!-- Left Column -->
+      <div class="left-col">
+
+        <div class="content-section">
+          <h2 class="section-title"><i class="fas fa-play-circle"></i> Intro Video</h2>
+          <div class="intro-video-wrapper" id="introVideoWrapper">
+            <img id="introVideoThumb" src="" alt="Intro Video Thumbnail" />
+            <div class="video-play-btn"><i class="fas fa-play"></i></div>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h2 class="section-title"><i class="fas fa-briefcase"></i> Portfolio</h2>
+          <div class="portfolio-grid" id="portfolioGrid"></div>
+        </div>
+
+        <div class="content-section">
+          <h2 class="section-title"><i class="fas fa-layer-group"></i> Gigs by <span id="gigsByFreelancerName"></span></h2>
+          <div class="gigs-list" id="gigsList"></div>
+        </div>
+
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+
+        <div class="content-section">
+          <h2 class="section-title"><i class="fas fa-history"></i> Job History</h2>
+          <div class="timeline" id="jobHistoryTimeline"></div>
+        </div>
+
+        <div class="content-section">
+          <h2 class="section-title"><i class="fas fa-certificate"></i> Certifications</h2>
+          <div class="cert-list" id="certList"></div>
+        </div>
+
+        <div class="content-section">
+          <h2 class="section-title"><i class="fas fa-star"></i> Reviews (<span id="reviewsHeadingCount">0</span>)</h2>
+          <div class="reviews-list" id="reviewsList"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="vert-footer">
+    <div class="vert-footer-inner">
+      <div class="vert-footer-cta">
+        <div class="container">
+          <div class="vert-footer-cta-inner">
+            <div>
+              <span class="vert-footer-eyebrow">Ready when you are</span>
+              <h3>Let’s build your <em>next great thing.</em></h3>
+            </div>
+            <div class="vert-footer-cta-actions">
+              <a href="mailto:support@vertted.com" class="vert-footer-btn vert-footer-btn-solid">
+                <i class="fas fa-headset"></i> Contact support
+              </a>
+              <a href="#" class="vert-footer-btn vert-footer-btn-ghost" onclick="document.getElementById('floatingChatBtn')?.click(); return false;">
+                <i class="fas fa-comment-dots"></i> Chat with AI
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vert-footer-ornament">
+        <span></span>
+        <i class="fas fa-asterisk"></i>
+        <span></span>
+      </div>
+
+      <div class="vert-footer-body">
+        <div class="container">
+          <div class="vert-footer-grid">
+            <div class="vert-footer-brand">
+              <a href="index.html" class="vert-footer-logo">
+                <img src="image/vertted-logo.jpeg" alt="Vertted">
+              </a>
+              <p class="vert-footer-tagline">
+                A curated freelance marketplace where verified talent and ambitious teams meet. Every profile is vetted. Every review is human-moderated.
+              </p>
+              <div class="vert-footer-socials">
+                <a href="#" class="vert-footer-social"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="vert-footer-social"><i class="fab fa-dribbble"></i></a>
+              </div>
+              <div class="vert-footer-status">
+                <span class="vert-footer-status-dot"></span>
+                All systems operational
+              </div>
+            </div>
+
+            <div class="vert-footer-col">
+              <h4>Explore</h4>
+              <ul>
+                <li><a href="service.html">Explore services</a></li>
+                <li><a href="#">Find freelancers</a></li>
+                <li><a href="#">Hire the agency</a></li>
+                <li><a href="#">How it works</a></li>
+                <li><a href="#">Verified reviews</a></li>
+              </ul>
+            </div>
+
+            <div class="vert-footer-col">
+              <h4>For freelancers</h4>
+              <ul>
+                <li><a href="#">Join as freelancer</a></li>
+                <li><a href="#">Get verified</a></li>
+                <li><a href="#">Build your gig</a></li>
+                <li><a href="#">Freelancer</a></li>
+              </ul>
+            </div>
+
+            <div class="vert-footer-col">
+              <h4>Get in touch</h4>
+              <ul class="vert-footer-contact-list">
+                <li><i class="fas fa-envelope"></i><a href="mailto:support@vertted.com">support@vertted.com</a></li>
+                <li><i class="fas fa-headset"></i><a href="tel:+10000000000">+1 (000) 000-0000</a></li>
+                <li><i class="fab fa-whatsapp"></i><a href="#">WhatsApp support</a></li>
+                <li><i class="fas fa-clock"></i><span>24/7</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="vert-footer-trust">
+            <div class="vert-footer-trust-item"><i class="fas fa-shield-halved"></i> Admin-verified profiles</div>
+            <div class="vert-footer-trust-item"><i class="fas fa-lock"></i> Secure &amp; private by design</div>
+            <div class="vert-footer-trust-item"><i class="fas fa-star"></i> Every review human-moderated</div>
+            <div class="vert-footer-trust-item"><i class="fas fa-bolt"></i> First reply within hours</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="vert-footer-bottom">
+        <div class="container">
+          <div class="vert-footer-bottom-inner">
+            <p class="vert-footer-copy">© 2026 Vertted. All rights reserved. Made with care for great work.</p>
+            <ul class="vert-footer-legal">
+              <li><a href="#">Privacy</a></li>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Cookies</a></li>
+              <li><a href="#">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== FLOATING CHAT WIDGET ===== -->
+  <button class="floating-chat-widget" id="floatingChatBtn" aria-label="Chat with AI">
+    <i class="fas fa-comment-dots"></i>
+  </button>
+
+  <!-- ===== SIDE CHATBOT ===== -->
+  <div class="chatbot-overlay" id="chatOverlay"></div>
+  <div class="chatbot-panel" id="chatPanel">
+    <div class="chatbot-header">
+      <div class="chatbot-header-avatar"><i class="fas fa-robot"></i></div>
+      <div class="chatbot-header-info">
+        <h3>Vertted AI assistant</h3>
+        <p>AI · replies instantly</p>
+      </div>
+      <button class="chatbot-close" id="closeChatBtn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chatbot-messages" id="chatMessages"></div>
+    <div class="chatbot-input-area">
+      <input type="text" placeholder="Type a message..." id="chatInput" />
+      <button class="chatbot-send-btn" id="sendChatBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- ===== JAVASCRIPT & FIREBASE SETUP ===== -->
+  <script type="module">
+    // ==========================================
+    // 1. FIREBASE SETUP (commented out for static preview)
+    // ==========================================
+    /*
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    */
+
+    // ==========================================
+    // 2. MOCK DATA (keyed by ?id=)
+    // ==========================================
+    const mockFreelancers = {
+      amara: {
+        id: "amara",
+        name: "Amara Okafor",
+        headline: "Figma specialist for fintech apps",
+        photo: "https://randomuser.me/api/portraits/women/44.jpg",
+        online: true,
+        rating: "4.9",
+        reviewsCount: "132",
+        location: "Lagos, Nigeria",
+        replyTime: "Usually replies in 2 hours",
+        languages: "English",
+        socials: [
+          { icon: "fab fa-linkedin-in", url: "#" },
+          { icon: "fab fa-dribbble", url: "#" },
+          { icon: "fab fa-behance", url: "#" },
+          { icon: "fab fa-twitter", url: "#" },
+          { icon: "fab fa-instagram", url: "#" }
+        ],
+        introVideoThumb: "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop",
+        portfolio: [
+          { img: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=600&auto=format&fit=crop", label: "Fintech App UI" },
+          { img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop", label: "Banking Dashboard" },
+          { img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop", label: "Crypto Wallet" },
+          { img: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?q=80&w=600&auto=format&fit=crop", label: "Wealth Management" }
+        ],
+        gigs: [
+          { id: "gig1", img: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=600&auto=format&fit=crop", category: "Website & Development", title: "I will design a premium fintech app UI/UX in Figma", rating: "4.9", count: 132, from: 800 },
+          { id: "gig1", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop", category: "Website & Development", title: "I will design a modern banking dashboard UI", rating: "4.9", count: 45, from: 600 }
+        ],
+        jobHistory: [
+          { date: "2021 - Present", title: "Senior Product Designer", company: "Freelance / Vertted" },
+          { date: "2018 - 2021", title: "UI/UX Designer", company: "Paystack" },
+          { date: "2016 - 2018", title: "Junior Designer", company: "Creative Hub Agency" }
+        ],
+        certifications: [
+          { title: "Google UX Design Professional", issuer: "Coursera · 2022" },
+          { title: "Figma Advanced Prototyping", issuer: "Figma Academy · 2023" }
+        ],
+        reviews: [
+          { author: "Nneoma Daniel", role: "CEO ZeniWeb", avatar: "https://randomuser.me/api/portraits/women/65.jpg", rating: 5, text: "Vertted made it so easy to find a skilled web developer. Amara's Figma work was exceptional and she delivered ahead of schedule." },
+          { author: "Femi Ade", role: "Creator", avatar: "https://randomuser.me/api/portraits/men/22.jpg", rating: 5, text: "The UI/UX was perfect for our fintech app. Highly recommended." },
+          { author: "Sarah Lin", role: "Brand Lead", avatar: "https://randomuser.me/api/portraits/women/12.jpg", rating: 5, text: "Finally, reviews I actually believe. Amara is a true professional and her Figma skills are top-notch." }
+        ]
+      }
+    };
+
+    // ==========================================
+    // 3. HELPERS
+    // ==========================================
+    function starsHTML(n) {
+      return '<i class="fas fa-star"></i>'.repeat(n);
+    }
+
+    // ==========================================
+    // 4. RENDER LOGIC
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const freelancerId = urlParams.get('id') || 'amara';
+
+      // In production:
+      // const ref = doc(db, "freelancers", freelancerId);
+      // const snap = await getDoc(ref);
+      // const data = snap.data();
+
+      const data = mockFreelancers[freelancerId] || mockFreelancers['amara'];
+
+      // --- Title ---
+      document.title = `${data.name} — Vertted`;
+
+      // --- Profile Header ---
+      document.getElementById('freelancerAvatar').src = data.photo;
+      document.getElementById('freelancerName').innerHTML = `${data.name} <i class="fas fa-check-circle"></i>`;
+      document.getElementById('freelancerHeadline').textContent = data.headline;
+      document.getElementById('freelancerRating').textContent = data.rating;
+      document.getElementById('freelancerReviewsCount').textContent = data.reviewsCount;
+      document.getElementById('freelancerLocation').textContent = data.location;
+      document.getElementById('reviewsHeadingCount').textContent = data.reviewsCount;
+
+      const dot = document.getElementById('freelancerOnlineDot');
+      if (!data.online) dot.style.display = 'none';
+
+      // Socials
+      document.getElementById('freelancerSocials').innerHTML = data.socials
+        .map(s => `<a href="${s.url}" aria-label="Social"><i class="${s.icon}"></i></a>`)
+        .join('');
+
+      // Contact card
+      document.getElementById('contactCardTitle').textContent = `Work with ${data.name.split(' ')[0]}`;
+      document.getElementById('contactReplyTime').textContent = data.replyTime;
+      document.getElementById('contactLanguages').textContent = data.languages;
+
+      // --- Intro Video ---
+      document.getElementById('introVideoThumb').src = data.introVideoThumb;
+
+      // --- Portfolio ---
+      document.getElementById('portfolioGrid').innerHTML = data.portfolio.map(p => `
+        <div class="portfolio-item">
+          <img src="${p.img}" alt="${p.label}" />
+          <div class="portfolio-overlay"><span>${p.label}</span></div>
+        </div>
+      `).join('');
+
+      // --- Gigs by freelancer ---
+      const firstName = data.name.split(' ')[0];
+      document.getElementById('gigsByFreelancerName').textContent = firstName;
+      document.getElementById('gigsList').innerHTML = data.gigs.map(g => `
+        <div class="gig-card-horizontal" onclick="window.location.href='gig.html?id=${g.id}'">
+          <img src="${g.img}" alt="Gig Cover" />
+          <div class="gig-card-horizontal-content">
+            <div class="gig-category-small">${g.category}</div>
+            <h4>${g.title}</h4>
+            <div style="font-size:0.85rem;color:var(--text-muted);">
+              <i class="fas fa-star" style="color:var(--accent);"></i> ${g.rating} (${g.count}) · From $${g.from}
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // --- Job History ---
+      document.getElementById('jobHistoryTimeline').innerHTML = data.jobHistory.map(j => `
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">${j.date}</div>
+          <div class="timeline-title">${j.title}</div>
+          <div class="timeline-company">${j.company}</div>
+        </div>
+      `).join('');
+
+      // --- Certifications ---
+      document.getElementById('certList').innerHTML = data.certifications.map(c => `
+        <div class="cert-card">
+          <div class="cert-icon"><i class="fas fa-award"></i></div>
+          <div class="cert-info">
+            <h4>${c.title}</h4>
+            <p>Issued by ${c.issuer}</p>
+          </div>
+        </div>
+      `).join('');
+
+      // --- Reviews ---
+      document.getElementById('reviewsList').innerHTML = data.reviews.map(r => `
+        <div class="review-card">
+          <div class="review-header">
+            <img src="${r.avatar}" alt="${r.author}" class="review-avatar" />
+            <div class="review-author-info">
+              <h4>${r.author}</h4>
+              <span>${r.role}</span>
+            </div>
+          </div>
+          <div class="review-stars">${starsHTML(r.rating)}</div>
+          <p class="review-text">"${r.text}"</p>
+        </div>
+      `).join('');
+    });
+
+    // ==========================================
+    // 5. HEADER SEARCH
+    // ==========================================
+    window.handleHeaderSearch = function() {
+      const query = document.getElementById('headerSearchInput').value.trim();
+      window.location.href = query
+        ? `service.html?q=${encodeURIComponent(query)}`
+        : `service.html`;
+    };
+
+    document.getElementById('headerSearchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') window.handleHeaderSearch();
+    });
+
+    // ==========================================
+    // 6. CHATBOT LOGIC
+    // ==========================================
+    const openChatBtn = document.getElementById('floatingChatBtn');
+    const closeChatBtn = document.getElementById('closeChatBtn');
+    const chatOverlay = document.getElementById('chatOverlay');
+    const chatPanel = document.getElementById('chatPanel');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const sendChatBtn = document.getElementById('sendChatBtn');
+
+    function openChat() {
+      chatPanel.classList.add('active');
+      chatOverlay.classList.add('active');
+    }
+    function closeChat() {
+      chatPanel.classList.remove('active');
+      chatOverlay.classList.remove('active');
+    }
+
+    openChatBtn.addEventListener('click', openChat);
+    closeChatBtn.addEventListener('click', closeChat);
+    chatOverlay.addEventListener('click', closeChat);
+
+    function addMessage(text, sender = 'bot', options = null) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message ${sender}`;
+      msgDiv.innerHTML = text;
+
+      if (options && options.length > 0) {
+        const optDiv = document.createElement('div');
+        optDiv.className = 'chat-options';
+        options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'chat-option-btn';
+          btn.textContent = opt;
+          btn.addEventListener('click', () => handleUserSelection(opt));
+          optDiv.appendChild(btn);
+        });
+        msgDiv.appendChild(optDiv);
+      }
+
+      chatMessages.appendChild(msgDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function startConversation() {
+      addMessage(
+        "Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?",
+        'bot',
+        ['A freelancer', 'The agency']
+      );
+    }
+
+    let chatState = 'initial';
+
+    function handleUserSelection(selection) {
+      const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
+      if (lastBotMsg) lastBotMsg.remove();
+      addMessage(selection, 'user');
+
+      setTimeout(() => {
+        if (chatState === 'initial') {
+          if (selection === 'A freelancer') {
+            chatState = 'choosing_service';
+            addMessage(
+              "Awesome! Which service: Website & Development, Marketing, or Video & Animation?",
+              'bot',
+              ['Website & Development', 'Marketing', 'Video & Animation']
+            );
+          } else {
+            chatState = 'agency_selected';
+            addMessage(
+              "Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.",
+              'bot'
+            );
+          }
+        } else if (chatState === 'choosing_service') {
+          chatState = 'service_selected';
+          addMessage(
+            "Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.",
+            'bot'
+          );
+        }
+      }, 600);
+    }
+
+    function handleTypedMessage() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
+      if (lastBotMsg) lastBotMsg.remove();
+      addMessage(text, 'user');
+      chatInput.value = '';
+      setTimeout(() => {
+        addMessage("Got it! I've noted that down. Our team will review your request and get back to you shortly.", 'bot');
+      }, 800);
+    }
+
+    sendChatBtn.addEventListener('click', handleTypedMessage);
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleTypedMessage();
+    });
+
+    // Kick off the conversation on first chat open (once)
+    let chatStarted = false;
+    openChatBtn.addEventListener('click', () => {
+      if (!chatStarted) {
+        chatStarted = true;
+        startConversation();
+      }
+    });
+  </script>
+</body>
+</html>
