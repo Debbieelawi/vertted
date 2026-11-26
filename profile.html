@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profile — Vertted Portal</title>
+  <link rel="icon" href="data:,">
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -169,7 +170,7 @@
       font-size: .85rem;
     }
 
-    /* NEW: URL input dialog (inline) */
+    /* URL input row */
     .url-input-row {
       display: none;
       gap: 8px;
@@ -254,7 +255,7 @@
       display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
     }
 
-    /* Repeatable lists (certs / jobs) */
+    /* Repeatable lists */
     .repeat-item {
       display: grid;
       grid-template-columns: 1fr 1fr auto;
@@ -369,7 +370,7 @@
     }
     .portfolio-tile-overlay .source.link { color: var(--blue); }
 
-    /* Portfolio add tiles — two variants side by side */
+    /* Portfolio add tiles */
     .portfolio-add-group {
       aspect-ratio: 4/3;
       display: flex; flex-direction: column;
@@ -560,7 +561,7 @@
     <!-- SIDEBAR -->
     <aside class="portal-sidebar" id="portalSidebar">
       <div class="portal-brand">
-        <a href="index.html"><img src="/image/vertted-logo.jpeg" alt="Vertted" /></a>
+        <a href="../index.html"><img src="../image/vertted-logo.jpeg" alt="Vertted" /></a>
       </div>
       <ul class="portal-nav">
         <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
@@ -901,7 +902,7 @@
       updatePassword, EmailAuthProvider, reauthenticateWithCredential
     } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import {
-      getFirestore, doc, getDoc, updateDoc, serverTimestamp
+      getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import {
       getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject
@@ -954,7 +955,6 @@
       const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
       return 'data:image/svg+xml;utf8,' + svg;
     }
-    // Validate an http(s) or data URL — rejects javascript:, ftp:, etc.
     function isValidImageUrl(url) {
       if (!url) return false;
       try {
@@ -980,7 +980,7 @@
     }
 
     // ==========================================
-    // Auth gate + load
+    // Auth gate + load (self-healing)
     // ==========================================
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -993,8 +993,49 @@
       $('portalUserAvatar').src = user.photoURL || initialsAvatar(user.displayName);
 
       const ref = doc(db, 'profiles', user.uid);
-      const snap = await getDoc(ref);
-      profile = snap.exists() ? snap.data() : {};
+      let snap;
+      try {
+        snap = await getDoc(ref);
+      } catch (e) {
+        console.error('Could not read profile doc', e);
+        snap = null;
+      }
+
+      // Bootstrap the profile doc if it doesn't exist yet
+      if (!snap || !snap.exists()) {
+        const bootstrap = {
+          displayName: user.displayName || (user.email || '').split('@')[0] || 'Freelancer',
+          photoURL: user.photoURL || '',
+          headline: '',
+          bio: '',
+          location: '',
+          languages: [],
+          serviceCategory: '',
+          contactEmail: user.email || '',
+          whatsapp: '',
+          socialLinks: {},
+          introVideoUrl: '',
+          availability: { status: 'available', hoursPerWeek: 0, timezone: 'UTC' },
+          certifications: [],
+          jobHistory: [],
+          portfolio: [],
+          online: true,
+          profileStrength: 10,
+          stats: { profileViews: 0, contactLeads: 0 },
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        };
+        try {
+          await setDoc(ref, bootstrap);
+          profile = bootstrap;
+        } catch (e) {
+          console.error('Could not create profile doc', e);
+          profile = {};
+        }
+      } else {
+        profile = snap.data();
+      }
+
       applyProfileToForm(profile);
 
       $('loadingOverlay').classList.add('hidden');
@@ -1146,7 +1187,7 @@
       $('avatarPreview').src = url;
       profile.photoURL = url;
       profile.photoSource = 'link';
-      profile.photoStoragePath = '';   // so old storage asset can be cleaned up on next save if desired
+      profile.photoStoragePath = '';
       $('avatarUrlRow').classList.remove('show');
       toast('Image linked — don\'t forget to save', 'success');
     });
@@ -1205,8 +1246,6 @@
     // ==========================================
     // Portfolio: upload + URL fallback
     // ==========================================
-    let pendingUrlForPortfolio = null;
-
     function renderPortfolio(list) {
       const grid = $('portfolioGrid');
       grid.innerHTML = '';
@@ -1226,7 +1265,6 @@
           </div>
         `;
         tile.querySelector('.del').addEventListener('click', () => {
-          // Remove from storage only if it was uploaded
           if (item.storagePath) {
             deleteObject(storageRef(storage, item.storagePath)).catch(() => {});
           }
@@ -1238,7 +1276,6 @@
       });
 
       if (list.length < 12) {
-        // Two mini tiles: upload + link
         const group = document.createElement('div');
         group.className = 'portfolio-add-group';
 
@@ -1305,7 +1342,6 @@
       );
     }
 
-    // Label input sync
     $('portfolioGrid').addEventListener('input', (e) => {
       if (e.target.matches('.portfolio-tile-overlay input')) {
         const idx = parseInt(e.target.dataset.idx, 10);
@@ -1318,10 +1354,10 @@
       if (!currentUser) return;
       setIndicator('saving', 'Saving portfolio…');
       try {
-        await updateDoc(doc(db, 'profiles', currentUser.uid), {
+        await setDoc(doc(db, 'profiles', currentUser.uid), {
           portfolio: profile.portfolio || [],
           updatedAt: serverTimestamp()
-        });
+        }, { merge: true });
         setIndicator('saved', 'Portfolio saved');
         toast('Portfolio saved', 'success');
       } catch (err) {
@@ -1372,7 +1408,7 @@
         const strength = computeProfileStrength({ ...profile, ...payload });
         payload.profileStrength = strength;
 
-        await updateDoc(doc(db, 'profiles', currentUser.uid), payload);
+        await setDoc(doc(db, 'profiles', currentUser.uid), payload, { merge: true });
         profile = { ...profile, ...payload };
 
         renderVideoPreview(payload.introVideoUrl);
@@ -1430,10 +1466,10 @@
           reviews: document.querySelector('.switch[data-setting="notifReviews"]').classList.contains('on'),
           marketing: document.querySelector('.switch[data-setting="notifMarketing"]').classList.contains('on')
         };
-        await updateDoc(doc(db, 'profiles', currentUser.uid), {
+        await setDoc(doc(db, 'profiles', currentUser.uid), {
           settings: { ...current, notifications },
           updatedAt: serverTimestamp()
-        });
+        }, { merge: true });
         profile.settings = { ...current, notifications };
         setIndicator('saved', 'Notifications saved');
         toast('Notifications updated', 'success');
@@ -1461,11 +1497,11 @@
         const current = profile.settings || {};
         const visibility = document.querySelector('#visibilitySegmented button.active')?.dataset.vis || 'online';
         const timezone = $('fieldSettingsTimezone').value;
-        await updateDoc(doc(db, 'profiles', currentUser.uid), {
+        await setDoc(doc(db, 'profiles', currentUser.uid), {
           online: visibility === 'online',
           settings: { ...current, visibility, timezone },
           updatedAt: serverTimestamp()
-        });
+        }, { merge: true });
         profile.settings = { ...current, visibility, timezone };
         profile.online = visibility === 'online';
         setIndicator('saved', 'Settings saved');
