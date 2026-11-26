@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gigs — Vertted Portal</title>
+  <link rel="icon" href="data:,">
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -265,7 +266,6 @@
       background: #f3f2ef; color: var(--text-muted);
       border-radius: 20px;
     }
-    /* ── NEW: pricing summary on card ── */
     .gig-card-pricing {
       display: flex; align-items: center; gap: 8px;
       padding: 8px 12px;
@@ -540,7 +540,55 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* ── NEW: Pricing packages editor ── */
+    /* ── NEW: cover link fallback ── */
+    .cover-actions {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .cover-link-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      background: #f3f2ef; color: var(--primary);
+      font-size: .85rem; font-weight: 600;
+      transition: background .2s;
+    }
+    .cover-link-btn:hover { background: #e5e3df; }
+    .cover-link-row {
+      display: none; gap: 8px; margin-bottom: 12px;
+      flex-wrap: wrap; align-items: stretch;
+    }
+    .cover-link-row.show { display: flex; }
+    .cover-link-row input {
+      flex: 1; min-width: 220px;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .cover-link-row input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .cover-link-row .apply {
+      padding: 10px 18px; border-radius: 12px;
+      background: var(--primary); color: #fff;
+      font-size: .85rem; font-weight: 600;
+      transition: background .2s;
+    }
+    .cover-link-row .apply:hover { background: var(--primary-dark); }
+    .cover-link-row .cancel {
+      padding: 10px 16px; border-radius: 12px;
+      background: #f3f2ef; color: var(--text-main);
+      font-size: .85rem; font-weight: 600;
+      transition: background .2s;
+    }
+    .cover-link-row .cancel:hover { background: #e5e3df; }
+
+    /* Pricing packages */
     .pkg-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -869,7 +917,6 @@
         <button class="btn-new-gig" id="newGigBtn"><i class="fas fa-plus"></i> New gig</button>
       </div>
 
-      <!-- Filter bar -->
       <div class="filter-bar">
         <div class="filter-search">
           <i class="fas fa-search search-icon"></i>
@@ -884,10 +931,7 @@
         <span class="filter-count" id="filterCount">—</span>
       </div>
 
-      <!-- Category chips -->
       <div class="category-scroller" id="categoryChips"></div>
-
-      <!-- Gigs grid -->
       <div class="gigs-grid" id="gigsGrid"></div>
     </main>
   </div>
@@ -927,12 +971,10 @@
           <textarea class="form-textarea" id="editorDescription" rows="6" maxlength="1200" placeholder="What's included, your process, deliverables, revisions..."></textarea>
         </div>
 
-        <!-- ── NEW: Pricing packages ── -->
+        <!-- Pricing packages (unchanged) -->
         <div class="form-row">
           <label>Pricing packages <span class="hint">Basic is required</span></label>
           <div class="pkg-grid" id="pkgGrid">
-
-            <!-- Basic -->
             <div class="pkg-card basic enabled" data-pkg="basic">
               <div class="pkg-head">
                 <div class="pkg-name"><i class="fas fa-cube"></i> Basic <span class="req">required</span></div>
@@ -960,7 +1002,6 @@
               </div>
             </div>
 
-            <!-- Standard -->
             <div class="pkg-card standard" data-pkg="standard">
               <div class="pkg-head">
                 <div class="pkg-name"><i class="fas fa-layer-group"></i> Standard</div>
@@ -988,7 +1029,6 @@
               </div>
             </div>
 
-            <!-- Premium -->
             <div class="pkg-card premium" data-pkg="premium">
               <div class="pkg-head">
                 <div class="pkg-name"><i class="fas fa-crown"></i> Premium</div>
@@ -1015,11 +1055,9 @@
                 </div>
               </div>
             </div>
-
           </div>
           <small class="form-hint">Give each tier a clear deliverable and a fair price. Clients compare them side-by-side.</small>
         </div>
-        <!-- ── /NEW ── -->
 
         <div class="form-row">
           <label>Tags <span class="hint"><span id="tagCount">0</span> / 8</span></label>
@@ -1029,6 +1067,7 @@
           <small class="form-hint">Press Enter or comma to add. Click × to remove.</small>
         </div>
 
+        <!-- Cover with new URL fallback -->
         <div class="form-row">
           <label>Cover <span class="hint">image or video</span></label>
           <div class="cover-type-toggle" id="coverTypeToggle">
@@ -1036,11 +1075,25 @@
             <button type="button" data-type="video"><i class="fas fa-video"></i> Video</button>
           </div>
           <div id="coverPreviewWrap"></div>
-          <div class="cover-dropzone" id="coverDropzone">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p>Click to upload or drag &amp; drop</p>
-            <small id="coverHint">JPG, PNG — max 5MB · 16:9 recommended</small>
-            <input type="file" id="coverInput" accept="image/*" hidden />
+
+          <!-- NEW: link input row -->
+          <div class="cover-link-row" id="coverLinkRow">
+            <input type="url" id="coverLinkInput" placeholder="https://example.com/cover.jpg or .mp4" />
+            <button type="button" class="apply" id="coverLinkApply">Apply</button>
+            <button type="button" class="cancel" id="coverLinkCancel">Cancel</button>
+          </div>
+
+          <!-- NEW: two actions — Upload (existing) or Paste link (new) -->
+          <div class="cover-actions">
+            <div class="cover-dropzone" id="coverDropzone" style="flex:1;margin:0;">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Click to upload or drag &amp; drop</p>
+              <small id="coverHint">JPG, PNG — max 5MB · 16:9 recommended</small>
+              <input type="file" id="coverInput" accept="image/*" hidden />
+            </div>
+            <button type="button" class="cover-link-btn" id="coverLinkBtn">
+              <i class="fas fa-link"></i> Use a link
+            </button>
           </div>
         </div>
 
@@ -1121,12 +1174,10 @@
     let gigs = [];
     let unsubGigs = null;
 
-    // Filters
     let filterCategory = 'all';
     let filterStatus = 'all';
     let filterSearch = '';
 
-    // Editor state
     let editing = {
       mode: 'create',
       gigId: null,
@@ -1135,8 +1186,9 @@
       coverUrl: '',
       coverType: 'image',
       coverStoragePath: '',
+      coverSource: 'upload',       // ← NEW
       faqs: [],
-      packages: defaultPackages()     // ← NEW
+      packages: defaultPackages()
     };
 
     function defaultPackages() {
@@ -1179,7 +1231,6 @@
     }
     const STATUS_LABEL = { live: 'Live', draft: 'Draft', paused: 'Paused' };
 
-    // NEW: what to show on the gig card as "From $X · N packages"
     function packageSummary(packages) {
       if (!packages) return null;
       const enabled = ['basic', 'standard', 'premium']
@@ -1190,6 +1241,21 @@
         Number(p.price) < Number(min.price) ? p : min, enabled[0]
       );
       return { count: enabled.length, from: Number(cheapest.price) };
+    }
+
+    // NEW: detect image vs video from URL
+    function detectCoverType(url) {
+      const u = String(url || '').toLowerCase().split('?')[0];
+      const videoExts = ['.mp4', '.webm', '.ogg', '.mov', '.m4v'];
+      return videoExts.some(ext => u.endsWith(ext)) ? 'video' : 'image';
+    }
+    // NEW: validate an http(s)/data URL
+    function isValidUrl(url) {
+      if (!url) return false;
+      try {
+        const u = new URL(url);
+        return u.protocol === 'http:' || u.protocol === 'https:' || u.protocol === 'data:';
+      } catch { return false; }
     }
 
     // ==========================================
@@ -1347,7 +1413,6 @@
         coverHtml = `<div class="gig-card-cover-placeholder"><i class="fas fa-image"></i></div>`;
       }
 
-      // NEW: pricing summary
       const pricing = g.packages ? packageSummary(g.packages) : null;
       const pricingHtml = pricing
         ? `<div class="gig-card-pricing">
@@ -1409,8 +1474,9 @@
         coverUrl: gig?.coverUrl || '',
         coverType: gig?.coverType || 'image',
         coverStoragePath: gig?.coverStoragePath || '',
+        coverSource: gig?.coverSource || (gig?.coverStoragePath ? 'upload' : 'link'),   // ← NEW
         faqs: gig?.faqs ? gig.faqs.map(f => ({ ...f })) : [],
-        packages: normalizePackages(gig?.packages)    // ← NEW
+        packages: normalizePackages(gig?.packages)
       };
 
       $('editorTitle').textContent = mode === 'create' ? 'Create gig' : 'Edit gig';
@@ -1427,11 +1493,14 @@
       updateCounter('editorTitleInput', 'titleCount', 80);
       updateCounter('editorDescription', 'descCount', 1200);
 
-      renderPackages();        // ← NEW
+      renderPackages();
       renderTags();
       setCoverType(editing.coverType);
       renderCoverPreview();
       renderFaqs();
+      // Ensure the link row is hidden when reopening
+      $('coverLinkRow').classList.remove('show');
+      $('coverLinkInput').value = '';
 
       $('editorBackdrop').classList.add('show');
       document.body.style.overflow = 'hidden';
@@ -1457,13 +1526,13 @@
     }
 
     // ==========================================
-    // NEW: Pricing packages editor
+    // Pricing packages (unchanged)
     // ==========================================
     function normalizePackages(p) {
       if (!p) return defaultPackages();
       return {
         basic: {
-          enabled: true,   // always true
+          enabled: true,
           title: p.basic?.title || '',
           price: p.basic?.price ?? '',
           days:  p.basic?.days  ?? ''
@@ -1501,7 +1570,6 @@
     function renderPackages() {
       const p = editing.packages;
 
-      // Populate values
       $('pkgBasicTitle').value    = p.basic.title;
       $('pkgBasicPrice').value    = p.basic.price;
       $('pkgBasicDays').value     = p.basic.days;
@@ -1512,13 +1580,11 @@
       $('pkgPremiumPrice').value  = p.premium.price;
       $('pkgPremiumDays').value   = p.premium.days;
 
-      // Enable/disable
       setPkgInputsState('basic', true);
       setPkgInputsState('standard', p.standard.enabled);
       setPkgInputsState('premium', p.premium.enabled);
     }
 
-    // Toggle clicks
     document.querySelectorAll('.pkg-toggle').forEach(toggle => {
       toggle.addEventListener('click', () => {
         if (toggle.classList.contains('locked')) return;
@@ -1530,7 +1596,6 @@
       });
     });
 
-    // Keep editing.packages in sync as the user types
     function bindPkgInput(tier, field, id) {
       $(id).addEventListener('input', (e) => {
         editing.packages[tier][field] = e.target.value;
@@ -1546,7 +1611,6 @@
     bindPkgInput('premium',  'price', 'pkgPremiumPrice');
     bindPkgInput('premium',  'days',  'pkgPremiumDays');
 
-    // Validate + normalize before saving
     function readPackagesForSave() {
       const order = ['basic', 'standard', 'premium'];
       const out = {};
@@ -1564,12 +1628,10 @@
     }
 
     function validatePackages(pkgs) {
-      // Basic must be complete
       if (!pkgs.basic.title) return 'Basic package needs a "what you\'ll do" title';
       if (!(pkgs.basic.price > 0)) return 'Basic package needs a price greater than 0';
       if (!(pkgs.basic.days > 0)) return 'Basic package needs a timeline of at least 1 day';
 
-      // Other tiers, if enabled, must be complete
       for (const tier of ['standard', 'premium']) {
         if (pkgs[tier].enabled) {
           if (!pkgs[tier].title) return `${tier[0].toUpperCase() + tier.slice(1)} package needs a title`;
@@ -1578,7 +1640,6 @@
         }
       }
 
-      // Optional: standard should be >= basic, premium >= standard
       if (pkgs.standard.enabled && pkgs.standard.price < pkgs.basic.price) {
         return 'Standard package should cost at least as much as Basic';
       }
@@ -1633,7 +1694,7 @@
     });
 
     // ==========================================
-    // Cover
+    // Cover (upload + link fallback)
     // ==========================================
     function setCoverType(type) {
       editing.coverType = type;
@@ -1650,13 +1711,13 @@
       btn.addEventListener('click', () => setCoverType(btn.dataset.type));
     });
 
+    // Upload (unchanged behavior)
     $('coverDropzone').addEventListener('click', () => $('coverInput').click());
     $('coverInput').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) uploadCover(file);
       e.target.value = '';
     });
-
     $('coverDropzone').addEventListener('dragover', (e) => {
       e.preventDefault();
       $('coverDropzone').style.borderColor = 'var(--accent)';
@@ -1673,35 +1734,6 @@
       const file = e.dataTransfer.files[0];
       if (file) uploadCover(file);
     });
-
-    function renderCoverPreview() {
-      const wrap = $('coverPreviewWrap');
-      wrap.innerHTML = '';
-      if (!editing.coverUrl) {
-        $('coverDropzone').style.display = '';
-        return;
-      }
-      const el = document.createElement('div');
-      el.className = 'cover-preview';
-      el.innerHTML = editing.coverType === 'video'
-        ? `<video src="${editing.coverUrl}" muted controls></video>`
-        : `<img src="${editing.coverUrl}" alt="Cover preview" />`;
-      const rm = document.createElement('button');
-      rm.type = 'button';
-      rm.className = 'remove-cover';
-      rm.innerHTML = '<i class="fas fa-times"></i>';
-      rm.addEventListener('click', () => {
-        if (editing.coverStoragePath) {
-          deleteObject(storageRef(storage, editing.coverStoragePath)).catch(() => {});
-        }
-        editing.coverUrl = '';
-        editing.coverStoragePath = '';
-        renderCoverPreview();
-      });
-      el.appendChild(rm);
-      wrap.appendChild(el);
-      $('coverDropzone').style.display = 'none';
-    }
 
     async function uploadCover(file) {
       if (!currentUser) return;
@@ -1724,18 +1756,82 @@
         (err) => {
           console.error(err);
           $('uploadProgress').classList.remove('show');
-          toast('Upload failed', 'error');
+          toast('Upload failed. Try "Use a link" instead.', 'error');
         },
         async () => {
           const url = await getDownloadURL(task.snapshot.ref);
           editing.coverUrl = url;
           editing.coverStoragePath = path;
+          editing.coverSource = 'upload';       // ← NEW
           editing.coverType = isVideo ? 'video' : 'image';
           renderCoverPreview();
           $('uploadProgress').classList.remove('show');
           toast('Cover uploaded', 'success');
         }
       );
+    }
+
+    // NEW: link fallback
+    $('coverLinkBtn').addEventListener('click', () => {
+      $('coverLinkRow').classList.toggle('show');
+      if ($('coverLinkRow').classList.contains('show')) {
+        $('coverLinkInput').value = (editing.coverSource === 'link') ? editing.coverUrl : '';
+        $('coverLinkInput').focus();
+      }
+    });
+    $('coverLinkCancel').addEventListener('click', () => {
+      $('coverLinkRow').classList.remove('show');
+      $('coverLinkInput').value = '';
+    });
+    $('coverLinkApply').addEventListener('click', () => {
+      const url = $('coverLinkInput').value.trim();
+      if (!url) return toast('Paste a URL first', 'error');
+      if (!isValidUrl(url)) return toast('Enter a valid http(s) link', 'error');
+
+      const type = detectCoverType(url);
+      editing.coverUrl = url;
+      editing.coverSource = 'link';       // ← NEW
+      editing.coverStoragePath = '';
+      editing.coverType = type;
+
+      // Reflect the type in the toggle
+      document.querySelectorAll('#coverTypeToggle button').forEach(b => {
+        b.classList.toggle('active', b.dataset.type === type);
+      });
+      $('coverLinkRow').classList.remove('show');
+      renderCoverPreview();
+      toast(`${type === 'video' ? 'Video' : 'Image'} link applied — don't forget to save`, 'success');
+    });
+
+    function renderCoverPreview() {
+      const wrap = $('coverPreviewWrap');
+      wrap.innerHTML = '';
+      if (!editing.coverUrl) {
+        $('coverDropzone').style.display = '';
+        return;
+      }
+      const el = document.createElement('div');
+      el.className = 'cover-preview';
+      el.innerHTML = editing.coverType === 'video'
+        ? `<video src="${editing.coverUrl}" muted controls></video>`
+        : `<img src="${editing.coverUrl}" alt="Cover preview" />`;
+      const rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'remove-cover';
+      rm.innerHTML = '<i class="fas fa-times"></i>';
+      rm.addEventListener('click', () => {
+        // Only attempt storage delete for uploaded items
+        if (editing.coverSource === 'upload' && editing.coverStoragePath) {
+          deleteObject(storageRef(storage, editing.coverStoragePath)).catch(() => {});
+        }
+        editing.coverUrl = '';
+        editing.coverStoragePath = '';
+        editing.coverSource = 'upload';
+        renderCoverPreview();
+      });
+      el.appendChild(rm);
+      wrap.appendChild(el);
+      $('coverDropzone').style.display = 'none';
     }
 
     // ==========================================
@@ -1794,14 +1890,11 @@
       if (!title || title.length < 5) return toast('Title must be at least 5 characters', 'error');
       if (!description || description.length < 20) return toast('Description must be at least 20 characters', 'error');
 
-      // NEW: packages validation
       const packages = readPackagesForSave();
       const pkgErr = validatePackages(packages);
       if (pkgErr) return toast(pkgErr, 'error');
 
       const cleanFaqs = editing.faqs.filter(f => (f.q || '').trim() && (f.a || '').trim());
-
-      // Derived display fields — useful for cards / public site without recomputing
       const summary = packageSummary(packages);
 
       const saveBtn = $('editorSaveBtn');
@@ -1818,10 +1911,11 @@
           coverUrl: editing.coverUrl,
           coverType: editing.coverType,
           coverStoragePath: editing.coverStoragePath,
+          coverSource: editing.coverSource,          // ← NEW
           faqs: cleanFaqs,
-          packages,                                       // ← NEW
-          startingPrice: summary ? summary.from : 0,      // ← NEW (derived)
-          packageCount:  summary ? summary.count : 0,     // ← NEW (derived)
+          packages,
+          startingPrice: summary ? summary.from : 0,
+          packageCount:  summary ? summary.count : 0,
           status,
           updatedAt: serverTimestamp()
         };
@@ -1857,7 +1951,8 @@
     async function deleteGig(gig) {
       if (!confirm(`Delete "${gig.title || 'this gig'}"? This cannot be undone.`)) return;
       try {
-        if (gig.coverStoragePath) {
+        // Only try to delete Storage asset for uploaded covers
+        if (gig.coverSource !== 'link' && gig.coverStoragePath) {
           deleteObject(storageRef(storage, gig.coverStoragePath)).catch(() => {});
         }
         await deleteDoc(doc(db, 'gigs', gig.id));
