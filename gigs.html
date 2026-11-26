@@ -265,6 +265,33 @@
       background: #f3f2ef; color: var(--text-muted);
       border-radius: 20px;
     }
+    /* ── NEW: pricing summary on card ── */
+    .gig-card-pricing {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px;
+      background: #fafaf9;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: .82rem;
+    }
+    .gig-card-pricing .from-label {
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em;
+      color: var(--text-muted);
+    }
+    .gig-card-pricing .from-price {
+      font-weight: 700; color: var(--primary);
+      font-size: .95rem;
+    }
+    .gig-card-pricing .pkg-count {
+      margin-left: auto;
+      font-size: .72rem; font-weight: 600;
+      color: var(--text-muted);
+      background: var(--white);
+      padding: 2px 8px; border-radius: 20px;
+      border: 1px solid var(--border-color);
+    }
+
     .gig-card-stats {
       display: grid; grid-template-columns: repeat(3, 1fr);
       gap: 8px;
@@ -513,6 +540,126 @@
       box-shadow: var(--shadow-sm);
     }
 
+    /* ── NEW: Pricing packages editor ── */
+    .pkg-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .pkg-card {
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fafaf9;
+      display: flex; flex-direction: column; gap: 10px;
+      transition: border-color .2s, background .2s;
+    }
+    .pkg-card.enabled {
+      background: var(--white);
+      border-color: var(--accent);
+    }
+    .pkg-card.basic { border-top: 3px solid #a5a2b0; }
+    .pkg-card.standard { border-top: 3px solid var(--blue); }
+    .pkg-card.premium { border-top: 3px solid var(--accent); }
+    .pkg-card.enabled.basic { border-top-color: #5e5e6b; }
+    .pkg-card.enabled.standard { border-top-color: var(--blue); }
+    .pkg-card.enabled.premium { border-top-color: var(--accent); }
+
+    .pkg-head {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .pkg-name {
+      font-size: .78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: var(--primary);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .pkg-name .req {
+      font-size: .62rem; color: var(--red);
+      text-transform: none; letter-spacing: 0;
+      font-weight: 600;
+    }
+    .pkg-toggle {
+      position: relative;
+      width: 34px; height: 20px;
+      border-radius: 20px;
+      background: #d1cfc9;
+      cursor: pointer;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+    .pkg-toggle::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0,0,0,.15);
+      transition: transform .2s;
+    }
+    .pkg-toggle.on { background: var(--accent); }
+    .pkg-toggle.on::after { transform: translateX(14px); }
+    .pkg-toggle.locked { opacity: .5; cursor: not-allowed; }
+
+    .pkg-field {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .pkg-field label {
+      font-size: .7rem; font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .pkg-field input {
+      padding: 8px 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: .85rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      background: var(--white);
+      width: 100%;
+    }
+    .pkg-field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .pkg-field input:disabled {
+      background: #f3f2ef; color: var(--text-muted); cursor: not-allowed;
+    }
+    .pkg-row2 {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    }
+    .pkg-input-prefix {
+      position: relative;
+    }
+    .pkg-input-prefix .prefix {
+      position: absolute;
+      left: 10px; top: 50%;
+      transform: translateY(-50%);
+      font-size: .8rem; color: var(--text-muted);
+      font-weight: 600;
+      pointer-events: none;
+    }
+    .pkg-input-prefix input {
+      padding-left: 22px;
+    }
+    .pkg-input-suffix {
+      position: relative;
+    }
+    .pkg-input-suffix .suffix {
+      position: absolute;
+      right: 10px; top: 50%;
+      transform: translateY(-50%);
+      font-size: .75rem; color: var(--text-muted);
+      font-weight: 500;
+      pointer-events: none;
+    }
+    .pkg-input-suffix input {
+      padding-right: 34px;
+    }
+
     /* FAQs */
     .faq-item {
       padding: 14px;
@@ -664,6 +811,9 @@
       .editor-header, .editor-footer { padding: 18px 20px; }
       .portal-topbar { flex-direction: column; align-items: stretch; }
     }
+    @media (max-width: 700px) {
+      .pkg-grid { grid-template-columns: 1fr; }
+    }
     @media (max-width: 600px) {
       .gigs-grid { grid-template-columns: 1fr; }
       .filter-bar { padding: 12px; }
@@ -777,6 +927,100 @@
           <textarea class="form-textarea" id="editorDescription" rows="6" maxlength="1200" placeholder="What's included, your process, deliverables, revisions..."></textarea>
         </div>
 
+        <!-- ── NEW: Pricing packages ── -->
+        <div class="form-row">
+          <label>Pricing packages <span class="hint">Basic is required</span></label>
+          <div class="pkg-grid" id="pkgGrid">
+
+            <!-- Basic -->
+            <div class="pkg-card basic enabled" data-pkg="basic">
+              <div class="pkg-head">
+                <div class="pkg-name"><i class="fas fa-cube"></i> Basic <span class="req">required</span></div>
+                <div class="pkg-toggle on locked" data-toggle="basic" title="Basic is always enabled"></div>
+              </div>
+              <div class="pkg-field">
+                <label>What you'll do</label>
+                <input type="text" id="pkgBasicTitle" maxlength="70" placeholder="I will design a landing page for you" />
+              </div>
+              <div class="pkg-row2">
+                <div class="pkg-field">
+                  <label>Price</label>
+                  <div class="pkg-input-prefix">
+                    <span class="prefix">$</span>
+                    <input type="number" id="pkgBasicPrice" min="1" placeholder="50" />
+                  </div>
+                </div>
+                <div class="pkg-field">
+                  <label>Timeline</label>
+                  <div class="pkg-input-suffix">
+                    <input type="number" id="pkgBasicDays" min="1" placeholder="3" />
+                    <span class="suffix">days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Standard -->
+            <div class="pkg-card standard" data-pkg="standard">
+              <div class="pkg-head">
+                <div class="pkg-name"><i class="fas fa-layer-group"></i> Standard</div>
+                <div class="pkg-toggle" data-toggle="standard"></div>
+              </div>
+              <div class="pkg-field">
+                <label>What you'll do</label>
+                <input type="text" id="pkgStandardTitle" maxlength="70" placeholder="I will design 2 pages + revision" disabled />
+              </div>
+              <div class="pkg-row2">
+                <div class="pkg-field">
+                  <label>Price</label>
+                  <div class="pkg-input-prefix">
+                    <span class="prefix">$</span>
+                    <input type="number" id="pkgStandardPrice" min="1" placeholder="120" disabled />
+                  </div>
+                </div>
+                <div class="pkg-field">
+                  <label>Timeline</label>
+                  <div class="pkg-input-suffix">
+                    <input type="number" id="pkgStandardDays" min="1" placeholder="5" disabled />
+                    <span class="suffix">days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Premium -->
+            <div class="pkg-card premium" data-pkg="premium">
+              <div class="pkg-head">
+                <div class="pkg-name"><i class="fas fa-crown"></i> Premium</div>
+                <div class="pkg-toggle" data-toggle="premium"></div>
+              </div>
+              <div class="pkg-field">
+                <label>What you'll do</label>
+                <input type="text" id="pkgPremiumTitle" maxlength="70" placeholder="I will design the full site + 3 revisions" disabled />
+              </div>
+              <div class="pkg-row2">
+                <div class="pkg-field">
+                  <label>Price</label>
+                  <div class="pkg-input-prefix">
+                    <span class="prefix">$</span>
+                    <input type="number" id="pkgPremiumPrice" min="1" placeholder="300" disabled />
+                  </div>
+                </div>
+                <div class="pkg-field">
+                  <label>Timeline</label>
+                  <div class="pkg-input-suffix">
+                    <input type="number" id="pkgPremiumDays" min="1" placeholder="10" disabled />
+                    <span class="suffix">days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <small class="form-hint">Give each tier a clear deliverable and a fair price. Clients compare them side-by-side.</small>
+        </div>
+        <!-- ── /NEW ── -->
+
         <div class="form-row">
           <label>Tags <span class="hint"><span id="tagCount">0</span> / 8</span></label>
           <div class="tags-box" id="tagsBox">
@@ -874,7 +1118,7 @@
     // State
     // ==========================================
     let currentUser = null;
-    let gigs = [];              // all gigs owned by current user
+    let gigs = [];
     let unsubGigs = null;
 
     // Filters
@@ -884,15 +1128,24 @@
 
     // Editor state
     let editing = {
-      mode: 'create',           // 'create' | 'edit'
+      mode: 'create',
       gigId: null,
       category: '',
       tags: [],
       coverUrl: '',
       coverType: 'image',
       coverStoragePath: '',
-      faqs: []
+      faqs: [],
+      packages: defaultPackages()     // ← NEW
     };
+
+    function defaultPackages() {
+      return {
+        basic:    { enabled: true,  title: '', price: '', days: '' },
+        standard: { enabled: false, title: '', price: '', days: '' },
+        premium:  { enabled: false, title: '', price: '', days: '' }
+      };
+    }
 
     const $ = (id) => document.getElementById(id);
 
@@ -926,18 +1179,27 @@
     }
     const STATUS_LABEL = { live: 'Live', draft: 'Draft', paused: 'Paused' };
 
+    // NEW: what to show on the gig card as "From $X · N packages"
+    function packageSummary(packages) {
+      if (!packages) return null;
+      const enabled = ['basic', 'standard', 'premium']
+        .map(k => packages[k])
+        .filter(p => p && p.enabled && Number(p.price) > 0);
+      if (enabled.length === 0) return null;
+      const cheapest = enabled.reduce((min, p) =>
+        Number(p.price) < Number(min.price) ? p : min, enabled[0]
+      );
+      return { count: enabled.length, from: Number(cheapest.price) };
+    }
+
     // ==========================================
     // Auth + sidebar
     // ==========================================
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
+      if (!user) { window.location.href = 'login.html'; return; }
       currentUser = user;
       $('portalUserName').textContent = user.displayName || 'Freelancer';
       $('portalUserAvatar').src = user.photoURL || initialsAvatar(user.displayName);
-
       loadGigs();
     });
 
@@ -966,7 +1228,6 @@
       unsubGigs = onSnapshot(q, (snap) => {
         gigs = [];
         snap.forEach(d => gigs.push({ id: d.id, ...d.data() }));
-        // Sort newest first
         gigs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
         renderCategoryChips();
         renderGigs();
@@ -988,7 +1249,6 @@
           All gigs <span class="count">${gigs.length}</span>
         </button>
       `;
-
       const seen = new Set(gigs.map(g => g.category).filter(Boolean));
       const userChips = CATEGORIES
         .filter(c => seen.has(c))
@@ -1000,7 +1260,6 @@
         }).join('');
 
       wrap.innerHTML = allChip + userChips;
-
       wrap.querySelectorAll('.cat-chip').forEach(chip => {
         chip.addEventListener('click', () => {
           filterCategory = chip.dataset.cat;
@@ -1027,15 +1286,10 @@
     // ==========================================
     function renderGigs() {
       const grid = $('gigsGrid');
-
       let filtered = gigs.slice();
 
-      if (filterCategory !== 'all') {
-        filtered = filtered.filter(g => g.category === filterCategory);
-      }
-      if (filterStatus !== 'all') {
-        filtered = filtered.filter(g => g.status === filterStatus);
-      }
+      if (filterCategory !== 'all') filtered = filtered.filter(g => g.category === filterCategory);
+      if (filterStatus !== 'all')   filtered = filtered.filter(g => g.status === filterStatus);
       if (filterSearch) {
         filtered = filtered.filter(g => {
           const inTitle = (g.title || '').toLowerCase().includes(filterSearch);
@@ -1044,10 +1298,8 @@
         });
       }
 
-      // Count
       $('filterCount').innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${gigs.length}</strong>`;
 
-      // Empty states
       if (gigs.length === 0) {
         grid.innerHTML = `
           <div class="empty-state">
@@ -1073,8 +1325,6 @@
       }
 
       grid.innerHTML = filtered.map(g => gigCard(g)).join('');
-
-      // Bind per-card
       filtered.forEach(g => {
         const card = grid.querySelector(`[data-gig-id="${g.id}"]`);
         if (!card) return;
@@ -1097,6 +1347,16 @@
         coverHtml = `<div class="gig-card-cover-placeholder"><i class="fas fa-image"></i></div>`;
       }
 
+      // NEW: pricing summary
+      const pricing = g.packages ? packageSummary(g.packages) : null;
+      const pricingHtml = pricing
+        ? `<div class="gig-card-pricing">
+             <span class="from-label">From</span>
+             <span class="from-price">$${pricing.from.toLocaleString()}</span>
+             <span class="pkg-count">${pricing.count} package${pricing.count > 1 ? 's' : ''}</span>
+           </div>`
+        : '';
+
       return `
         <div class="gig-card" data-gig-id="${g.id}">
           <div class="gig-card-cover-wrap">
@@ -1111,6 +1371,7 @@
                 ${tagSlice.map(t => `<span class="gig-card-tag">${escapeHTML(t)}</span>`).join('')}
                 ${tagMore}
               </div>` : ''}
+            ${pricingHtml}
             <div class="gig-card-stats">
               <div class="gig-card-stat">
                 <div class="gig-card-stat-value">${(g.impressions || 0).toLocaleString()}</div>
@@ -1148,7 +1409,8 @@
         coverUrl: gig?.coverUrl || '',
         coverType: gig?.coverType || 'image',
         coverStoragePath: gig?.coverStoragePath || '',
-        faqs: gig?.faqs ? gig.faqs.map(f => ({ ...f })) : []
+        faqs: gig?.faqs ? gig.faqs.map(f => ({ ...f })) : [],
+        packages: normalizePackages(gig?.packages)    // ← NEW
       };
 
       $('editorTitle').textContent = mode === 'create' ? 'Create gig' : 'Edit gig';
@@ -1157,8 +1419,7 @@
         : 'Update your gig. Changes go live immediately when you save.';
 
       $('editorCategory').value = editing.category || '';
-      $('editorCategory').disabled = false;   // category is now editable in both modes
-
+      $('editorCategory').disabled = false;
       $('editorTitleInput').value = gig?.title || '';
       $('editorDescription').value = gig?.description || '';
       $('editorStatus').value = gig?.status || 'draft';
@@ -1166,6 +1427,7 @@
       updateCounter('editorTitleInput', 'titleCount', 80);
       updateCounter('editorDescription', 'descCount', 1200);
 
+      renderPackages();        // ← NEW
       renderTags();
       setCoverType(editing.coverType);
       renderCoverPreview();
@@ -1192,6 +1454,139 @@
       update();
       inp.removeEventListener('input', update);
       inp.addEventListener('input', update);
+    }
+
+    // ==========================================
+    // NEW: Pricing packages editor
+    // ==========================================
+    function normalizePackages(p) {
+      if (!p) return defaultPackages();
+      return {
+        basic: {
+          enabled: true,   // always true
+          title: p.basic?.title || '',
+          price: p.basic?.price ?? '',
+          days:  p.basic?.days  ?? ''
+        },
+        standard: {
+          enabled: !!p.standard?.enabled,
+          title: p.standard?.title || '',
+          price: p.standard?.price ?? '',
+          days:  p.standard?.days  ?? ''
+        },
+        premium: {
+          enabled: !!p.premium?.enabled,
+          title: p.premium?.title || '',
+          price: p.premium?.price ?? '',
+          days:  p.premium?.days  ?? ''
+        }
+      };
+    }
+
+    function setPkgInputsState(tier, enabled) {
+      const map = {
+        basic:    ['pkgBasicTitle', 'pkgBasicPrice', 'pkgBasicDays'],
+        standard: ['pkgStandardTitle', 'pkgStandardPrice', 'pkgStandardDays'],
+        premium:  ['pkgPremiumTitle', 'pkgPremiumPrice', 'pkgPremiumDays']
+      };
+      map[tier].forEach(id => { $(id).disabled = !enabled; });
+      const card = document.querySelector(`.pkg-card[data-pkg="${tier}"]`);
+      if (card) card.classList.toggle('enabled', enabled);
+      const toggle = document.querySelector(`.pkg-toggle[data-toggle="${tier}"]`);
+      if (toggle && !toggle.classList.contains('locked')) {
+        toggle.classList.toggle('on', enabled);
+      }
+    }
+
+    function renderPackages() {
+      const p = editing.packages;
+
+      // Populate values
+      $('pkgBasicTitle').value    = p.basic.title;
+      $('pkgBasicPrice').value    = p.basic.price;
+      $('pkgBasicDays').value     = p.basic.days;
+      $('pkgStandardTitle').value = p.standard.title;
+      $('pkgStandardPrice').value = p.standard.price;
+      $('pkgStandardDays').value  = p.standard.days;
+      $('pkgPremiumTitle').value  = p.premium.title;
+      $('pkgPremiumPrice').value  = p.premium.price;
+      $('pkgPremiumDays').value   = p.premium.days;
+
+      // Enable/disable
+      setPkgInputsState('basic', true);
+      setPkgInputsState('standard', p.standard.enabled);
+      setPkgInputsState('premium', p.premium.enabled);
+    }
+
+    // Toggle clicks
+    document.querySelectorAll('.pkg-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        if (toggle.classList.contains('locked')) return;
+        const tier = toggle.dataset.toggle;
+        const nowOn = !toggle.classList.contains('on');
+        editing.packages[tier].enabled = nowOn;
+        toggle.classList.toggle('on', nowOn);
+        setPkgInputsState(tier, nowOn);
+      });
+    });
+
+    // Keep editing.packages in sync as the user types
+    function bindPkgInput(tier, field, id) {
+      $(id).addEventListener('input', (e) => {
+        editing.packages[tier][field] = e.target.value;
+      });
+    }
+    bindPkgInput('basic',    'title', 'pkgBasicTitle');
+    bindPkgInput('basic',    'price', 'pkgBasicPrice');
+    bindPkgInput('basic',    'days',  'pkgBasicDays');
+    bindPkgInput('standard', 'title', 'pkgStandardTitle');
+    bindPkgInput('standard', 'price', 'pkgStandardPrice');
+    bindPkgInput('standard', 'days',  'pkgStandardDays');
+    bindPkgInput('premium',  'title', 'pkgPremiumTitle');
+    bindPkgInput('premium',  'price', 'pkgPremiumPrice');
+    bindPkgInput('premium',  'days',  'pkgPremiumDays');
+
+    // Validate + normalize before saving
+    function readPackagesForSave() {
+      const order = ['basic', 'standard', 'premium'];
+      const out = {};
+      for (const tier of order) {
+        const src = editing.packages[tier];
+        const enabled = tier === 'basic' ? true : !!src.enabled;
+        out[tier] = {
+          enabled,
+          title: (src.title || '').trim(),
+          price: enabled ? (parseFloat(src.price) || 0) : 0,
+          days:  enabled ? (parseInt(src.days, 10) || 0) : 0
+        };
+      }
+      return out;
+    }
+
+    function validatePackages(pkgs) {
+      // Basic must be complete
+      if (!pkgs.basic.title) return 'Basic package needs a "what you\'ll do" title';
+      if (!(pkgs.basic.price > 0)) return 'Basic package needs a price greater than 0';
+      if (!(pkgs.basic.days > 0)) return 'Basic package needs a timeline of at least 1 day';
+
+      // Other tiers, if enabled, must be complete
+      for (const tier of ['standard', 'premium']) {
+        if (pkgs[tier].enabled) {
+          if (!pkgs[tier].title) return `${tier[0].toUpperCase() + tier.slice(1)} package needs a title`;
+          if (!(pkgs[tier].price > 0)) return `${tier[0].toUpperCase() + tier.slice(1)} package needs a price > 0`;
+          if (!(pkgs[tier].days > 0)) return `${tier[0].toUpperCase() + tier.slice(1)} package needs a timeline > 0`;
+        }
+      }
+
+      // Optional: standard should be >= basic, premium >= standard
+      if (pkgs.standard.enabled && pkgs.standard.price < pkgs.basic.price) {
+        return 'Standard package should cost at least as much as Basic';
+      }
+      if (pkgs.premium.enabled && pkgs.premium.price < (pkgs.standard.enabled ? pkgs.standard.price : pkgs.basic.price)) {
+        return 'Premium package should cost more than the lower tiers';
+      }
+
+      return null;
     }
 
     // ==========================================
@@ -1312,14 +1707,10 @@
       if (!currentUser) return;
       const isVideo = file.type.startsWith('video/');
       const maxSize = isVideo ? 20 * 1024 * 1024 : 5 * 1024 * 1024;
-      if (file.size > maxSize) {
-        return toast(`File must be under ${isVideo ? 20 : 5}MB`, 'error');
-      }
+      if (file.size > maxSize) return toast(`File must be under ${isVideo ? 20 : 5}MB`, 'error');
       if (isVideo && editing.coverType !== 'video') setCoverType('video');
       if (!isVideo && editing.coverType !== 'image') setCoverType('image');
 
-      // Category slug in the path is best-effort — the editor might not
-      // have category yet, so we fall back to 'misc'.
       const catSlug = slugify($('editorCategory').value || 'misc') || 'misc';
       const path = `gigs/${currentUser.uid}/${catSlug}/${Date.now()}_${file.name}`;
       const ref = storageRef(storage, path);
@@ -1403,7 +1794,15 @@
       if (!title || title.length < 5) return toast('Title must be at least 5 characters', 'error');
       if (!description || description.length < 20) return toast('Description must be at least 20 characters', 'error');
 
+      // NEW: packages validation
+      const packages = readPackagesForSave();
+      const pkgErr = validatePackages(packages);
+      if (pkgErr) return toast(pkgErr, 'error');
+
       const cleanFaqs = editing.faqs.filter(f => (f.q || '').trim() && (f.a || '').trim());
+
+      // Derived display fields — useful for cards / public site without recomputing
+      const summary = packageSummary(packages);
 
       const saveBtn = $('editorSaveBtn');
       saveBtn.disabled = true;
@@ -1420,6 +1819,9 @@
           coverType: editing.coverType,
           coverStoragePath: editing.coverStoragePath,
           faqs: cleanFaqs,
+          packages,                                       // ← NEW
+          startingPrice: summary ? summary.from : 0,      // ← NEW (derived)
+          packageCount:  summary ? summary.count : 0,     // ← NEW (derived)
           status,
           updatedAt: serverTimestamp()
         };
