@@ -336,10 +336,13 @@
     .portfolio-tile img { width: 100%; height: 100%; object-fit: cover; }
     .portfolio-tile-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,.75), transparent 60%);
-      display: flex; align-items: flex-end;
+      background: linear-gradient(to top, rgba(0,0,0,.82), transparent 55%);
+      display: flex; flex-direction: column; justify-content: flex-end;
       padding: 12px;
-      gap: 8px;
+      gap: 6px;
+    }
+    .portfolio-tile-row {
+      display: flex; gap: 6px; align-items: center;
     }
     .portfolio-tile-overlay input {
       flex: 1;
@@ -348,16 +351,21 @@
       border-radius: 8px;
       padding: 6px 10px;
       font-size: .8rem; font-family: 'Inter', sans-serif;
+      min-width: 0;
     }
-    .portfolio-tile-overlay .del {
+    .portfolio-tile-overlay .del,
+    .portfolio-tile-overlay .edit {
       width: 30px; height: 30px;
       background: rgba(255,255,255,.92);
-      color: var(--red);
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       transition: background .2s;
+      flex-shrink: 0;
     }
+    .portfolio-tile-overlay .del { color: var(--red); }
     .portfolio-tile-overlay .del:hover { background: #fff; }
+    .portfolio-tile-overlay .edit { color: var(--primary); }
+    .portfolio-tile-overlay .edit:hover { background: #fff; }
     .portfolio-tile-overlay .source {
       position: absolute;
       top: 8px; left: 8px;
@@ -369,6 +377,21 @@
       text-transform: uppercase; letter-spacing: .04em;
     }
     .portfolio-tile-overlay .source.link { color: var(--blue); }
+    .portfolio-tile-overlay .source.detailed {
+      left: auto; right: 8px;
+      color: var(--green);
+    }
+    .portfolio-tile-overlay .edit-details-btn {
+      background: rgba(255,255,255,.92);
+      color: var(--primary);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: .78rem; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      transition: background .2s;
+    }
+    .portfolio-tile-overlay .edit-details-btn:hover { background: #fff; }
+    .portfolio-tile-overlay .edit-details-btn i { font-size: .8rem; }
 
     /* Portfolio add tiles */
     .portfolio-add-group {
@@ -394,6 +417,87 @@
     .portfolio-add:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
     .portfolio-add.link:hover { border-color: var(--blue); color: var(--blue); background: #eef2ff; }
     .portfolio-add i { font-size: 1.1rem; }
+
+    /* ===== NEW: Portfolio details editor ===== */
+    .pf-editor {
+      display: none;
+      margin-top: 24px;
+      padding: 24px;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      animation: fadeIn .25s ease-out;
+    }
+    .pf-editor.show { display: block; }
+    .pf-editor-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      gap: 16px; margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .pf-editor-header h3 {
+      font-size: 1.1rem; font-weight: 700; color: var(--primary);
+    }
+    .pf-editor-header p { font-size: .82rem; color: var(--text-muted); margin-top: 2px; }
+    .pf-editor-close {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      background: #f3f2ef; color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+    .pf-editor-close:hover { background: #e5e3df; }
+    .pf-editor-preview {
+      display: flex; gap: 16px; align-items: flex-start;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .pf-editor-preview img {
+      width: 160px; aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+    .pf-editor-preview .meta { flex: 1; min-width: 180px; }
+    .pf-editor-preview .meta .source-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em;
+      margin-bottom: 8px;
+    }
+    .pf-editor-preview .meta .source-badge.upload { background: #f3f2ef; color: var(--text-muted); }
+    .pf-editor-preview .meta .source-badge.link { background: #eef2ff; color: var(--blue); }
+    .pf-editor-preview .meta p { font-size: .82rem; color: var(--text-muted); }
+    .pf-editor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .pf-editor-grid .full { grid-column: 1 / -1; }
+    .pf-editor-footer {
+      display: flex; justify-content: flex-end; gap: 10px;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+    }
+    .pf-editor-footer button {
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      font-size: .85rem; font-weight: 600;
+      transition: all .2s;
+    }
+    .pf-editor-footer .cancel { background: #f3f2ef; color: var(--text-main); }
+    .pf-editor-footer .cancel:hover { background: #e5e3df; }
+    .pf-editor-footer .save {
+      background: var(--accent); color: #fff;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .pf-editor-footer .save:hover { background: var(--accent-hover); }
 
     /* Upload progress */
     .upload-progress {
@@ -514,6 +618,7 @@
       .availability-row { grid-template-columns: 1fr; }
       .repeat-item, .repeat-item.job { grid-template-columns: 1fr; }
       .remove-btn { width: 100%; }
+      .pf-editor-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 900px) {
       .portal-shell { grid-template-columns: 1fr; }
@@ -537,6 +642,7 @@
       .profile-tab { padding: 14px 16px; white-space: nowrap; }
       .portfolio-grid { grid-template-columns: 1fr; }
       .socials-grid { grid-template-columns: 1fr; }
+      .pf-editor-preview img { width: 120px; }
     }
     .portal-mobile-toggle { display: none; }
     .sidebar-backdrop {
@@ -561,7 +667,7 @@
     <!-- SIDEBAR -->
     <aside class="portal-sidebar" id="portalSidebar">
       <div class="portal-brand">
-        <a href="index.html"><img src="image/vertted-logo.jpeg" alt="Vertted" /></a>
+        <a href="../index.html"><img src="../image/vertted-logo.jpeg" alt="Vertted" /></a>
       </div>
       <ul class="portal-nav">
         <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
@@ -787,10 +893,62 @@
           <div class="card-header">
             <div>
               <h2>Portfolio</h2>
-              <p>Showcase your best work. Upload images or paste image links. Up to 12.</p>
+              <p>Showcase your best work. Upload images or paste image links. Add project details so buyers see the full story. Up to 12.</p>
             </div>
           </div>
           <div class="portfolio-grid" id="portfolioGrid"></div>
+
+          <!-- NEW: per-item details editor -->
+          <div class="pf-editor" id="pfEditor">
+            <div class="pf-editor-header">
+              <div>
+                <h3 id="pfEditorTitle">Edit portfolio item</h3>
+                <p>Add the details buyers will see when they click this image.</p>
+              </div>
+              <button type="button" class="pf-editor-close" id="pfEditorCloseBtn" aria-label="Close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <div class="pf-editor-preview">
+              <img id="pfEditorImg" src="" alt="Portfolio preview" />
+              <div class="meta">
+                <span class="source-badge" id="pfEditorSource">Uploaded</span>
+                <p>Click <strong>Save details</strong> below to attach these details to this portfolio item. Then hit <strong>Save portfolio</strong> to publish.</p>
+              </div>
+            </div>
+
+            <div class="pf-editor-grid">
+              <div class="form-row">
+                <label>Project title</label>
+                <input type="text" class="form-input" id="pfFieldTitle" maxlength="100" placeholder="Fintech mobile app — Nova Bank" />
+              </div>
+              <div class="form-row">
+                <label>Cost range <span class="hint">free text</span></label>
+                <input type="text" class="form-input" id="pfFieldCost" maxlength="50" placeholder="$500 – $1,200" />
+              </div>
+              <div class="form-row">
+                <label>Timeline</label>
+                <input type="text" class="form-input" id="pfFieldTimeline" maxlength="60" placeholder="3 weeks" />
+              </div>
+              <div class="form-row full">
+                <label>Description</label>
+                <textarea class="form-textarea" id="pfFieldDescription" rows="4" maxlength="800" placeholder="What was the project, what did you deliver, what was the outcome?"></textarea>
+              </div>
+              <div class="form-row full">
+                <label>What the buyer said <span class="hint">testimonial</span></label>
+                <textarea class="form-textarea" id="pfFieldTestimonial" rows="3" maxlength="400" placeholder="&quot;Amara transformed our concept into a beautiful, usable product in record time.&quot; — Nneoma D., CEO"></textarea>
+              </div>
+            </div>
+
+            <div class="pf-editor-footer">
+              <button type="button" class="cancel" id="pfEditorCancelBtn">Cancel</button>
+              <button type="button" class="save" id="pfEditorSaveBtn">
+                <i class="fas fa-check"></i> Save details
+              </button>
+            </div>
+          </div>
+
           <div class="save-bar">
             <button class="btn-primary" id="savePortfolioBtn"><i class="fas fa-save"></i> Save portfolio</button>
           </div>
@@ -964,6 +1122,24 @@
         return false;
       }
     }
+    // Normalise any portfolio item to the full shape.
+    // Keeps backward compatibility with items created before details existed.
+    function normalizePortfolioItem(item) {
+      return {
+        id: item.id || Date.now(),
+        img: item.img || '',
+        label: item.label || '',
+        storagePath: item.storagePath || '',
+        title: item.title || '',
+        costRange: item.costRange || '',
+        description: item.description || '',
+        timeline: item.timeline || '',
+        testimonial: item.testimonial || ''
+      };
+    }
+    function itemHasDetails(item) {
+      return !!(item.title || item.description || item.testimonial || item.costRange || item.timeline);
+    }
 
     // Time zones
     const TIMEZONES = [
@@ -1001,7 +1177,6 @@
         snap = null;
       }
 
-      // Bootstrap the profile doc if it doesn't exist yet
       if (!snap || !snap.exists()) {
         const bootstrap = {
           displayName: user.displayName || (user.email || '').split('@')[0] || 'Freelancer',
@@ -1100,7 +1275,7 @@
 
       renderCerts(p.certifications || []);
       renderJobs(p.jobHistory || []);
-      renderPortfolio(p.portfolio || []);
+      renderPortfolio((p.portfolio || []).map(normalizePortfolioItem));
 
       const set = p.settings || {};
       const notif = set.notifications || {};
@@ -1193,7 +1368,7 @@
     });
 
     // ==========================================
-    // Certs / jobs repeaters
+    // Certs / jobs repeaters (unchanged)
     // ==========================================
     function renderCerts(list) {
       const wrap = $('certList');
@@ -1244,34 +1419,49 @@
     }
 
     // ==========================================
-    // Portfolio: upload + URL fallback
+    // Portfolio: upload + URL fallback + details editor
     // ==========================================
+    let editingPortfolioIdx = null;
+
     function renderPortfolio(list) {
       const grid = $('portfolioGrid');
       grid.innerHTML = '';
 
       list.forEach((item, i) => {
+        const norm = normalizePortfolioItem(item);
+        list[i] = norm;
+
         const tile = document.createElement('div');
         tile.className = 'portfolio-tile';
-        const source = item.storagePath ? 'upload' : 'link';
+        const source = norm.storagePath ? 'upload' : 'link';
         const sourceLabel = source === 'upload' ? 'Uploaded' : 'Linked';
         const sourceCls = source === 'upload' ? '' : 'link';
+        const detailed = itemHasDetails(norm);
         tile.innerHTML = `
-          <img src="${item.img}" alt="${item.label || ''}" />
+          <img src="${norm.img}" alt="${norm.label || ''}" />
           <div class="portfolio-tile-overlay">
             <span class="source ${sourceCls}">${sourceLabel}</span>
-            <input type="text" data-idx="${i}" value="${item.label || ''}" placeholder="Label" />
-            <button class="del" type="button" data-idx="${i}"><i class="fas fa-trash"></i></button>
+            ${detailed ? '<span class="source detailed">Details ✓</span>' : ''}
+            <button type="button" class="edit-details-btn" data-idx="${i}">
+              <i class="fas fa-pen"></i> ${detailed ? 'Edit details' : 'Add details'}
+            </button>
+            <div class="portfolio-tile-row">
+              <input type="text" data-idx="${i}" value="${norm.label || ''}" placeholder="Label" />
+              <button class="del" type="button" data-idx="${i}"><i class="fas fa-trash"></i></button>
+            </div>
           </div>
         `;
         tile.querySelector('.del').addEventListener('click', () => {
-          if (item.storagePath) {
-            deleteObject(storageRef(storage, item.storagePath)).catch(() => {});
+          if (norm.storagePath) {
+            deleteObject(storageRef(storage, norm.storagePath)).catch(() => {});
           }
           list.splice(i, 1);
+          if (editingPortfolioIdx === i) closePortfolioEditor();
+          else if (editingPortfolioIdx !== null && editingPortfolioIdx > i) editingPortfolioIdx -= 1;
           renderPortfolio(list);
           profile.portfolio = list;
         });
+        tile.querySelector('.edit-details-btn').addEventListener('click', () => openPortfolioEditor(i));
         grid.appendChild(tile);
       });
 
@@ -1298,7 +1488,7 @@
           if (!isValidImageUrl(url)) return toast('Enter a valid http(s) image link', 'error');
           const list = profile.portfolio || [];
           if (list.length >= 12) return toast('Max 12 portfolio items', 'error');
-          list.push({ id: Date.now(), img: url, label: '', storagePath: '' });
+          list.push(normalizePortfolioItem({ id: Date.now(), img: url, label: '', storagePath: '' }));
           profile.portfolio = list;
           renderPortfolio(list);
           toast('Image added via link — don\'t forget to save', 'success');
@@ -1309,6 +1499,54 @@
         grid.appendChild(group);
       }
     }
+
+    function openPortfolioEditor(idx) {
+      const list = profile.portfolio || [];
+      const item = list[idx];
+      if (!item) return;
+      editingPortfolioIdx = idx;
+      const norm = normalizePortfolioItem(item);
+
+      $('pfEditorTitle').textContent = `Edit portfolio item ${idx + 1}`;
+      $('pfEditorImg').src = norm.img || '';
+      $('pfEditorSource').textContent = norm.storagePath ? 'Uploaded' : 'Linked';
+      $('pfEditorSource').className = `source-badge ${norm.storagePath ? 'upload' : 'link'}`;
+
+      $('pfFieldTitle').value = norm.title;
+      $('pfFieldCost').value = norm.costRange;
+      $('pfFieldTimeline').value = norm.timeline;
+      $('pfFieldDescription').value = norm.description;
+      $('pfFieldTestimonial').value = norm.testimonial;
+
+      $('pfEditor').classList.add('show');
+      $('pfEditor').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closePortfolioEditor() {
+      editingPortfolioIdx = null;
+      $('pfEditor').classList.remove('show');
+    }
+    $('pfEditorCloseBtn').addEventListener('click', closePortfolioEditor);
+    $('pfEditorCancelBtn').addEventListener('click', closePortfolioEditor);
+
+    $('pfEditorSaveBtn').addEventListener('click', () => {
+      if (editingPortfolioIdx === null) return;
+      const list = profile.portfolio || [];
+      const item = list[editingPortfolioIdx];
+      if (!item) return;
+      item.title = $('pfFieldTitle').value.trim();
+      item.costRange = $('pfFieldCost').value.trim();
+      item.timeline = $('pfFieldTimeline').value.trim();
+      item.description = $('pfFieldDescription').value.trim();
+      item.testimonial = $('pfFieldTestimonial').value.trim();
+
+      profile.portfolio = list;
+      renderPortfolio(list);
+      // Reopen editor so user can see the "Details ✓" badge on the tile
+      // — but keep it open in case they want to keep editing.
+      $('pfEditorTitle').textContent = `Edit portfolio item ${editingPortfolioIdx + 1}`;
+      toast('Details saved — click "Save portfolio" to publish', 'success');
+    });
 
     async function uploadPortfolioImage(file) {
       if (!currentUser) return;
@@ -1333,7 +1571,7 @@
         async () => {
           const url = await getDownloadURL(task.snapshot.ref);
           const list = profile.portfolio || [];
-          list.push({ id: Date.now(), img: url, label: '', storagePath: path });
+          list.push(normalizePortfolioItem({ id: Date.now(), img: url, label: '', storagePath: path }));
           profile.portfolio = list;
           renderPortfolio(list);
           $('uploadProgress').classList.remove('show');
@@ -1343,7 +1581,7 @@
     }
 
     $('portfolioGrid').addEventListener('input', (e) => {
-      if (e.target.matches('.portfolio-tile-overlay input')) {
+      if (e.target.matches('.portfolio-tile-row input')) {
         const idx = parseInt(e.target.dataset.idx, 10);
         const list = profile.portfolio || [];
         if (list[idx]) list[idx].label = e.target.value;
@@ -1354,10 +1592,13 @@
       if (!currentUser) return;
       setIndicator('saving', 'Saving portfolio…');
       try {
+        // Normalise every item before saving so the shape is always complete.
+        const clean = (profile.portfolio || []).map(normalizePortfolioItem);
         await setDoc(doc(db, 'profiles', currentUser.uid), {
-          portfolio: profile.portfolio || [],
+          portfolio: clean,
           updatedAt: serverTimestamp()
         }, { merge: true });
+        profile.portfolio = clean;
         setIndicator('saved', 'Portfolio saved');
         toast('Portfolio saved', 'success');
       } catch (err) {
