@@ -1354,6 +1354,8 @@
       }
     }
 
+
+
     async function handleDeliveryAction(msgId, action, btn) {
       btn.disabled = true;
       try {
@@ -1490,6 +1492,19 @@
         btn.innerHTML = `<i class="fas fa-paper-plane"></i> Send offer`;
       }
     });
+
+
+    // Add to the thread update after sending an offer message:
+await updateDoc(doc(db, 'threads', activeThreadId), {
+  lastMessage: `Offer: ${title} — $${amount}`,
+  lastMessageAt: serverTimestamp(),
+  lastMessageType: 'offer',
+  lastOfferStatus: 'pending',
+  lastOfferFromUid: currentUser.uid,
+  lastOffer: { title, amount, deliveryDays: days, scope, status: 'pending' },
+  [`unreadBy.${otherUid}`]: increment(1)
+});
+
 
     // ==========================================
     // Delivery modal
