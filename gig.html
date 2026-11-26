@@ -50,42 +50,20 @@
     .menu-toggle { display: none; font-size: 1.4rem; color: var(--primary); }
 
     /* ===== PAGE STATES ===== */
-    .gig-state {
-      padding: 80px 24px;
-      text-align: center;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-    .gig-state-icon {
-      width: 72px; height: 72px;
-      border-radius: 20px;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 1.8rem; margin-bottom: 18px;
-    }
+    .gig-state { padding: 80px 24px; text-align: center; max-width: 560px; margin: 0 auto; }
+    .gig-state-icon { width: 72px; height: 72px; border-radius: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 18px; }
     .gig-state.error .gig-state-icon { background: #fdeaea; color: var(--red); }
     .gig-state.loading .gig-state-icon { background: var(--accent-soft); color: var(--accent); }
     .gig-state.unavailable .gig-state-icon { background: #fff7e6; color: var(--amber); }
     .gig-state h2 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
     .gig-state p { font-size: .95rem; color: var(--text-muted); line-height: 1.6; }
     .gig-state .gig-state-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
-    .gig-state .gig-state-actions a,
-    .gig-state .gig-state-actions button {
-      padding: 12px 22px; border-radius: var(--radius-pill);
-      font-weight: 600; font-size: .9rem; transition: all .2s;
-      display: inline-flex; align-items: center; gap: 8px;
-    }
+    .gig-state .gig-state-actions a, .gig-state .gig-state-actions button { padding: 12px 22px; border-radius: var(--radius-pill); font-weight: 600; font-size: .9rem; transition: all .2s; display: inline-flex; align-items: center; gap: 8px; }
     .gig-state .gig-state-actions .primary { background: var(--accent); color: #fff; }
     .gig-state .gig-state-actions .primary:hover { background: var(--accent-hover); }
     .gig-state .gig-state-actions .ghost { background: var(--white); border: 1px solid var(--border-color); color: var(--text-main); }
     .gig-state .gig-state-actions .ghost:hover { background: #fafaf9; }
-    .gig-spinner {
-      width: 24px; height: 24px;
-      border: 3px solid rgba(242,107,33,.25);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-      display: inline-block;
-    }
+    .gig-spinner { width: 24px; height: 24px; border: 3px solid rgba(242,107,33,.25); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ===== GIG PAGE LAYOUT ===== */
@@ -94,7 +72,6 @@
     .breadcrumbs a { color: var(--accent); font-weight: 500; transition: text-decoration 0.2s; }
     .breadcrumbs a:hover { text-decoration: underline; }
     .breadcrumbs span { color: var(--text-main); font-weight: 500; }
-
     .gig-layout-grid { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
     .gig-main-content { display: flex; flex-direction: column; gap: 40px; }
     .gig-title { font-size: 2rem; font-weight: 700; color: var(--primary); line-height: 1.2; letter-spacing: -0.01em; }
@@ -104,11 +81,7 @@
     .gig-gallery-main-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #eee; overflow: hidden; }
     .gig-gallery-main { width: 100%; height: 100%; object-fit: cover; display: block; }
     .gig-gallery-main-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .gig-gallery-placeholder {
-      width: 100%; aspect-ratio: 16/9;
-      display: flex; align-items: center; justify-content: center;
-      background: #f3f2ef; color: var(--text-muted); font-size: 2.4rem;
-    }
+    .gig-gallery-placeholder { width: 100%; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; background: #f3f2ef; color: var(--text-muted); font-size: 2.4rem; }
 
     .section-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 32px; box-shadow: var(--shadow-sm); }
     .section-title { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; }
@@ -138,6 +111,8 @@
 
     /* ===== SIDEBAR ===== */
     .gig-sidebar { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 24px; }
+
+    /* Seller card */
     .seller-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 32px; box-shadow: var(--shadow-md); text-align: center; }
     .seller-avatar-wrap { position: relative; display: inline-block; margin-bottom: 16px; }
     .seller-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--white); box-shadow: var(--shadow-sm); }
@@ -149,79 +124,82 @@
     .stat-item { display: flex; flex-direction: column; align-items: center; }
     .stat-value { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .btn-contact-large { width: 100%; padding: 16px 0; background: var(--accent); color: var(--white); border-radius: var(--radius-pill); font-weight: 600; font-size: 1rem; transition: background 0.2s, transform 0.1s; margin-bottom: 12px; }
-    .btn-contact-large:hover { background: var(--accent-hover); transform: translateY(-1px); }
-    .btn-view-profile { width: 100%; padding: 14px 0; background: var(--white); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-pill); font-weight: 600; font-size: 0.95rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-view-profile { width: 100%; padding: 14px 0; background: var(--white); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-pill); font-weight: 600; font-size: 0.95rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
     .btn-view-profile:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
+    /* Email + WhatsApp buttons (new) */
+    .seller-contact-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .btn-seller-contact {
+      padding: 11px 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-color);
+      background: var(--white);
+      color: var(--text-main);
+      font-weight: 600; font-size: .85rem;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all .2s;
+      white-space: nowrap;
+      min-width: 0;
+    }
+    .btn-seller-contact i { font-size: .9rem; }
+    .btn-seller-contact:hover:not(:disabled) {
+      background: #fafaf9;
+      border-color: #c9c6c0;
+    }
+    .btn-seller-contact.email i { color: #d44638; }
+    .btn-seller-contact.whatsapp i { color: #25d366; }
+    .btn-seller-contact:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+    .btn-seller-contact.email:hover:not(:disabled) { background: #fdf0ef; border-color: #f4c7c2; }
+    .btn-seller-contact.whatsapp:hover:not(:disabled) { background: #eafaf0; border-color: #bfe9cb; }
+
+    /* Meta */
     .gig-meta-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 24px; box-shadow: var(--shadow-sm); }
     .gig-meta-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; }
     .gig-meta-row:last-child { margin-bottom: 0; }
     .gig-meta-label { color: var(--text-muted); }
     .gig-meta-value { font-weight: 600; color: var(--primary); }
 
-    /* ===== PACKAGES (new) ===== */
+    /* Packages */
     .packages-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 24px; box-shadow: var(--shadow-sm); }
     .packages-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .packages-title { font-size: 1.05rem; font-weight: 700; color: var(--primary); }
     .packages-subtitle { font-size: .78rem; color: var(--text-muted); margin-top: 2px; }
     .pkg-tabs { display: flex; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 16px; }
-    .pkg-tab {
-      flex: 1; padding: 12px 10px;
-      background: #fafaf9; color: var(--text-muted);
-      font-size: .82rem; font-weight: 600;
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      transition: all .2s;
-      border-right: 1px solid var(--border-color);
-    }
+    .pkg-tab { flex: 1; padding: 12px 10px; background: #fafaf9; color: var(--text-muted); font-size: .82rem; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all .2s; border-right: 1px solid var(--border-color); }
     .pkg-tab:last-child { border-right: none; }
     .pkg-tab:hover:not(.active) { background: #f3f2ef; color: var(--primary); }
     .pkg-tab.active { background: var(--accent); color: #fff; }
     .pkg-tab .pkg-tab-name { text-transform: uppercase; letter-spacing: .04em; font-size: .72rem; font-weight: 700; }
     .pkg-tab .pkg-tab-price { font-size: .9rem; font-weight: 700; }
     .pkg-tab .pkg-tab-days { font-size: .68rem; opacity: .8; }
-
-    .pkg-details {
-      padding: 14px;
-      background: #fafaf9;
-      border-radius: 12px;
-      margin-bottom: 16px;
-    }
-    .pkg-details .pkg-scope {
-      font-size: .88rem; color: var(--text-main);
-      line-height: 1.55;
-      margin-bottom: 10px;
-      white-space: pre-line;
-    }
-    .pkg-details .pkg-meta {
-      display: flex; gap: 14px; flex-wrap: wrap;
-      font-size: .82rem; color: var(--text-muted);
-    }
+    .pkg-details { padding: 14px; background: #fafaf9; border-radius: 12px; margin-bottom: 16px; }
+    .pkg-details .pkg-scope { font-size: .88rem; color: var(--text-main); line-height: 1.55; margin-bottom: 10px; white-space: pre-line; }
+    .pkg-details .pkg-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: .82rem; color: var(--text-muted); }
     .pkg-details .pkg-meta span { display: inline-flex; align-items: center; gap: 5px; }
     .pkg-details .pkg-meta i { color: var(--accent); font-size: .78rem; }
     .pkg-details .pkg-meta strong { color: var(--primary); font-weight: 700; }
 
-    /* ===== MORE GIGS STRIP ===== */
-    .more-gigs-section { margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 60px; }
-    .more-gigs-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
-    .more-gigs-header h2 { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
-    .more-gigs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .gig-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; }
-    .gig-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: #d0cdc7; }
-    .gig-cover { width: 100%; height: 160px; object-fit: cover; background: #eee; }
-    .gig-content { padding: 16px; display: flex; flex-direction: column; flex: 1; }
-    .gig-category { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-    .gig-title-small { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; line-height: 1.3; flex: 1; }
-    .gig-price-hint { font-size: .78rem; color: var(--text-muted); margin-bottom: 10px; }
-    .gig-price-hint strong { color: var(--primary); font-weight: 700; font-size: .9rem; }
-    .gig-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: auto; }
-    .gig-freelancer { display: flex; align-items: center; gap: 8px; }
-    .freelancer-avatar-wrap { position: relative; display: inline-block; flex-shrink: 0; }
-    .freelancer-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
-    .online-indicator { position: absolute; bottom: 0; right: 0; width: 8px; height: 8px; background: #22c55e; border: 1.5px solid var(--white); border-radius: 50%; }
-    .freelancer-info h4 { font-size: 0.75rem; font-weight: 600; color: var(--text-main); }
-    .freelancer-info .rating { font-size: 0.65rem; color: var(--text-muted); display: flex; align-items: center; gap: 2px; }
-    .freelancer-info .rating i { color: var(--accent); }
+    /* Continue button (moved from seller card) */
+    .btn-contact-large {
+      width: 100%;
+      padding: 15px 0;
+      background: var(--accent);
+      color: var(--white);
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+      font-size: .95rem;
+      transition: background 0.2s, transform 0.1s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-contact-large:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-contact-large:disabled { opacity: .7; cursor: not-allowed; }
 
     /* ===== CHATBOT & FOOTER ===== */
     .floating-chat-widget { position: fixed; bottom: 32px; right: 32px; width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.6rem; box-shadow: 0 8px 32px rgba(242, 107, 33, 0.4); cursor: pointer; z-index: 998; transition: transform 0.2s, background 0.2s; }
@@ -326,7 +304,6 @@
     @media (max-width: 1024px) {
       .gig-layout-grid { grid-template-columns: 1fr; }
       .gig-sidebar { position: relative; top: 0; }
-      .more-gigs-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 900px) {
       .header-search-wrapper { display: none; }
@@ -334,7 +311,6 @@
       .header-actions .btn-signin { display: none; }
     }
     @media (max-width: 768px) {
-      .more-gigs-grid { grid-template-columns: 1fr; }
       .gig-title { font-size: 1.6rem; }
       .section-card { padding: 24px; }
       .seller-card { padding: 24px; }
@@ -385,7 +361,7 @@
         <p>Fetching the latest details from Vertted.</p>
       </div>
 
-      <!-- Not found / unavailable / error -->
+      <!-- Error / not found -->
       <div class="gig-state error" id="stateError" style="display:none;">
         <div class="gig-state-icon"><i class="fas fa-triangle-exclamation"></i></div>
         <h2 id="stateErrorTitle">Gig not found</h2>
@@ -396,6 +372,7 @@
         </div>
       </div>
 
+      <!-- Unavailable -->
       <div class="gig-state unavailable" id="stateUnavailable" style="display:none;">
         <div class="gig-state-icon"><i class="fas fa-eye-slash"></i></div>
         <h2>This gig isn't available</h2>
@@ -408,7 +385,6 @@
       <!-- Real content -->
       <div id="gigPageContent" style="display:none;">
 
-        <!-- Breadcrumbs -->
         <div class="breadcrumbs" id="breadcrumbs">
           <a href="service.html">Explore Services</a>
           <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
@@ -424,27 +400,21 @@
 
             <h1 class="gig-title" id="gigTitle">Gig Title</h1>
 
-            <!-- Gallery -->
             <div class="gig-gallery">
-              <div class="gig-gallery-main-wrap" id="galleryMainWrap">
-                <!-- injected via JS -->
-              </div>
+              <div class="gig-gallery-main-wrap" id="galleryMainWrap"></div>
             </div>
 
-            <!-- Description & Tags -->
             <div class="section-card">
               <h2 class="section-title">About this gig</h2>
               <div class="gig-description" id="gigDescription"></div>
               <div class="gig-tags" id="gigTags"></div>
             </div>
 
-            <!-- FAQs -->
             <div class="section-card" id="faqsSection">
               <h2 class="section-title">Frequently Asked Questions</h2>
               <div id="gigFaqs"></div>
             </div>
 
-            <!-- Reviews -->
             <div class="section-card" id="reviewsSection">
               <h2 class="section-title">Reviews for this gig</h2>
               <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Verified reviews from past clients.</p>
@@ -453,10 +423,10 @@
 
           </div>
 
-          <!-- Right Column (Sidebar) -->
+          <!-- Right Column -->
           <aside class="gig-sidebar">
 
-            <!-- Packages -->
+            <!-- Packages (with Continue button moved here) -->
             <div class="packages-card" id="packagesCard">
               <div class="packages-header">
                 <div>
@@ -466,6 +436,10 @@
               </div>
               <div class="pkg-tabs" id="pkgTabs"></div>
               <div class="pkg-details" id="pkgDetails"></div>
+              <!-- The contact CTA now lives here -->
+              <button class="btn-contact-large" id="contactSellerBtn">
+                Continue
+              </button>
             </div>
 
             <!-- Seller Card -->
@@ -486,11 +460,21 @@
                   <span class="stat-label">Reviews</span>
                 </div>
               </div>
-              <button class="btn-contact-large" id="contactSellerBtn">Contact Seller</button>
+
               <a href="#" class="btn-view-profile" id="viewProfileBtn"><i class="fas fa-user"></i> View Full Profile</a>
+
+              <!-- NEW: Email + WhatsApp -->
+              <div class="seller-contact-row">
+                <a class="btn-seller-contact email" id="emailSellerBtn" href="#" target="_blank" rel="noopener">
+                  <i class="fas fa-envelope"></i> Email
+                </a>
+                <a class="btn-seller-contact whatsapp" id="whatsappSellerBtn" href="#" target="_blank" rel="noopener">
+                  <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+              </div>
             </div>
 
-            <!-- Gig Meta -->
+            <!-- Meta -->
             <div class="gig-meta-card">
               <div class="gig-meta-row">
                 <span class="gig-meta-label">Starting at</span>
@@ -513,15 +497,7 @@
           </aside>
         </div>
 
-        <!-- More Gigs Strip -->
-        <div class="more-gigs-section" id="moreGigsSection" style="display:none;">
-          <div class="more-gigs-header">
-            <h2>More gigs for your search</h2>
-            <a href="service.html" style="color: var(--accent); font-weight: 600; font-size: 0.95rem;">View all <i class="fas fa-arrow-right"></i></a>
-          </div>
-          <div class="more-gigs-grid" id="moreGigsGrid"></div>
-        </div>
-
+        <!-- "More gigs" section REMOVED -->
       </div>
     </div>
   </main>
@@ -693,7 +669,7 @@
     let selectedTier = 'basic';
     let reviewCount = 0;
     let avgRating = 0;
-    let clicked = false;   // only bump clicks once per session per gig
+    let clicked = false;
 
     const $ = (id) => document.getElementById(id);
 
@@ -744,9 +720,7 @@
     // ==========================================
     // Boot
     // ==========================================
-    onAuthStateChanged(auth, (user) => {
-      currentUser = user;
-    });
+    onAuthStateChanged(auth, (user) => { currentUser = user; });
 
     (async function init() {
       const urlParams = new URLSearchParams(window.location.search);
@@ -766,32 +740,21 @@
           return showUnavailable();
         }
 
-        // Bump impressions (skip if owner viewing their own gig)
         if (currentUser?.uid !== gigData.ownerUid) {
           try {
-            await updateDoc(doc(db, 'gigs', gigId), {
-              impressions: increment(1)
-            });
+            await updateDoc(doc(db, 'gigs', gigId), { impressions: increment(1) });
           } catch (e) { /* non-critical */ }
         }
 
-        // Fetch seller profile (public read)
         try {
           const pSnap = await getDoc(doc(db, 'profiles', gigData.ownerUid));
           sellerProfile = pSnap.exists() ? pSnap.data() : null;
-        } catch (e) {
-          sellerProfile = null;
-        }
+        } catch (e) { sellerProfile = null; }
 
-        // Fetch reviews + count them for the seller card
         await fetchReviewsAndSellerStats();
-
-        // Render everything
         renderAll();
         showContent();
-
-        // Now safe to load related gigs
-        fetchRelatedGigs();
+        // NOTE: no more fetchRelatedGigs() call — removed per request
       } catch (err) {
         console.error(err);
         showError('Could not load gig', 'Something went wrong. Please try again in a moment.');
@@ -803,7 +766,6 @@
     // ==========================================
     async function fetchReviewsAndSellerStats() {
       try {
-        // approved reviews for this freelancer
         const rq = query(
           collection(db, 'reviews'),
           where('freelancerUid', '==', gigData.ownerUid),
@@ -855,25 +817,15 @@
     function renderAll() {
       document.title = `${gigData.title || 'Gig'} — Vertted`;
 
-      // Breadcrumbs
       $('breadcrumbCategory').textContent = gigData.category || 'Category';
       $('breadcrumbCategory').href = `service.html?q=${encodeURIComponent(gigData.category || '')}`;
       $('breadcrumbTitle').textContent = gigData.title || 'Gig';
-
-      // Title
       $('gigTitle').textContent = gigData.title || 'Untitled gig';
 
-      // Gallery
       renderGallery();
-
-      // Description
       $('gigDescription').textContent = gigData.description || '';
+      $('gigTags').innerHTML = (gigData.tags || []).map(t => `<span>${escapeHTML(t)}</span>`).join('');
 
-      // Tags
-      const tagsWrap = $('gigTags');
-      tagsWrap.innerHTML = (gigData.tags || []).map(t => `<span>${escapeHTML(t)}</span>`).join('');
-
-      // FAQs
       const faqsWrap = $('gigFaqs');
       const faqs = gigData.faqs || [];
       if (!faqs.length) {
@@ -891,24 +843,16 @@
         });
       }
 
-      // Seller card
       renderSellerCard();
-
-      // Packages
       renderPackages();
 
-      // Meta
       const start = Number(gigData.startingPrice || 0);
       $('gigStartingPrice').textContent = start > 0 ? `$${start.toLocaleString()}` : '—';
       $('gigDelivery').textContent = deriveShortDelivery();
       $('gigCategoryMeta').textContent = gigData.category || '—';
 
-      // Contact button
       $('contactSellerBtn').addEventListener('click', onContactSeller);
-
-      // View profile
-      const vpBtn = $('viewProfileBtn');
-      vpBtn.href = `freelancer.html?id=${encodeURIComponent(gigData.ownerUid)}`;
+      $('viewProfileBtn').href = `freelancer.html?id=${encodeURIComponent(gigData.ownerUid)}`;
     }
 
     function renderGallery() {
@@ -930,11 +874,43 @@
       $('sellerName').innerHTML = `${escapeHTML(name)} <i class="fas fa-check-circle"></i>`;
       $('sellerTitle').textContent = sellerProfile?.headline || (gigData.category ? `${gigData.category} specialist` : '');
 
-      const online = sellerProfile?.online !== false;
-      $('sellerOnlineDot').style.display = online ? 'block' : 'none';
-
+      $('sellerOnlineDot').style.display = (sellerProfile?.online !== false) ? 'block' : 'none';
       $('sellerRating').textContent = avgRating > 0 ? avgRating.toFixed(1) : '—';
       $('sellerReviews').textContent = reviewCount > 0 ? reviewCount : '—';
+
+      // NEW: wire Email + WhatsApp buttons from seller profile
+      const emailBtn = $('emailSellerBtn');
+      const waBtn = $('whatsappSellerBtn');
+
+      const email = (sellerProfile?.contactEmail || '').trim();
+      if (email) {
+        emailBtn.href = `mailto:${email}?subject=${encodeURIComponent('Interested in your gig on Vertted')}&body=${encodeURIComponent(`Hi ${name.split(' ')[0] || ''},\n\nI'm interested in your gig "${gigData.title || ''}" on Vertted.\n\n`)}`;
+        emailBtn.disabled = false;
+        emailBtn.style.pointerEvents = '';
+        emailBtn.style.opacity = '';
+        emailBtn.title = `Email ${name}`;
+      } else {
+        emailBtn.href = '#';
+        emailBtn.style.pointerEvents = 'none';
+        emailBtn.style.opacity = '.55';
+        emailBtn.title = 'This freelancer hasn’t shared an email address';
+      }
+
+      const rawWa = (sellerProfile?.whatsapp || '').trim();
+      if (rawWa) {
+        const digits = rawWa.replace(/[^\d]/g, '');
+        const text = encodeURIComponent(`Hi ${name.split(' ')[0] || ''}, I'm interested in your gig "${gigData.title || ''}" on Vertted.`);
+        waBtn.href = digits ? `https://wa.me/${digits}?text=${text}` : `https://wa.me/?text=${text}`;
+        waBtn.disabled = false;
+        waBtn.style.pointerEvents = '';
+        waBtn.style.opacity = '';
+        waBtn.title = `Message ${name} on WhatsApp`;
+      } else {
+        waBtn.href = '#';
+        waBtn.style.pointerEvents = 'none';
+        waBtn.style.opacity = '.55';
+        waBtn.title = 'This freelancer hasn’t shared a WhatsApp number';
+      }
     }
 
     // ==========================================
@@ -970,21 +946,26 @@
       const details = $('pkgDetails');
       const card = $('packagesCard');
 
-      // If no packages at all, hide the card
       const enabledTiers = pk ? ['basic', 'standard', 'premium'].filter(t => pk[t].enabled && pk[t].price > 0) : [];
       if (enabledTiers.length === 0) {
-        card.style.display = 'none';
+        // Hide package UI but keep the continue button functional with a generic label
+        card.querySelector('.pkg-tabs').style.display = 'none';
+        card.querySelector('.pkg-details').style.display = 'none';
+        $('packagesSubtitle').textContent = 'Contact the seller to discuss scope and pricing.';
+        const btn = $('contactSellerBtn');
+        btn.textContent = 'Contact Seller';
+        btn.disabled = false;
         return;
       }
+      card.querySelector('.pkg-tabs').style.display = '';
+      card.querySelector('.pkg-details').style.display = '';
       card.style.display = '';
 
-      // Default selected to cheapest enabled
       if (!enabledTiers.includes(selectedTier)) {
         const cheapest = enabledTiers.reduce((min, t) => pk[t].price < pk[min].price ? t : min, enabledTiers[0]);
         selectedTier = cheapest;
       }
 
-      // Render tabs
       tabs.innerHTML = enabledTiers.map(t => {
         const active = t === selectedTier ? 'active' : '';
         const label = { basic: 'Basic', standard: 'Standard', premium: 'Premium' }[t];
@@ -1004,7 +985,6 @@
         });
       });
 
-      // Detail body
       const sel = pk[selectedTier];
       const label = { basic: 'Basic', standard: 'Standard', premium: 'Premium' }[selectedTier];
       $('packagesSubtitle').textContent = `${label} package · $${sel.price.toLocaleString()} · ${sel.days} day${sel.days === 1 ? '' : 's'}`;
@@ -1016,14 +996,15 @@
         </div>
       `;
 
-      // Update meta rows
       $('gigStartingPrice').textContent = `$${pk[enabledTiers[0]].price.toLocaleString()}`;
       $('gigDelivery').textContent = `${pk[selectedTier].days} day${pk[selectedTier].days === 1 ? '' : 's'}`;
       $('gigSelectedPkgRow').style.display = '';
       $('gigSelectedPkg').textContent = `${label} · $${pk[selectedTier].price.toLocaleString()}`;
 
-      // Update Contact button label
-      $('contactSellerBtn').textContent = `Continue with ${label} · $${pk[selectedTier].price.toLocaleString()}`;
+      // Update the Continue button label (now inside the packages card)
+      const btn = $('contactSellerBtn');
+      btn.disabled = false;
+      btn.textContent = `Continue with ${label} · $${pk[selectedTier].price.toLocaleString()}`;
     }
 
     function deriveShortDelivery() {
@@ -1031,7 +1012,6 @@
       if (!pk) return '—';
       const sel = pk[selectedTier] || pk.basic;
       if (sel && sel.days > 0) return `${sel.days} day${sel.days === 1 ? '' : 's'}`;
-      // fallback: shortest enabled
       const enabled = ['basic', 'standard', 'premium'].filter(t => pk[t].enabled && pk[t].days > 0);
       if (!enabled.length) return '—';
       const min = enabled.reduce((m, t) => pk[t].days < pk[m].days ? t : m, enabled[0]);
@@ -1039,7 +1019,7 @@
     }
 
     // ==========================================
-    // Contact seller → create/reuse thread
+    // Contact seller
     // ==========================================
     async function onContactSeller() {
       if (!currentUser) {
@@ -1060,18 +1040,13 @@
       btn.innerHTML = `<span class="gig-spinner" style="width:16px;height:16px;border-width:2px;vertical-align:middle;margin-right:6px;"></span>Opening chat…`;
 
       try {
-        // bump clicks (once per session)
         if (!clicked) {
           clicked = true;
           try { await updateDoc(doc(db, 'gigs', gigData.id), { clicks: increment(1) }); } catch (e) {}
         }
 
-        // Find existing thread between these two users
         const threadsRef = collection(db, 'threads');
-        const q1 = query(
-          threadsRef,
-          where('participants', 'array-contains', currentUser.uid)
-        );
+        const q1 = query(threadsRef, where('participants', 'array-contains', currentUser.uid));
         const snap = await getDocs(q1);
         let existing = null;
         snap.forEach(d => {
@@ -1089,7 +1064,7 @@
         } else {
           const pk = normalizePackages(gigData.packages);
           const tier = pk?.[selectedTier];
-          const intro = tier
+          const intro = tier && tier.price > 0
             ? `Hi! I'm interested in your ${selectedTier} package ($${tier.price}) for "${gigData.title}".`
             : `Hi! I'm interested in "${gigData.title}".`;
 
@@ -1119,71 +1094,6 @@
         toast('Could not open chat — please try again.', 'error');
         btn.disabled = false;
         btn.textContent = originalLabel;
-      }
-    }
-
-    // ==========================================
-    // Related gigs
-    // ==========================================
-    async function fetchRelatedGigs() {
-      try {
-        const q = query(
-          collection(db, 'gigs'),
-          where('category', '==', gigData.category || ''),
-          where('status', '==', 'live'),
-          limit(6)
-        );
-        const snap = await getDocs(q);
-        const related = [];
-        snap.forEach(d => {
-          if (d.id === gigData.id) return;
-          related.push({ id: d.id, ...d.data() });
-        });
-        if (!related.length) return;
-
-        // Fetch seller profiles for these gigs in bulk (small N)
-        const profileCache = {};
-        await Promise.all(related.slice(0, 3).map(async g => {
-          if (profileCache[g.ownerUid]) return;
-          try {
-            const p = await getDoc(doc(db, 'profiles', g.ownerUid));
-            profileCache[g.ownerUid] = p.exists() ? p.data() : null;
-          } catch (e) { profileCache[g.ownerUid] = null; }
-        }));
-
-        const grid = $('moreGigsGrid');
-        grid.innerHTML = related.slice(0, 3).map(g => {
-          const s = profileCache[g.ownerUid] || {};
-          const online = s.online !== false;
-          const price = Number(g.startingPrice || g.packages?.basic?.price || 0);
-          const cover = g.coverUrl || '';
-          return `
-            <div class="gig-card" onclick="window.location.href='gig.html?id=${g.id}'">
-              ${cover
-                ? `<img src="${escapeAttr(cover)}" alt="${escapeAttr(g.title || '')}" class="gig-cover">`
-                : `<div class="gig-cover" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted)"><i class="fas fa-image" style="font-size:2rem"></i></div>`}
-              <div class="gig-content">
-                <div class="gig-category">${escapeHTML(g.category || '')}</div>
-                <h3 class="gig-title-small">${escapeHTML(g.title || '')}</h3>
-                ${price > 0 ? `<div class="gig-price-hint">From <strong>$${price.toLocaleString()}</strong></div>` : ''}
-                <div class="gig-footer">
-                  <div class="gig-freelancer">
-                    <div class="freelancer-avatar-wrap">
-                      <img src="${s.photoURL || initialsAvatar(s.displayName || 'F')}" alt="${escapeAttr(s.displayName || 'Freelancer')}" class="freelancer-avatar">
-                      ${online ? '<span class="online-indicator"></span>' : ''}
-                    </div>
-                    <div class="freelancer-info">
-                      <h4>${escapeHTML(s.displayName || 'Freelancer')}</h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join('');
-        $('moreGigsSection').style.display = '';
-      } catch (e) {
-        console.warn('related gigs failed', e);
       }
     }
 
