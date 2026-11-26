@@ -4,13 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Freelancer Profile — Vertted</title>
+  <link rel="icon" href="data:,">
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
@@ -21,24 +19,16 @@
     button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
     .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 
-    /* ===== VARIABLES ===== */
     :root {
-      --primary: #1e2b4f;
-      --primary-dark: #151d36;
-      --accent: #f26b21;
-      --accent-hover: #d95b17;
-      --accent-soft: #fdf2e8;
-      --text-main: #1a1a24;
-      --text-muted: #5e5e6b;
-      --border-color: #e5e3df;
-      --white: #ffffff;
+      --primary: #1e2b4f; --primary-dark: #151d36;
+      --accent: #f26b21; --accent-hover: #d95b17; --accent-soft: #fdf2e8;
+      --text-main: #1a1a24; --text-muted: #5e5e6b;
+      --border-color: #e5e3df; --white: #ffffff;
       --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
       --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
       --shadow-lg: 0 24px 64px rgba(0,0,0,0.12);
-      --radius-pill: 50px;
-      --radius-card: 24px;
-      --green-verified: #22c55e;
-      --dark-bg: #0d1627;
+      --radius-pill: 50px; --radius-card: 24px;
+      --green-verified: #22c55e; --dark-bg: #0d1627;
     }
 
     /* ===== HEADER ===== */
@@ -59,489 +49,240 @@
     .btn-primary-dark:hover { background: var(--primary-dark); transform: translateY(-1px); }
     .menu-toggle { display: none; font-size: 1.4rem; color: var(--primary); }
 
-    /* ===== PROFILE PAGE LAYOUT ===== */
-    .profile-header-section {
-      background: linear-gradient(180deg, #fafaf9 0%, #ffffff 100%);
-      border-bottom: 1px solid var(--border-color);
-      padding: 60px 0;
-    }
+    /* ===== PROFILE HEADER ===== */
+    .profile-header-section { background: linear-gradient(180deg, #fafaf9 0%, #ffffff 100%); border-bottom: 1px solid var(--border-color); padding: 60px 0; }
+    .profile-header-grid { display: flex; gap: 40px; align-items: flex-start; }
+    .profile-info-col { flex: 1 1 60%; display: flex; gap: 32px; align-items: flex-start; }
+    .profile-avatar-wrap { position: relative; flex-shrink: 0; }
+    .profile-avatar { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--white); box-shadow: var(--shadow-md); background: #f3f2ef; }
+    .online-dot-large { position: absolute; bottom: 10px; right: 10px; width: 24px; height: 24px; background: #22c55e; border: 4px solid var(--white); border-radius: 50%; box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3); }
+    .profile-text h1 { font-family: 'Inter', sans-serif; font-size: 2.8rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .profile-text h1 i { color: var(--green-verified); font-size: 1.8rem; }
+    .profile-headline { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 20px; font-weight: 500; }
+    .profile-socials { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .profile-socials a { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 1rem; transition: all 0.2s; background: var(--white); }
+    .profile-socials a:hover { background: var(--primary); color: var(--white); border-color: var(--primary); transform: translateY(-2px); }
+    .profile-stats-row { display: flex; gap: 24px; font-size: 0.9rem; font-weight: 600; color: var(--text-main); flex-wrap: wrap; }
+    .profile-stats-row span { color: var(--text-muted); font-weight: 400; }
+    .profile-contact-col { flex: 1 1 40%; display: flex; justify-content: flex-end; }
+    .contact-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 32px; box-shadow: var(--shadow-md); width: 100%; max-width: 400px; }
+    .contact-card h3 { font-size: 1.2rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; }
+    .contact-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.6; }
+    .btn-contact-large { width: 100%; padding: 16px 0; background: var(--accent); color: var(--white); border-radius: var(--radius-pill); font-weight: 600; font-size: 1rem; transition: background 0.2s, transform 0.1s; margin-bottom: 12px; }
+    .btn-contact-large:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .contact-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 16px; }
 
-    .profile-header-grid {
-      display: flex;
-      gap: 40px;
-      align-items: flex-start;
-    }
-
-    .profile-info-col {
-      flex: 1 1 60%;
-      display: flex;
-      gap: 32px;
-      align-items: flex-start;
-    }
-
-    .profile-avatar-wrap {
-      position: relative;
-      flex-shrink: 0;
-    }
-
-    .profile-avatar {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid var(--white);
-      box-shadow: var(--shadow-md);
-    }
-
-    .online-dot-large {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 24px;
-      height: 24px;
-      background: #22c55e;
-      border: 4px solid var(--white);
-      border-radius: 50%;
-      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3);
-    }
-
-    .profile-text h1 {
-      font-family: 'Inter', sans-serif;
-      font-size: 2.8rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .profile-text h1 i {
-      color: var(--green-verified);
-      font-size: 1.8rem;
-    }
-
-    .profile-headline {
-      font-size: 1.2rem;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      font-weight: 500;
-    }
-
-    .profile-socials {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .profile-socials a {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 1rem;
-      transition: all 0.2s;
-      background: var(--white);
-    }
-
-    .profile-socials a:hover {
-      background: var(--primary);
-      color: var(--white);
-      border-color: var(--primary);
-      transform: translateY(-2px);
-    }
-
-    .profile-stats-row {
-      display: flex;
-      gap: 24px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-main);
-      flex-wrap: wrap;
-    }
-
-    .profile-stats-row span {
-      color: var(--text-muted);
-      font-weight: 400;
-    }
-
-    .profile-contact-col {
-      flex: 1 1 40%;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .contact-card {
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-card);
-      padding: 32px;
-      box-shadow: var(--shadow-md);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .contact-card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
-
-    .contact-card p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-
-    .btn-contact-large {
-      width: 100%;
-      padding: 16px 0;
-      background: var(--accent);
-      color: var(--white);
-      border-radius: var(--radius-pill);
-      font-weight: 600;
-      font-size: 1rem;
-      transition: background 0.2s, transform 0.1s;
-      margin-bottom: 16px;
-    }
-
-    .btn-contact-large:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
-    }
-
-    .contact-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border-color);
-      padding-top: 16px;
-    }
-
-    /* ===== MAIN CONTENT GRID ===== */
-    .profile-main-section {
-      padding: 60px 0 100px;
-    }
-
-    .profile-layout-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: start;
-    }
-
-    .content-section {
-      margin-bottom: 50px;
-    }
-
-    .section-title {
-      font-family: 'Inter', sans-serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .section-title i {
-      color: var(--accent);
-      font-size: 1.3rem;
-    }
+    /* ===== MAIN LAYOUT ===== */
+    .profile-main-section { padding: 60px 0 100px; }
+    .profile-layout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+    .content-section { margin-bottom: 50px; }
+    .section-title { font-family: 'Inter', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--primary); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+    .section-title i { color: var(--accent); font-size: 1.3rem; }
+    .section-empty { font-size: .88rem; color: var(--text-muted); padding: 22px; text-align: center; background: #fafaf9; border: 1px dashed var(--border-color); border-radius: 14px; }
 
     /* Intro Video */
-    .intro-video-wrapper {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-      border-radius: var(--radius-card);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      background: #d9d6d0;
-    }
+    .intro-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-md); background: #d9d6d0; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; }
+    .intro-video-wrapper img { width: 100%; height: 100%; object-fit: cover; opacity: .85; }
+    .video-play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: var(--accent); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer; box-shadow: 0 8px 32px rgba(242, 107, 33, 0.4); transition: transform 0.2s, background 0.2s; padding-left: 6px; }
+    .video-play-btn:hover { transform: translate(-50%, -50%) scale(1.05); background: var(--accent-hover); }
 
-    .intro-video-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.8;
+    /* Portfolio Grid (updated) */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .portfolio-item { border-radius: 16px; overflow: hidden; position: relative; aspect-ratio: 4/3; box-shadow: var(--shadow-sm); cursor: pointer; background: #f3f2ef; }
+    .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .portfolio-item:hover img { transform: scale(1.05); }
+    .portfolio-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.82), transparent 60%); opacity: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; transition: opacity 0.3s; gap: 4px; }
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    .portfolio-overlay .pf-title { color: var(--white); font-weight: 700; font-size: .95rem; line-height: 1.3; }
+    .portfolio-overlay .pf-meta-row { color: rgba(255,255,255,.85); font-size: .74rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .portfolio-overlay .pf-meta-row i { color: var(--accent); font-size: .7rem; }
+    .portfolio-overlay .pf-details-chip {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(255,255,255,.92); color: var(--green-verified);
+      font-size: .65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em;
+      padding: 3px 9px; border-radius: 20px;
+      display: inline-flex; align-items: center; gap: 4px;
     }
+    .portfolio-overlay .pf-details-chip i { font-size: .6rem; }
 
-    .video-play-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80px;
-      height: 80px;
-      background: var(--accent);
-      color: var(--white);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      cursor: pointer;
-      box-shadow: 0 8px 32px rgba(242, 107, 33, 0.4);
-      transition: transform 0.2s, background 0.2s;
-      padding-left: 6px;
-    }
+    /* Gigs strip */
+    .gigs-list { display: flex; flex-direction: column; gap: 20px; }
+    .gig-card-horizontal { display: flex; background: var(--white); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .gig-card-horizontal:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: #d0cdc7; }
+    .gig-card-horizontal img { width: 200px; height: 140px; object-fit: cover; flex-shrink: 0; background: #f3f2ef; }
+    .gig-card-horizontal-content { padding: 20px; display: flex; flex-direction: column; justify-content: center; }
+    .gig-category-small { font-size: 0.7rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .gig-card-horizontal h4 { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; line-height: 1.3; }
 
-    .video-play-btn:hover {
-      transform: translate(-50%, -50%) scale(1.05);
-      background: var(--accent-hover);
-    }
-
-    /* Portfolio Grid */
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .portfolio-item {
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-      aspect-ratio: 4/3;
-      box-shadow: var(--shadow-sm);
-      cursor: pointer;
-    }
-
-    .portfolio-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s;
-    }
-
-    .portfolio-item:hover img {
-      transform: scale(1.05);
-    }
-
-    .portfolio-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-      opacity: 0;
-      display: flex;
-      align-items: flex-end;
-      padding: 16px;
-      transition: opacity 0.3s;
-    }
-
-    .portfolio-item:hover .portfolio-overlay {
-      opacity: 1;
-    }
-
-    .portfolio-overlay span {
-      color: var(--white);
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    /* Gigs */
-    .gigs-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .gig-card-horizontal {
-      display: flex;
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-    }
-
-    .gig-card-horizontal:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-      border-color: #d0cdc7;
-    }
-
-    .gig-card-horizontal img {
-      width: 200px;
-      height: 140px;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-
-    .gig-card-horizontal-content {
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .gig-category-small {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-
-    .gig-card-horizontal h4 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 12px;
-      line-height: 1.3;
-    }
-
-    /* Job History */
-    .timeline {
-      border-left: 2px solid var(--border-color);
-      padding-left: 24px;
-      margin-left: 8px;
-    }
-
-    .timeline-item {
-      position: relative;
-      margin-bottom: 32px;
-    }
-
-    .timeline-item:last-child {
-      margin-bottom: 0;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: -33px;
-      top: 4px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--white);
-      border: 3px solid var(--accent);
-    }
-
-    .timeline-date {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--accent);
-      margin-bottom: 4px;
-    }
-
-    .timeline-title {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-
-    .timeline-company {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
+    /* Timeline */
+    .timeline { border-left: 2px solid var(--border-color); padding-left: 24px; margin-left: 8px; }
+    .timeline-item { position: relative; margin-bottom: 32px; }
+    .timeline-item:last-child { margin-bottom: 0; }
+    .timeline-dot { position: absolute; left: -33px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--white); border: 3px solid var(--accent); }
+    .timeline-date { font-size: 0.8rem; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+    .timeline-title { font-size: 1.05rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .timeline-company { font-size: 0.9rem; color: var(--text-muted); }
 
     /* Certifications */
-    .cert-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .cert-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .cert-icon {
-      width: 48px;
-      height: 48px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      flex-shrink: 0;
-    }
-
-    .cert-info h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 4px;
-    }
-
-    .cert-info p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
+    .cert-list { display: flex; flex-direction: column; gap: 16px; }
+    .cert-card { display: flex; align-items: flex-start; gap: 16px; background: var(--white); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: var(--shadow-sm); }
+    .cert-icon { width: 48px; height: 48px; background: var(--accent-soft); color: var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .cert-info h4 { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .cert-info p { font-size: 0.85rem; color: var(--text-muted); }
 
     /* Reviews */
-    .reviews-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+    .reviews-list { display: flex; flex-direction: column; gap: 20px; }
+    .review-card { background: var(--white); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-sm); }
+    .review-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .review-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+    .review-author-info h4 { font-size: 1rem; font-weight: 700; color: var(--primary); }
+    .review-author-info span { font-size: 0.8rem; color: var(--text-muted); }
+    .review-stars { color: var(--accent); font-size: 0.9rem; margin-bottom: 12px; }
+    .review-text { font-size: 0.95rem; color: var(--text-main); line-height: 1.6; }
 
-    .review-card {
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
+    /* ===== NEW: Portfolio lightbox ===== */
+    .pf-lightbox {
+      position: fixed; inset: 0;
+      background: rgba(10, 14, 24, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
       padding: 24px;
-      box-shadow: var(--shadow-sm);
+      opacity: 0; visibility: hidden;
+      transition: opacity .25s ease, visibility .25s ease;
     }
+    .pf-lightbox.show { opacity: 1; visibility: visible; }
+    .pf-lightbox-inner {
+      width: 100%; max-width: 1080px;
+      max-height: calc(100vh - 48px);
+      background: var(--white);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      box-shadow: 0 24px 64px rgba(0,0,0,.4);
+      transform: translateY(16px);
+      transition: transform .3s ease;
+    }
+    .pf-lightbox.show .pf-lightbox-inner { transform: translateY(0); }
+    .pf-lb-image {
+      background: #111;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pf-lb-image img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      max-height: calc(100vh - 48px);
+      display: block;
+    }
+    .pf-lb-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.92);
+      color: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      transition: background .2s;
+      z-index: 2;
+    }
+    .pf-lb-close:hover { background: #fff; }
+    .pf-lb-nav {
+      position: absolute; top: 50%;
+      transform: translateY(-50%);
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.92);
+      color: var(--primary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      transition: background .2s;
+      z-index: 2;
+    }
+    .pf-lb-nav:hover { background: #fff; }
+    .pf-lb-nav.prev { left: 16px; }
+    .pf-lb-nav.next { right: 16px; }
+    .pf-lb-nav:disabled { opacity: .35; cursor: not-allowed; }
 
-    .review-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .pf-lb-body {
+      padding: 32px 32px 28px;
+      overflow-y: auto;
+      max-height: calc(100vh - 48px);
+    }
+    .pf-lb-body .pf-lb-kicker {
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .pf-lb-body h2 {
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--primary);
+      line-height: 1.25;
       margin-bottom: 16px;
     }
-
-    .review-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      object-fit: cover;
+    .pf-lb-meta-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
     }
-
-    .review-author-info h4 {
-      font-size: 1rem;
-      font-weight: 700;
+    .pf-lb-meta {
+      padding: 12px 14px;
+      background: #fafaf9;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+    }
+    .pf-lb-meta .lbl {
+      font-size: .68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .05em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .pf-lb-meta .val {
+      font-size: .92rem; font-weight: 600;
       color: var(--primary);
     }
-
-    .review-author-info span {
-      font-size: 0.8rem;
+    .pf-lb-section { margin-bottom: 18px; }
+    .pf-lb-section:last-child { margin-bottom: 0; }
+    .pf-lb-section h4 {
+      font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .06em;
       color: var(--text-muted);
+      margin-bottom: 6px;
     }
-
-    .review-stars {
+    .pf-lb-section p {
+      font-size: .93rem; color: var(--text-main);
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+    .pf-lb-testimonial {
+      padding: 16px 18px;
+      background: var(--accent-soft);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      position: relative;
+    }
+    .pf-lb-testimonial::before {
+      content: '"';
+      position: absolute;
+      top: 4px; left: 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
       color: var(--accent);
-      font-size: 0.9rem;
-      margin-bottom: 12px;
+      opacity: .35;
+      line-height: 1;
     }
-
-    .review-text {
-      font-size: 0.95rem;
+    .pf-lb-testimonial p {
+      font-size: .93rem;
+      font-style: italic;
       color: var(--text-main);
       line-height: 1.6;
+      position: relative;
+      padding-left: 12px;
     }
 
     /* ===== CHATBOT ===== */
@@ -617,15 +358,6 @@
     .vert-footer-contact-list li i { color: #f26b21; font-size: 0.85rem; margin-top: 3px; flex-shrink: 0; width: 16px; }
     .vert-footer-contact-list li a { color: rgba(255, 255, 255, 0.75); transition: color 0.2s; }
     .vert-footer-contact-list li a:hover { color: #f26b21; }
-    .vert-footer-newsletter { padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
-    .vert-footer-newsletter label { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: #f26b21; margin-bottom: 12px; }
-    .vert-footer-newsletter-row { display: flex; align-items: stretch; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-pill); overflow: hidden; transition: border-color 0.2s; }
-    .vert-footer-newsletter-row:focus-within { border-color: #f26b21; }
-    .vert-footer-newsletter-row input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 12px 20px; color: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.85rem; }
-    .vert-footer-newsletter-row input::placeholder { color: rgba(255, 255, 255, 0.4); }
-    .vert-footer-newsletter-row button { background: #f26b21; border: 0; color: #ffffff; padding: 0 22px; font-size: 0.9rem; transition: background 0.2s; cursor: pointer; display: flex; align-items: center; }
-    .vert-footer-newsletter-row button:hover { background: #d95b17; }
-    .vert-footer-newsletter-note { font-size: 0.72rem; color: rgba(255, 255, 255, 0.4); margin-top: 10px; letter-spacing: 0.02em; }
     .vert-footer-trust { display: flex; gap: 20px; flex-wrap: wrap; padding: 30px 0 0; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
     .vert-footer-trust-item { display: inline-flex; align-items: center; gap: 10px; font-size: 0.82rem; color: rgba(255, 255, 255, 0.6); font-weight: 500; }
     .vert-footer-trust-item i { color: #f26b21; font-size: 0.9rem; }
@@ -636,7 +368,7 @@
     .vert-footer-legal a { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); transition: color 0.2s; }
     .vert-footer-legal a:hover { color: #f26b21; }
 
-    /* ===== RESPONSIVE ===== */
+    /* Responsive */
     @media (max-width: 1024px) {
       .profile-layout-grid { grid-template-columns: 1fr; }
       .profile-header-grid { flex-direction: column; }
@@ -653,6 +385,9 @@
       .profile-text h1 { justify-content: center; }
       .profile-socials { justify-content: center; }
       .profile-stats-row { justify-content: center; }
+      .pf-lightbox-inner { grid-template-columns: 1fr; }
+      .pf-lb-image { max-height: 45vh; }
+      .pf-lb-body { max-height: calc(55vh - 48px); }
     }
     @media (max-width: 768px) {
       .portfolio-grid { grid-template-columns: 1fr; }
@@ -664,11 +399,16 @@
       .vert-footer-grid { grid-template-columns: 1fr; gap: 36px; }
       .vert-footer-bottom-inner { flex-direction: column; text-align: center; gap: 14px; }
       .vert-footer-legal { justify-content: center; flex-wrap: wrap; gap: 16px; }
+      .pf-lb-meta-grid { grid-template-columns: 1fr; }
+      .pf-lb-body { padding: 22px 20px; }
     }
     @media (max-width: 600px) {
       .floating-chat-widget { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 1.3rem; }
       .profile-avatar { width: 120px; height: 120px; }
       .profile-text h1 { font-size: 2rem; }
+      .pf-lightbox { padding: 8px; }
+      .pf-lb-image { max-height: 40vh; }
+      .pf-lb-nav { width: 36px; height: 36px; }
     }
   </style>
 </head>
@@ -687,7 +427,7 @@
         </button>
       </div>
       <div class="header-actions">
-        <button class="btn-signin">Sign in</button>
+        <button class="btn-signin" onclick="window.location.href='portal/freelancer/login.html'">Sign in</button>
         <button class="btn-primary-dark">Hire The Agency</button>
         <button class="menu-toggle"><i class="fas fa-bars"></i></button>
       </div>
@@ -700,15 +440,13 @@
       <div class="profile-header-grid">
         <div class="profile-info-col">
           <div class="profile-avatar-wrap">
-            <img src="" alt="Freelancer" class="profile-avatar" id="freelancerAvatar" />
-            <span class="online-dot-large" id="freelancerOnlineDot"></span>
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23e5e3df'/></svg>" alt="Freelancer" class="profile-avatar" id="freelancerAvatar" />
+            <span class="online-dot-large" id="freelancerOnlineDot" style="display:none;"></span>
           </div>
           <div class="profile-text">
             <h1 id="freelancerName">Loading… <i class="fas fa-check-circle"></i></h1>
             <p class="profile-headline" id="freelancerHeadline"></p>
-            <div class="profile-socials" id="freelancerSocials">
-              <!-- injected via JS -->
-            </div>
+            <div class="profile-socials" id="freelancerSocials"></div>
             <div class="profile-stats-row">
               <div><i class="fas fa-star" style="color: var(--accent);"></i> <span id="freelancerRating">—</span> Rating</div>
               <div><i class="fas fa-check-circle" style="color: var(--green-verified);"></i> <span id="freelancerReviewsCount">—</span> Reviews</div>
@@ -720,7 +458,7 @@
           <div class="contact-card">
             <h3 id="contactCardTitle">Work with this freelancer</h3>
             <p id="contactCardBlurb">Send a message to discuss your project requirements and get a custom offer.</p>
-            <button class="btn-contact-large" onclick="document.getElementById('floatingChatBtn').click()">Contact Me</button>
+            <button class="btn-contact-large" id="contactMeBtn">Contact Me</button>
             <div class="contact-meta">
               <span id="contactReplyTime">Usually replies in 2 hours</span>
               <span id="contactLanguages">English</span>
@@ -731,19 +469,16 @@
     </div>
   </section>
 
-  <!-- ===== MAIN CONTENT ===== -->
+  <!-- ===== MAIN ===== -->
   <main class="profile-main-section">
     <div class="container profile-layout-grid">
 
       <!-- Left Column -->
       <div class="left-col">
 
-        <div class="content-section">
+        <div class="content-section" id="introVideoSection">
           <h2 class="section-title"><i class="fas fa-play-circle"></i> Intro Video</h2>
-          <div class="intro-video-wrapper" id="introVideoWrapper">
-            <img id="introVideoThumb" src="" alt="Intro Video Thumbnail" />
-            <div class="video-play-btn"><i class="fas fa-play"></i></div>
-          </div>
+          <div class="intro-video-wrapper" id="introVideoWrapper"></div>
         </div>
 
         <div class="content-section">
@@ -913,190 +648,514 @@
     </div>
   </div>
 
-  <!-- ===== JAVASCRIPT & FIREBASE SETUP ===== -->
+  <!-- ===== NEW: PORTFOLIO LIGHTBOX ===== -->
+  <div class="pf-lightbox" id="pfLightbox" aria-hidden="true" role="dialog">
+    <div class="pf-lightbox-inner">
+      <div class="pf-lb-image">
+        <button class="pf-lb-close" id="pfLbCloseBtn" aria-label="Close"><i class="fas fa-times"></i></button>
+        <button class="pf-lb-nav prev" id="pfLbPrevBtn" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="pf-lb-nav next" id="pfLbNextBtn" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+        <img id="pfLbImage" src="" alt="Portfolio image" />
+      </div>
+      <div class="pf-lb-body">
+        <div class="pf-lb-kicker" id="pfLbKicker">Project</div>
+        <h2 id="pfLbTitle">—</h2>
+        <div class="pf-lb-meta-grid" id="pfLbMetaGrid"></div>
+        <div class="pf-lb-section" id="pfLbDescSection">
+          <h4>About this project</h4>
+          <p id="pfLbDescription"></p>
+        </div>
+        <div class="pf-lb-section" id="pfLbTestimonialSection">
+          <h4>What the buyer said</h4>
+          <div class="pf-lb-testimonial"><p id="pfLbTestimonial"></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FIREBASE + RENDER ===== -->
   <script type="module">
-    // ==========================================
-    // 1. FIREBASE SETUP (commented out for static preview)
-    // ==========================================
-    /*
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import {
+      getFirestore, doc, getDoc, collection, query, where, getDocs, limit
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyDsL6tQHjXqTK0NTSDgb6SMS_1_ode2whQ",
+      authDomain: "vertted-28f7f.firebaseapp.com",
+      projectId: "vertted-28f7f",
+      storageBucket: "vertted-28f7f.firebasestorage.app",
+      messagingSenderId: "912377837951",
+      appId: "1:912377837951:web:c5550721e51b2a3a5f824a",
+      measurementId: "G-Q4FQ96Q25T"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    */
 
     // ==========================================
-    // 2. MOCK DATA (keyed by ?id=)
+    // State
     // ==========================================
-    const mockFreelancers = {
-      amara: {
-        id: "amara",
-        name: "Amara Okafor",
-        headline: "Figma specialist for fintech apps",
-        photo: "https://randomuser.me/api/portraits/women/44.jpg",
-        online: true,
-        rating: "4.9",
-        reviewsCount: "132",
-        location: "Lagos, Nigeria",
-        replyTime: "Usually replies in 2 hours",
-        languages: "English",
-        socials: [
-          { icon: "fab fa-linkedin-in", url: "#" },
-          { icon: "fab fa-dribbble", url: "#" },
-          { icon: "fab fa-behance", url: "#" },
-          { icon: "fab fa-twitter", url: "#" },
-          { icon: "fab fa-instagram", url: "#" }
-        ],
-        introVideoThumb: "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop",
-        portfolio: [
-          { img: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=600&auto=format&fit=crop", label: "Fintech App UI" },
-          { img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop", label: "Banking Dashboard" },
-          { img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop", label: "Crypto Wallet" },
-          { img: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?q=80&w=600&auto=format&fit=crop", label: "Wealth Management" }
-        ],
-        gigs: [
-          { id: "gig1", img: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=600&auto=format&fit=crop", category: "Website & Development", title: "I will design a premium fintech app UI/UX in Figma", rating: "4.9", count: 132, from: 800 },
-          { id: "gig1", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop", category: "Website & Development", title: "I will design a modern banking dashboard UI", rating: "4.9", count: 45, from: 600 }
-        ],
-        jobHistory: [
-          { date: "2021 - Present", title: "Senior Product Designer", company: "Freelance / Vertted" },
-          { date: "2018 - 2021", title: "UI/UX Designer", company: "Paystack" },
-          { date: "2016 - 2018", title: "Junior Designer", company: "Creative Hub Agency" }
-        ],
-        certifications: [
-          { title: "Google UX Design Professional", issuer: "Coursera · 2022" },
-          { title: "Figma Advanced Prototyping", issuer: "Figma Academy · 2023" }
-        ],
-        reviews: [
-          { author: "Nneoma Daniel", role: "CEO ZeniWeb", avatar: "https://randomuser.me/api/portraits/women/65.jpg", rating: 5, text: "Vertted made it so easy to find a skilled web developer. Amara's Figma work was exceptional and she delivered ahead of schedule." },
-          { author: "Femi Ade", role: "Creator", avatar: "https://randomuser.me/api/portraits/men/22.jpg", rating: 5, text: "The UI/UX was perfect for our fintech app. Highly recommended." },
-          { author: "Sarah Lin", role: "Brand Lead", avatar: "https://randomuser.me/api/portraits/women/12.jpg", rating: 5, text: "Finally, reviews I actually believe. Amara is a true professional and her Figma skills are top-notch." }
-        ]
-      }
-    };
+    let profile = null;                // profiles/{uid}
+    let gigs = [];                     // gigs where ownerUid == uid && status == 'live'
+    let reviews = [];                  // reviews where freelancerUid == uid && status == 'approved'
+    let portfolioItems = [];           // profile.portfolio (normalised)
+    let activePfIdx = -1;
+
+    const $ = (id) => document.getElementById(id);
 
     // ==========================================
-    // 3. HELPERS
+    // Helpers
     // ==========================================
+    function initialsAvatar(name) {
+      const letter = (name || 'U').trim().charAt(0).toUpperCase();
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
+      return 'data:image/svg+xml;utf8,' + svg;
+    }
+    function escapeHTML(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function escapeAttr(s) {
+      return String(s ?? '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
     function starsHTML(n) {
-      return '<i class="fas fa-star"></i>'.repeat(n);
+      const rating = Number(n) || 0;
+      let out = '';
+      for (let i = 1; i <= 5; i++) {
+        out += i <= rating
+          ? '<i class="fas fa-star"></i>'
+          : '<i class="fas fa-star" style="color:#d1cfc9"></i>';
+      }
+      return out;
+    }
+    function normalizePortfolioItem(item) {
+      return {
+        id: item.id || '',
+        img: item.img || '',
+        label: item.label || '',
+        storagePath: item.storagePath || '',
+        title: item.title || '',
+        costRange: item.costRange || '',
+        description: item.description || '',
+        timeline: item.timeline || '',
+        testimonial: item.testimonial || ''
+      };
+    }
+    function itemHasDetails(item) {
+      return !!(item.title || item.description || item.testimonial || item.costRange || item.timeline);
+    }
+    function getStartingPrice(g) {
+      if (g.startingPrice && Number(g.startingPrice) > 0) return Number(g.startingPrice);
+      const pk = g.packages || {};
+      const prices = ['basic','standard','premium']
+        .map(t => pk[t] && pk[t].enabled ? Number(pk[t].price) : 0)
+        .filter(n => n > 0);
+      return prices.length ? Math.min(...prices) : 0;
     }
 
     // ==========================================
-    // 4. RENDER LOGIC
+    // Boot
     // ==========================================
-    document.addEventListener('DOMContentLoaded', () => {
+    (async function init() {
       const urlParams = new URLSearchParams(window.location.search);
-      const freelancerId = urlParams.get('id') || 'amara';
+      const uid = urlParams.get('id');
+      if (!uid) {
+        return renderError('No freelancer specified', 'Open a freelancer profile from a gig or the marketplace.');
+      }
 
-      // In production:
-      // const ref = doc(db, "freelancers", freelancerId);
-      // const snap = await getDoc(ref);
-      // const data = snap.data();
+      try {
+        const pSnap = await getDoc(doc(db, 'profiles', uid));
+        if (!pSnap.exists()) {
+          return renderError('Profile not found', 'This freelancer may have removed their profile.');
+        }
+        profile = pSnap.data();
+        profile.uid = uid;
+        portfolioItems = (profile.portfolio || []).map(normalizePortfolioItem);
 
-      const data = mockFreelancers[freelancerId] || mockFreelancers['amara'];
+        // Fetch gigs + reviews in parallel
+        const [gigsSnap, reviewsSnap] = await Promise.all([
+          getDocs(query(
+            collection(db, 'gigs'),
+            where('ownerUid', '==', uid),
+            where('status', '==', 'live'),
+            limit(20)
+          )),
+          getDocs(query(
+            collection(db, 'reviews'),
+            where('freelancerUid', '==', uid),
+            where('status', '==', 'approved'),
+            limit(50)
+          ))
+        ]);
 
-      // --- Title ---
-      document.title = `${data.name} — Vertted`;
+        gigs = [];
+        gigsSnap.forEach(d => gigs.push({ id: d.id, ...d.data() }));
+        gigs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
-      // --- Profile Header ---
-      document.getElementById('freelancerAvatar').src = data.photo;
-      document.getElementById('freelancerName').innerHTML = `${data.name} <i class="fas fa-check-circle"></i>`;
-      document.getElementById('freelancerHeadline').textContent = data.headline;
-      document.getElementById('freelancerRating').textContent = data.rating;
-      document.getElementById('freelancerReviewsCount').textContent = data.reviewsCount;
-      document.getElementById('freelancerLocation').textContent = data.location;
-      document.getElementById('reviewsHeadingCount').textContent = data.reviewsCount;
+        reviews = [];
+        reviewsSnap.forEach(d => reviews.push({ id: d.id, ...d.data() }));
+        reviews.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
 
-      const dot = document.getElementById('freelancerOnlineDot');
-      if (!data.online) dot.style.display = 'none';
+        renderAll();
+      } catch (err) {
+        console.error(err);
+        renderError('Could not load profile', 'Something went wrong. Please try again in a moment.');
+      }
+    })();
+
+    function renderError(title, message) {
+      document.title = 'Profile unavailable — Vertted';
+      $('freelancerName').innerHTML = escapeHTML(title);
+      $('freelancerHeadline').textContent = message;
+      ['introVideoSection'].forEach(id => $(id) && ($(id).style.display = 'none'));
+      $('portfolioGrid').innerHTML = `<div class="section-empty">${escapeHTML(message)}</div>`;
+      $('gigsList').innerHTML = '';
+      $('jobHistoryTimeline').innerHTML = '';
+      $('certList').innerHTML = '';
+      $('reviewsList').innerHTML = '';
+    }
+
+    // ==========================================
+    // Master render
+    // ==========================================
+    function renderAll() {
+      const name = profile.displayName || 'A Vertted freelancer';
+      document.title = `${name} — Vertted`;
+
+      // -------- Profile header --------
+      $('freelancerAvatar').src = profile.photoURL || initialsAvatar(name);
+      $('freelancerName').innerHTML = `${escapeHTML(name)} <i class="fas fa-check-circle"></i>`;
+      $('freelancerHeadline').textContent = profile.headline || '';
+
+      // Online dot
+      const online = profile.online !== false;
+      $('freelancerOnlineDot').style.display = online ? 'block' : 'none';
+
+      // Rating + review count
+      const avg = reviews.length ? reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0) / reviews.length : 0;
+      $('freelancerRating').textContent = reviews.length ? avg.toFixed(1) : '—';
+      $('freelancerReviewsCount').textContent = reviews.length ? reviews.length : '—';
+      $('reviewsHeadingCount').textContent = reviews.length;
+
+      // Location
+      $('freelancerLocation').textContent = profile.location || '—';
 
       // Socials
-      document.getElementById('freelancerSocials').innerHTML = data.socials
-        .map(s => `<a href="${s.url}" aria-label="Social"><i class="${s.icon}"></i></a>`)
+      const socials = profile.socialLinks || {};
+      const socialMap = [
+        { key: 'linkedin',  icon: 'fab fa-linkedin-in' },
+        { key: 'dribbble',  icon: 'fab fa-dribbble' },
+        { key: 'behance',   icon: 'fab fa-behance' },
+        { key: 'twitter',   icon: 'fab fa-twitter' },
+        { key: 'instagram', icon: 'fab fa-instagram' },
+        { key: 'github',    icon: 'fab fa-github' },
+        { key: 'website',   icon: 'fas fa-globe' }
+      ];
+      $('freelancerSocials').innerHTML = socialMap
+        .filter(s => socials[s.key])
+        .map(s => `<a href="${escapeAttr(socials[s.key])}" target="_blank" rel="noopener" aria-label="${s.key}"><i class="${s.icon}"></i></a>`)
         .join('');
 
       // Contact card
-      document.getElementById('contactCardTitle').textContent = `Work with ${data.name.split(' ')[0]}`;
-      document.getElementById('contactReplyTime').textContent = data.replyTime;
-      document.getElementById('contactLanguages').textContent = data.languages;
+      const firstName = name.split(' ')[0];
+      $('contactCardTitle').textContent = `Work with ${firstName}`;
+      $('contactReplyTime').textContent = profile.availability?.status === 'unavailable'
+        ? 'Not taking new work right now'
+        : 'Usually replies within hours';
+      $('contactLanguages').textContent = (profile.languages && profile.languages.length)
+        ? profile.languages.slice(0, 2).join(' · ')
+        : 'English';
 
-      // --- Intro Video ---
-      document.getElementById('introVideoThumb').src = data.introVideoThumb;
+      // Contact button behavior
+      $('contactMeBtn').onclick = () => onContactSeller();
 
-      // --- Portfolio ---
-      document.getElementById('portfolioGrid').innerHTML = data.portfolio.map(p => `
-        <div class="portfolio-item">
-          <img src="${p.img}" alt="${p.label}" />
-          <div class="portfolio-overlay"><span>${p.label}</span></div>
+      // -------- Intro video --------
+      renderIntroVideo();
+
+      // -------- Portfolio --------
+      renderPortfolio();
+
+      // -------- Gigs --------
+      renderGigs(firstName);
+
+      // -------- Job history --------
+      renderJobHistory();
+
+      // -------- Certifications --------
+      renderCertifications();
+
+      // -------- Reviews --------
+      renderReviews();
+    }
+
+    // ==========================================
+    // Intro Video
+    // ==========================================
+    function renderIntroVideo() {
+      const wrapper = $('introVideoWrapper');
+      const url = profile.introVideoUrl || '';
+      if (!url) {
+        $('introVideoSection').style.display = 'none';
+        return;
+      }
+      $('introVideoSection').style.display = '';
+
+      const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
+      if (ytMatch) {
+        const id = ytMatch[1];
+        wrapper.innerHTML = `
+          <img src="https://img.youtube.com/vi/${id}/maxresdefault.jpg" alt="Intro video" />
+          <div class="video-play-btn"><i class="fas fa-play"></i></div>
+        `;
+        wrapper.onclick = () => window.open(url, '_blank', 'noopener');
+        return;
+      }
+      if (/\.(mp4|webm|ogg)(\?|$)/i.test(url)) {
+        wrapper.innerHTML = `
+          <video src="${escapeAttr(url)}" muted playsinline style="width:100%;height:100%;object-fit:cover;"></video>
+          <div class="video-play-btn"><i class="fas fa-play"></i></div>
+        `;
+        wrapper.onclick = () => window.open(url, '_blank', 'noopener');
+        return;
+      }
+      wrapper.innerHTML = `
+        <div style="text-align:center;padding:40px;">
+          <i class="fas fa-link" style="font-size:2rem;color:var(--accent);margin-bottom:10px;display:block;"></i>
+          <p style="font-size:.9rem;">Intro video linked</p>
         </div>
-      `).join('');
+      `;
+      wrapper.onclick = () => window.open(url, '_blank', 'noopener');
+    }
 
-      // --- Gigs by freelancer ---
-      const firstName = data.name.split(' ')[0];
-      document.getElementById('gigsByFreelancerName').textContent = firstName;
-      document.getElementById('gigsList').innerHTML = data.gigs.map(g => `
-        <div class="gig-card-horizontal" onclick="window.location.href='gig.html?id=${g.id}'">
-          <img src="${g.img}" alt="Gig Cover" />
-          <div class="gig-card-horizontal-content">
-            <div class="gig-category-small">${g.category}</div>
-            <h4>${g.title}</h4>
-            <div style="font-size:0.85rem;color:var(--text-muted);">
-              <i class="fas fa-star" style="color:var(--accent);"></i> ${g.rating} (${g.count}) · From $${g.from}
+    // ==========================================
+    // Portfolio (grid + lightbox)
+    // ==========================================
+    function renderPortfolio() {
+      const grid = $('portfolioGrid');
+      if (!portfolioItems.length) {
+        grid.innerHTML = `<div class="section-empty">No portfolio items yet.</div>`;
+        return;
+      }
+
+      grid.innerHTML = portfolioItems.map((p, i) => {
+        const title = p.title || p.label || 'Portfolio item';
+        const metaBits = [];
+        if (p.costRange) metaBits.push(`<span><i class="fas fa-tag"></i> ${escapeHTML(p.costRange)}</span>`);
+        if (p.timeline) metaBits.push(`<span><i class="fas fa-clock"></i> ${escapeHTML(p.timeline)}</span>`);
+        const hasDetails = itemHasDetails(p);
+        return `
+          <div class="portfolio-item" data-idx="${i}">
+            <img src="${escapeAttr(p.img)}" alt="${escapeAttr(title)}" loading="lazy" />
+            <div class="portfolio-overlay">
+              ${hasDetails ? `<span class="pf-details-chip"><i class="fas fa-circle-info"></i> Details</span>` : ''}
+              <div class="pf-title">${escapeHTML(title)}</div>
+              ${metaBits.length ? `<div class="pf-meta-row">${metaBits.join('')}</div>` : ''}
             </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
 
-      // --- Job History ---
-      document.getElementById('jobHistoryTimeline').innerHTML = data.jobHistory.map(j => `
-        <div class="timeline-item">
-          <div class="timeline-dot"></div>
-          <div class="timeline-date">${j.date}</div>
-          <div class="timeline-title">${j.title}</div>
-          <div class="timeline-company">${j.company}</div>
-        </div>
-      `).join('');
+      grid.querySelectorAll('.portfolio-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.dataset.idx, 10);
+          openPortfolioLightbox(idx);
+        });
+      });
+    }
 
-      // --- Certifications ---
-      document.getElementById('certList').innerHTML = data.certifications.map(c => `
-        <div class="cert-card">
-          <div class="cert-icon"><i class="fas fa-award"></i></div>
-          <div class="cert-info">
-            <h4>${c.title}</h4>
-            <p>Issued by ${c.issuer}</p>
-          </div>
-        </div>
-      `).join('');
+    function openPortfolioLightbox(idx) {
+      if (idx < 0 || idx >= portfolioItems.length) return;
+      activePfIdx = idx;
+      renderLightbox();
+      $('pfLightbox').classList.add('show');
+      $('pfLightbox').setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
 
-      // --- Reviews ---
-      document.getElementById('reviewsList').innerHTML = data.reviews.map(r => `
-        <div class="review-card">
-          <div class="review-header">
-            <img src="${r.avatar}" alt="${r.author}" class="review-avatar" />
-            <div class="review-author-info">
-              <h4>${r.author}</h4>
-              <span>${r.role}</span>
+    function closePortfolioLightbox() {
+      $('pfLightbox').classList.remove('show');
+      $('pfLightbox').setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      activePfIdx = -1;
+    }
+
+    function renderLightbox() {
+      const p = portfolioItems[activePfIdx];
+      if (!p) return;
+
+      $('pfLbImage').src = p.img;
+      $('pfLbImage').alt = p.title || p.label || 'Portfolio image';
+      $('pfLbTitle').textContent = p.title || p.label || 'Portfolio item';
+      $('pfLbKicker').textContent = p.title ? 'Project' : 'Portfolio';
+
+      // Meta grid (only fields that exist)
+      const metaRows = [];
+      if (p.costRange) metaRows.push({ lbl: 'Cost range', val: p.costRange });
+      if (p.timeline) metaRows.push({ lbl: 'Timeline', val: p.timeline });
+      $('pfLbMetaGrid').innerHTML = metaRows.length
+        ? metaRows.map(m => `
+            <div class="pf-lb-meta">
+              <div class="lbl">${escapeHTML(m.lbl)}</div>
+              <div class="val">${escapeHTML(m.val)}</div>
             </div>
-          </div>
-          <div class="review-stars">${starsHTML(r.rating)}</div>
-          <p class="review-text">"${r.text}"</p>
-        </div>
-      `).join('');
+          `).join('')
+        : '';
+
+      // Description
+      if (p.description) {
+        $('pfLbDescSection').style.display = '';
+        $('pfLbDescription').textContent = p.description;
+      } else {
+        $('pfLbDescSection').style.display = 'none';
+      }
+
+      // Testimonial
+      if (p.testimonial) {
+        $('pfLbTestimonialSection').style.display = '';
+        $('pfLbTestimonial').textContent = p.testimonial;
+      } else {
+        $('pfLbTestimonialSection').style.display = 'none';
+      }
+
+      // Prev / Next
+      $('pfLbPrevBtn').disabled = activePfIdx <= 0;
+      $('pfLbNextBtn').disabled = activePfIdx >= portfolioItems.length - 1;
+    }
+
+    $('pfLbCloseBtn').addEventListener('click', closePortfolioLightbox);
+    $('pfLbPrevBtn').addEventListener('click', () => {
+      if (activePfIdx > 0) { activePfIdx--; renderLightbox(); }
+    });
+    $('pfLbNextBtn').addEventListener('click', () => {
+      if (activePfIdx < portfolioItems.length - 1) { activePfIdx++; renderLightbox(); }
+    });
+    $('pfLightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'pfLightbox') closePortfolioLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!$('pfLightbox').classList.contains('show')) return;
+      if (e.key === 'Escape') closePortfolioLightbox();
+      else if (e.key === 'ArrowLeft' && activePfIdx > 0) { activePfIdx--; renderLightbox(); }
+      else if (e.key === 'ArrowRight' && activePfIdx < portfolioItems.length - 1) { activePfIdx++; renderLightbox(); }
     });
 
     // ==========================================
-    // 5. HEADER SEARCH
+    // Gigs
+    // ==========================================
+    function renderGigs(firstName) {
+      $('gigsByFreelancerName').textContent = firstName;
+      const wrap = $('gigsList');
+      if (!gigs.length) {
+        wrap.innerHTML = `<div class="section-empty">No live gigs yet.</div>`;
+        return;
+      }
+      wrap.innerHTML = gigs.map(g => {
+        const price = getStartingPrice(g);
+        const cover = g.coverUrl || '';
+        return `
+          <div class="gig-card-horizontal" onclick="window.location.href='gig.html?id=${g.id}'">
+            ${cover
+              ? `<img src="${escapeAttr(cover)}" alt="${escapeAttr(g.title || '')}" />`
+              : `<div style="width:200px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);background:#f3f2ef;flex-shrink:0;"><i class="fas fa-image" style="font-size:1.8rem"></i></div>`}
+            <div class="gig-card-horizontal-content">
+              <div class="gig-category-small">${escapeHTML(g.category || '')}</div>
+              <h4>${escapeHTML(g.title || 'Untitled gig')}</h4>
+              <div style="font-size:0.85rem;color:var(--text-muted);">
+                <i class="fas fa-star" style="color:var(--accent);"></i>
+                ${reviews.length ? (reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0) / reviews.length).toFixed(1) : '—'}
+                ${price > 0 ? ` · From $${price.toLocaleString()}` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==========================================
+    // Job history
+    // ==========================================
+    function renderJobHistory() {
+      const wrap = $('jobHistoryTimeline');
+      const list = profile.jobHistory || [];
+      if (!list.length) {
+        wrap.innerHTML = `<div class="section-empty">No job history yet.</div>`;
+        return;
+      }
+      wrap.innerHTML = list.map(j => `
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">${escapeHTML(j.date || '')}</div>
+          <div class="timeline-title">${escapeHTML(j.title || '')}</div>
+          <div class="timeline-company">${escapeHTML(j.company || '')}</div>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // Certifications
+    // ==========================================
+    function renderCertifications() {
+      const wrap = $('certList');
+      const list = profile.certifications || [];
+      if (!list.length) {
+        wrap.innerHTML = `<div class="section-empty">No certifications yet.</div>`;
+        return;
+      }
+      wrap.innerHTML = list.map(c => `
+        <div class="cert-card">
+          <div class="cert-icon"><i class="fas fa-award"></i></div>
+          <div class="cert-info">
+            <h4>${escapeHTML(c.title || '')}</h4>
+            <p>${c.issuer ? 'Issued by ' + escapeHTML(c.issuer) : ''}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // Reviews
+    // ==========================================
+    function renderReviews() {
+      const wrap = $('reviewsList');
+      if (!reviews.length) {
+        wrap.innerHTML = `<div class="section-empty">No approved reviews yet.</div>`;
+        return;
+      }
+      wrap.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <div class="review-header">
+            <img src="${r.clientAvatar || initialsAvatar(r.clientName)}" alt="${escapeAttr(r.clientName || 'Client')}" class="review-avatar" />
+            <div class="review-author-info">
+              <h4>${escapeHTML(r.clientName || 'Client')}</h4>
+              <span>${r.gigTitle ? escapeHTML(r.gigTitle) : 'Verified client'}</span>
+            </div>
+          </div>
+          <div class="review-stars">${starsHTML(r.rating)}</div>
+          <p class="review-text">"${escapeHTML(r.text || '')}"</p>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // Contact — mirror of gig.html's flow, but for freelancer page
+    // (we look up their latest gig to reuse the same handler on gig.html;
+    //  if there are no gigs we fall back to opening the chatbot)
+    // ==========================================
+    function onContactSeller() {
+      if (!gigs.length) {
+        // No gigs to message from — fall back to the AI chat so the user
+        // can still reach out.
+        document.getElementById('floatingChatBtn').click();
+        return;
+      }
+      // Jump to their top gig, where "Continue with package" creates the
+      // thread (auth-aware, dedupes existing threads). That's the cleanest
+      // way to kick off contact without duplicating that logic here.
+      window.location.href = `gig.html?id=${gigs[0].id}`;
+    }
+
+    // ==========================================
+    // Header search + chatbot (unchanged)
     // ==========================================
     window.handleHeaderSearch = function() {
       const query = document.getElementById('headerSearchInput').value.trim();
@@ -1104,14 +1163,10 @@
         ? `service.html?q=${encodeURIComponent(query)}`
         : `service.html`;
     };
-
     document.getElementById('headerSearchInput').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') window.handleHeaderSearch();
     });
 
-    // ==========================================
-    // 6. CHATBOT LOGIC
-    // ==========================================
     const openChatBtn = document.getElementById('floatingChatBtn');
     const closeChatBtn = document.getElementById('closeChatBtn');
     const chatOverlay = document.getElementById('chatOverlay');
@@ -1120,15 +1175,8 @@
     const chatInput = document.getElementById('chatInput');
     const sendChatBtn = document.getElementById('sendChatBtn');
 
-    function openChat() {
-      chatPanel.classList.add('active');
-      chatOverlay.classList.add('active');
-    }
-    function closeChat() {
-      chatPanel.classList.remove('active');
-      chatOverlay.classList.remove('active');
-    }
-
+    function openChat() { chatPanel.classList.add('active'); chatOverlay.classList.add('active'); }
+    function closeChat() { chatPanel.classList.remove('active'); chatOverlay.classList.remove('active'); }
     openChatBtn.addEventListener('click', openChat);
     closeChatBtn.addEventListener('click', closeChat);
     chatOverlay.addEventListener('click', closeChat);
@@ -1137,83 +1185,60 @@
       const msgDiv = document.createElement('div');
       msgDiv.className = `message ${sender}`;
       msgDiv.innerHTML = text;
-
-      if (options && options.length > 0) {
+      if (options && options.length) {
         const optDiv = document.createElement('div');
         optDiv.className = 'chat-options';
         options.forEach(opt => {
-          const btn = document.createElement('button');
-          btn.className = 'chat-option-btn';
-          btn.textContent = opt;
-          btn.addEventListener('click', () => handleUserSelection(opt));
-          optDiv.appendChild(btn);
+          const b = document.createElement('button');
+          b.className = 'chat-option-btn';
+          b.textContent = opt;
+          b.addEventListener('click', () => handleUserSelection(opt));
+          optDiv.appendChild(b);
         });
         msgDiv.appendChild(optDiv);
       }
-
       chatMessages.appendChild(msgDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
     function startConversation() {
-      addMessage(
-        "Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?",
-        'bot',
-        ['A freelancer', 'The agency']
-      );
+      addMessage("Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?", 'bot', ['A freelancer', 'The agency']);
     }
-
     let chatState = 'initial';
-
     function handleUserSelection(selection) {
-      const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
-      if (lastBotMsg) lastBotMsg.remove();
+      const last = chatMessages.querySelector('.message.bot:last-child .chat-options');
+      if (last) last.remove();
       addMessage(selection, 'user');
-
       setTimeout(() => {
         if (chatState === 'initial') {
           if (selection === 'A freelancer') {
             chatState = 'choosing_service';
-            addMessage(
-              "Awesome! Which service: Website & Development, Marketing, or Video & Animation?",
-              'bot',
-              ['Website & Development', 'Marketing', 'Video & Animation']
-            );
+            addMessage("Awesome! Which service: Website & Development, Marketing, or Video & Animation?", 'bot', ['Website & Development', 'Marketing', 'Video & Animation']);
           } else {
             chatState = 'agency_selected';
-            addMessage(
-              "Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.",
-              'bot'
-            );
+            addMessage("Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.", 'bot');
           }
         } else if (chatState === 'choosing_service') {
           chatState = 'service_selected';
-          addMessage(
-            "Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.",
-            'bot'
-          );
+          addMessage("Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.", 'bot');
         }
       }, 600);
     }
-
     function handleTypedMessage() {
       const text = chatInput.value.trim();
       if (!text) return;
-      const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
-      if (lastBotMsg) lastBotMsg.remove();
+      const last = chatMessages.querySelector('.message.bot:last-child .chat-options');
+      if (last) last.remove();
       addMessage(text, 'user');
       chatInput.value = '';
       setTimeout(() => {
         addMessage("Got it! I've noted that down. Our team will review your request and get back to you shortly.", 'bot');
       }, 800);
     }
-
     sendChatBtn.addEventListener('click', handleTypedMessage);
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') handleTypedMessage();
     });
 
-    // Kick off the conversation on first chat open (once)
     let chatStarted = false;
     openChatBtn.addEventListener('click', () => {
       if (!chatStarted) {
