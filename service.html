@@ -4,13 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Explore Services — Vertted</title>
-  
-  <!-- Fonts -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
@@ -21,23 +18,15 @@
     button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
     .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 
-    /* ===== VARIABLES ===== */
     :root {
-      --primary: #1e2b4f;
-      --primary-dark: #151d36;
-      --accent: #f26b21;
-      --accent-hover: #d95b17;
-      --accent-soft: #fdf2e8;
-      --text-main: #1a1a24;
-      --text-muted: #5e5e6b;
-      --border-color: #e5e3df;
-      --white: #ffffff;
+      --primary: #1e2b4f; --primary-dark: #151d36;
+      --accent: #f26b21; --accent-hover: #d95b17; --accent-soft: #fdf2e8;
+      --text-main: #1a1a24; --text-muted: #5e5e6b;
+      --border-color: #e5e3df; --white: #ffffff;
       --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
       --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
-      --radius-pill: 50px;
-      --radius-card: 24px;
-      --green-verified: #22c55e;
-      --dark-bg: #0d1627;
+      --radius-pill: 50px; --radius-card: 24px;
+      --green-verified: #22c55e; --dark-bg: #0d1627;
     }
 
     /* ===== HEADER ===== */
@@ -58,17 +47,16 @@
     .btn-primary-dark:hover { background: var(--primary-dark); transform: translateY(-1px); }
     .menu-toggle { display: none; font-size: 1.4rem; color: var(--primary); }
 
-    /* ===== SERVICE PAGE LAYOUT ===== */
+    /* ===== PAGE HEADER ===== */
     .page-header { padding: 60px 0 40px; background: linear-gradient(180deg, #fafaf9 0%, #ffffff 100%); border-bottom: 1px solid var(--border-color); }
     .page-header h1 { font-family: 'Inter', sans-serif; font-size: 3rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; letter-spacing: -0.02em; }
     .page-header p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; }
-    
-    .search-results-info { margin-top: 16px; font-size: 0.95rem; color: var(--primary); display: none; font-weight: 500; background: var(--accent-soft); padding: 10px 16px; border-radius: 8px; border: 1px solid #f2c7a7; width: fit-content; }
-    .search-results-info button { background: var(--accent); color: white; border: none; padding: 4px 12px; border-radius: 12px; margin-left: 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .search-results-info { margin-top: 16px; font-size: 0.95rem; color: var(--primary); display: none; font-weight: 500; background: var(--accent-soft); padding: 10px 16px; border-radius: 8px; border: 1px solid #f2c7a7; width: fit-content; align-items: center; gap: 12px; }
+    .search-results-info button { background: var(--accent); color: white; border: none; padding: 4px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
 
     .marketplace-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; padding: 40px 0 100px; }
 
-    /* ===== FILTERS SIDEBAR ===== */
+    /* ===== FILTERS ===== */
     .filters-sidebar { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 24px; height: fit-content; position: sticky; top: 100px; }
     .filter-group { margin-bottom: 24px; }
     .filter-group:last-child { margin-bottom: 0; }
@@ -78,42 +66,88 @@
     .filter-checkbox:hover { color: var(--primary); }
     .filter-checkbox input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
 
-    /* ===== RESULTS AREA ===== */
+    /* ===== RESULTS ===== */
     .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .results-count { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
     .results-sort { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-muted); }
     .results-sort select { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Inter', sans-serif; color: var(--text-main); background: var(--white); outline: none; cursor: pointer; }
 
-    /* ===== GIG GRID (2 PER ROW) ===== */
+    /* ===== GIG GRID ===== */
     .gig-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
     .gig-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; }
     .gig-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: #d0cdc7; }
-    .gig-cover { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+    .gig-cover-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #eee; overflow: hidden; }
+    .gig-cover-wrap img,
+    .gig-cover-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gig-cover-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 2rem; }
+    .gig-status-badge {
+      position: absolute; top: 12px; left: 12px;
+      background: rgba(255,255,255,.92);
+      color: var(--primary);
+      font-size: .65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em;
+      padding: 3px 9px; border-radius: 20px;
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(6px);
+    }
     .gig-content { padding: 20px; display: flex; flex-direction: column; flex: 1; }
     .gig-category { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
     .gig-title { font-size: 1.15rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; line-height: 1.3; flex: 1; }
     .gig-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    
     .gig-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
     .gig-tags span { background: var(--accent-soft); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
     .gig-tags span.highlighted { background: var(--accent); color: var(--white); border: 1px solid var(--accent); }
-    
-    .gig-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: auto; }
-    .gig-freelancer { display: flex; align-items: center; gap: 12px; }
+    .gig-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: auto; gap: 12px; }
+    .gig-freelancer { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .freelancer-avatar-wrap { position: relative; display: inline-block; flex-shrink: 0; }
     .freelancer-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
     .online-indicator { position: absolute; bottom: 0px; right: 0px; width: 10px; height: 10px; background: #22c55e; border: 2px solid var(--white); border-radius: 50%; box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3); }
-    .freelancer-info h4 { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+    .freelancer-info { min-width: 0; }
+    .freelancer-info h4 { font-size: 0.85rem; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .freelancer-info .rating { font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 2px; }
     .freelancer-info .rating i { color: var(--accent); font-size: 0.7rem; }
+    .freelancer-info .rating .no-reviews { color: var(--text-muted); font-style: italic; }
+    .gig-price { text-align: right; flex-shrink: 0; }
+    .gig-price-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+    .gig-price-value { font-weight: 700; color: var(--primary); font-size: 1rem; }
 
-    /* ===== EMPTY STATE ===== */
+    /* ===== EMPTY / LOADING ===== */
     .empty-state { text-align: center; padding: 60px 20px; background: var(--white); border: 1px dashed var(--border-color); border-radius: var(--radius-card); grid-column: 1 / -1; }
     .empty-state i { font-size: 3rem; color: var(--border-color); margin-bottom: 16px; }
     .empty-state h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 8px; }
     .empty-state p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
     .empty-state button { background: var(--accent); color: white; padding: 10px 24px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .empty-state button:hover { background: var(--accent-hover); }
+
+    .loading-state { grid-column: 1 / -1; padding: 80px 20px; text-align: center; color: var(--text-muted); }
+    .loading-spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .skeleton-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .skeleton {
+      background: linear-gradient(90deg, #f0efec 0%, #e5e3df 50%, #f0efec 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .skeleton-cover { width: 100%; aspect-ratio: 16/9; }
+    .skeleton-body { padding: 20px; }
+    .skeleton-line { height: 12px; border-radius: 4px; margin-bottom: 10px; }
+    .skeleton-line.short { width: 40%; }
+    .skeleton-line.medium { width: 70%; }
 
     /* ===== FOOTER ===== */
     .vert-footer { background: var(--dark-bg); color: #e8e6e1; position: relative; overflow: hidden; font-size: 0.9rem; margin-top: 80px; }
@@ -161,15 +195,6 @@
     .vert-footer-contact-list li i { color: #f26b21; font-size: 0.85rem; margin-top: 3px; flex-shrink: 0; width: 16px; }
     .vert-footer-contact-list li a { color: rgba(255, 255, 255, 0.75); transition: color 0.2s; }
     .vert-footer-contact-list li a:hover { color: #f26b21; }
-    .vert-footer-newsletter { padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
-    .vert-footer-newsletter label { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: #f26b21; margin-bottom: 12px; }
-    .vert-footer-newsletter-row { display: flex; align-items: stretch; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-pill); overflow: hidden; transition: border-color 0.2s; }
-    .vert-footer-newsletter-row:focus-within { border-color: #f26b21; }
-    .vert-footer-newsletter-row input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 12px 20px; color: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.85rem; }
-    .vert-footer-newsletter-row input::placeholder { color: rgba(255, 255, 255, 0.4); }
-    .vert-footer-newsletter-row button { background: #f26b21; border: 0; color: #ffffff; padding: 0 22px; font-size: 0.9rem; transition: background 0.2s; cursor: pointer; display: flex; align-items: center; }
-    .vert-footer-newsletter-row button:hover { background: #d95b17; }
-    .vert-footer-newsletter-note { font-size: 0.72rem; color: rgba(255, 255, 255, 0.4); margin-top: 10px; letter-spacing: 0.02em; }
     .vert-footer-trust { display: flex; gap: 20px; flex-wrap: wrap; padding: 30px 0 0; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
     .vert-footer-trust-item { display: inline-flex; align-items: center; gap: 10px; font-size: 0.82rem; color: rgba(255, 255, 255, 0.6); font-weight: 500; }
     .vert-footer-trust-item i { color: #f26b21; font-size: 0.9rem; }
@@ -188,7 +213,6 @@
     }
     @media (max-width: 900px) {
       .header-search-wrapper { display: none; }
-      .nav-links { display: none; }
       .menu-toggle { display: block; }
       .header-actions .btn-signin { display: none; }
     }
@@ -217,30 +241,25 @@
       <a href="index.html" class="logo-container">
         <img src="image/vertted-logo.jpeg" alt="Vertted Logo" class="logo-img" />
       </a>
-      
       <div class="header-search-wrapper">
-        <!-- Added id and type="button" to fix mobile click -->
         <input type="text" id="headerSearchInput" placeholder="Search for services..." />
         <button type="button" class="header-search-icon-btn" onclick="handleHeaderSearch()">
           <i class="fas fa-search"></i>
         </button>
       </div>
-      
       <div class="header-actions">
-        <button class="btn-signin">Sign in</button>
+        <button class="btn-signin" onclick="window.location.href='portal/freelancer/login.html'">Sign in</button>
         <button class="btn-primary-dark">Hire The Agency</button>
         <button class="menu-toggle"><i class="fas fa-bars"></i></button>
       </div>
     </div>
   </header>
 
-  <!-- ===== SERVICE PAGE HEADER ===== -->
+  <!-- ===== PAGE HEADER ===== -->
   <section class="page-header">
     <div class="container">
-      <h1>Explore Specialists</h1>
-      <p>Find the exact expert you need. Browse thousands of verified, niche freelancers ready to bring your next project to life.</p>
-      
-      <!-- Search Results Info Box -->
+      <h1 id="pageTitle">Explore Specialists</h1>
+      <p id="pageSubtitle">Find the exact expert you need. Browse thousands of verified, niche freelancers ready to bring your next project to life.</p>
       <div id="searchResultsInfo" class="search-results-info">
         <span id="searchInfoText"></span>
         <button type="button" onclick="clearSearch()">Clear Search</button>
@@ -248,18 +267,20 @@
     </div>
   </section>
 
-  <!-- ===== MARKETPLACE LAYOUT ===== -->
+  <!-- ===== MARKETPLACE ===== -->
   <div class="container marketplace-layout">
-    
-    <!-- FILTERS SIDEBAR -->
+
+    <!-- FILTERS -->
     <aside class="filters-sidebar">
       <div class="filter-group">
         <div class="filter-title">Category</div>
-        <div class="filter-options">
+        <div class="filter-options" id="categoryFilters">
           <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="Website & Development"> Website & Development</label>
           <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="Marketing"> Marketing</label>
           <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="Video & Animation"> Video & Animation</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="Design & Creative"> Design & Creative</label>
           <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="AI Automation"> AI Automation</label>
+          <label class="filter-checkbox"><input type="checkbox" class="filter-category" value="Writing & Translation"> Writing & Translation</label>
         </div>
       </div>
 
@@ -291,7 +312,7 @@
       </div>
     </aside>
 
-    <!-- RESULTS AREA -->
+    <!-- RESULTS -->
     <main>
       <div class="results-header">
         <div class="results-count">Showing <span id="gigCount">0</span> gigs</div>
@@ -300,14 +321,12 @@
           <select id="sortSelect">
             <option value="recommended">Recommended</option>
             <option value="rating">Top Rated</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
           </select>
         </div>
       </div>
-
-      <!-- GIG GRID CONTAINER -->
-      <div class="gig-grid" id="gigGrid">
-        <!-- Cards injected via JavaScript -->
-      </div>
+      <div class="gig-grid" id="gigGrid"></div>
     </main>
   </div>
 
@@ -366,7 +385,7 @@
             <div class="vert-footer-col">
               <h4>Explore</h4>
               <ul>
-                <li><a href="#">Explore services</a></li>
+                <li><a href="service.html">Explore services</a></li>
                 <li><a href="#">Find freelancers</a></li>
                 <li><a href="#">Hire the agency</a></li>
                 <li><a href="#">How it works</a></li>
@@ -380,7 +399,7 @@
                 <li><a href="#">Join as freelancer</a></li>
                 <li><a href="#">Get verified</a></li>
                 <li><a href="#">Build your gig</a></li>
-                <li><a href="#">Freelancer </a></li>
+                <li><a href="#">Freelancer</a></li>
               </ul>
             </div>
 
@@ -420,200 +439,252 @@
     </div>
   </footer>
 
-  <!-- ===== FIREBASE & DATA LOGIC ===== -->
+  <!-- ===== FIREBASE + LOGIC ===== -->
   <script type="module">
-    // --- Mock Data ---
-    const mockGigs = [
-      {
-        id: "gig1",
-        title: "I will design a premium fintech app UI/UX in Figma",
-        description: "Looking for a modern, clean, and user-friendly interface for your fintech app? I specialize in Figma designs for banking and financial platforms.",
-        category: "Website & Development",
-        tags: ["Figma", "UI/UX", "Fintech", "Mobile App"],
-        budget: 800,
-        coverImage: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=800&auto=format&fit=crop",
-        freelancer: { name: "Amara Okafor", photo: "https://randomuser.me/api/portraits/women/44.jpg", rating: 4.9, reviews: 132, online: true, verified: true }
-      },
-      {
-        id: "gig2",
-        title: "I will build a high-converting Webflow website for your SaaS",
-        description: "Get a fast, responsive, and SEO-optimized Webflow site for your SaaS business. I handle everything from design to deployment.",
-        category: "Website & Development",
-        tags: ["Webflow", "SaaS", "SEO", "Web Design"],
-        budget: 1500,
-        coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop",
-        freelancer: { name: "Daniel Mensah", photo: "https://randomuser.me/api/portraits/men/32.jpg", rating: 4.8, reviews: 97, online: false, verified: true }
-      },
-      {
-        id: "gig3",
-        title: "I will create viral TikTok ad creatives for your beauty brand",
-        description: "Stop the scroll with high-energy, engaging TikTok ads. I edit videos specifically for beauty and skincare brands to boost conversions.",
-        category: "Marketing",
-        tags: ["TikTok", "Beauty", "Video Ads", "Social Media"],
-        budget: 350,
-        coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop",
-        freelancer: { name: "Zainab Bello", photo: "https://randomuser.me/api/portraits/women/68.jpg", rating: 4.9, reviews: 176, online: true, verified: true }
-      },
-      {
-        id: "gig4",
-        title: "I will build custom AI chatbots to automate your customer support",
-        description: "Save hours of manual work. I build intelligent AI chatbots integrated with your website to handle customer queries 24/7.",
-        category: "AI Automation",
-        tags: ["AI", "Chatbots", "Automation", "Python"],
-        budget: 2500,
-        coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop",
-        freelancer: { name: "Kenji Tanaka", photo: "https://randomuser.me/api/portraits/men/45.jpg", rating: 4.8, reviews: 67, online: true, verified: true }
-      },
-      {
-        id: "gig5",
-        title: "I will edit your YouTube videos with premium motion graphics",
-        description: "Take your YouTube channel to the next level with professional editing, sound design, and custom motion graphics.",
-        category: "Video & Animation",
-        tags: ["Video Editing", "Motion Graphics", "YouTube", "After Effects"],
-        budget: 400,
-        coverImage: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=800&auto=format&fit=crop",
-        freelancer: { name: "Sofia Rossi", photo: "https://randomuser.me/api/portraits/women/90.jpg", rating: 4.9, reviews: 112, online: false, verified: true }
-      },
-      {
-        id: "gig6",
-        title: "I will write SEO-optimized content for your B2B SaaS blog",
-        description: "Drive organic traffic to your SaaS website with high-quality, researched, and keyword-optimized blog posts.",
-        category: "Marketing",
-        tags: ["Copywriting", "SEO", "B2B", "Content Writing"],
-        budget: 250,
-        coverImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
-        freelancer: { name: "Sarah Jenkins", photo: "https://randomuser.me/api/portraits/women/12.jpg", rating: 5.0, reviews: 203, online: true, verified: true }
-      },
-      {
-        id: "gig7",
-        title: "I will develop a custom WordPress e-commerce store",
-        description: "Get a fully functional, beautifully designed WordPress WooCommerce store that is ready to sell. Includes theme customization and product setup.",
-        category: "Website & Development",
-        tags: ["WordPress", "E-commerce", "Web Development", "Store Setup"],
-        budget: 1200,
-        coverImage: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=800&auto=format&fit=crop",
-        freelancer: { name: "Kwame Adeyemi", photo: "https://randomuser.me/api/portraits/men/75.jpg", rating: 4.7, reviews: 145, online: true, verified: true }
-      }
-    ];
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import {
+      getFirestore, collection, query, where, onSnapshot,
+      doc, getDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // --- State Variables ---
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsL6tQHjXqTK0NTSDgb6SMS_1_ode2whQ",
+      authDomain: "vertted-28f7f.firebaseapp.com",
+      projectId: "vertted-28f7f",
+      storageBucket: "vertted-28f7f.firebasestorage.app",
+      messagingSenderId: "912377837951",
+      appId: "1:912377837951:web:c5550721e51b2a3a5f824a",
+      measurementId: "G-Q4FQ96Q25T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ==========================================
+    // State
+    // ==========================================
+    let allGigs = [];                 // raw live gigs from Firestore
+    let sellerCache = {};             // uid -> profile data
+    let reviewsCache = {};            // uid -> { rating, count }
     let currentSearchQuery = '';
     let extractedKeywords = [];
-    
-    // --- DOM Elements ---
-    const grid = document.getElementById('gigGrid');
-    const countElement = document.getElementById('gigCount');
-    const searchResultsInfo = document.getElementById('searchResultsInfo');
-    const searchInfoText = document.getElementById('searchInfoText');
-    
-    // --- Helper: Tokenize and filter search query ---
+    let unsubGigs = null;
+
+    const $ = (id) => document.getElementById(id);
+    const grid = $('gigGrid');
+    const countElement = $('gigCount');
+    const searchResultsInfo = $('searchResultsInfo');
+    const searchInfoText = $('searchInfoText');
+
+    // ==========================================
+    // Helpers
+    // ==========================================
+    function initialsAvatar(name) {
+      const letter = (name || 'U').trim().charAt(0).toUpperCase();
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
+      return 'data:image/svg+xml;utf8,' + svg;
+    }
+    function escapeHTML(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function escapeAttr(s) {
+      return String(s ?? '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
     function getKeywords(query) {
-      const stopWords = ['a', 'an', 'the', 'for', 'my', 'i', 'will', 'need', 'want', 'to', 'and', 'in', 'on', 'with', 'of', 'is', 'are', 'do', 'does', 'can', 'you', 'me', 'we', 'us', 'our', 'your'];
+      const stopWords = ['a','an','the','for','my','i','will','need','want','to','and','in','on','with','of','is','are','do','does','can','you','me','we','us','our','your'];
       return query.toLowerCase()
-        .replace(/[^\w\s]/g, '') // Remove punctuation
-        .split(/\s+/) // Split by spaces
-        .filter(word => word.length > 1 && !stopWords.includes(word)); // Remove short and stop words
+        .replace(/[^\w\s]/g, '')
+        .split(/\s+/)
+        .filter(w => w.length > 1 && !stopWords.includes(w));
+    }
+    function getStartingPrice(g) {
+      if (g.startingPrice && Number(g.startingPrice) > 0) return Number(g.startingPrice);
+      const pk = g.packages || {};
+      const prices = ['basic','standard','premium']
+        .map(t => pk[t] && pk[t].enabled ? Number(pk[t].price) : 0)
+        .filter(n => n > 0);
+      return prices.length ? Math.min(...prices) : 0;
+    }
+    function hasPackages(g) {
+      const pk = g.packages || {};
+      return ['basic','standard','premium'].some(t => pk[t]?.enabled && Number(pk[t]?.price) > 0);
     }
 
-    // --- Initialization: Read URL Params ---
+    // ==========================================
+    // Load live gigs
+    // ==========================================
+    function loadGigs() {
+      if (unsubGigs) unsubGigs();
+      const q = query(collection(db, 'gigs'), where('status', '==', 'live'));
+      renderSkeletons();
+      unsubGigs = onSnapshot(q, async (snap) => {
+        allGigs = [];
+        snap.forEach(d => allGigs.push({ id: d.id, ...d.data() }));
+        // newest first
+        allGigs.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+        // Enrich with seller + review stats (batched)
+        await enrichGigs(allGigs);
+        applyFilters();
+      }, (err) => {
+        console.error('gigs listener', err);
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-triangle-exclamation"></i>
+            <h3>Could not load gigs</h3>
+            <p>Please refresh the page and try again.</p>
+            <button type="button" onclick="window.location.reload()">Retry</button>
+          </div>
+        `;
+      });
+    }
+
+    async function enrichGigs(gigs) {
+      // Fetch seller profiles not already cached
+      const needSellers = [...new Set(
+        gigs.map(g => g.ownerUid).filter(uid => uid && !sellerCache[uid])
+      )];
+      await Promise.all(needSellers.map(async uid => {
+        try {
+          const p = await getDoc(doc(db, 'profiles', uid));
+          sellerCache[uid] = p.exists() ? p.data() : null;
+        } catch (e) {
+          sellerCache[uid] = null;
+        }
+      }));
+
+      // Fetch review aggregates for seller ratings on cards
+      const needReviews = [...new Set(
+        gigs.map(g => g.ownerUid).filter(uid => uid && !reviewsCache[uid])
+      )];
+      await Promise.all(needReviews.map(async uid => {
+        try {
+          // Use approved reviews only
+          const rs = await new Promise((resolve, reject) => {
+            const qr = query(
+              collection(db, 'reviews'),
+              where('freelancerUid', '==', uid),
+              where('status', '==', 'approved')
+            );
+            // one-shot read via onSnapshot first emission, or getDocs
+            import('https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js')
+              .then(({ getDocs }) => getDocs(qr).then(resolve).catch(reject));
+          });
+          let sum = 0, count = 0;
+          rs.forEach(d => {
+            sum += Number(d.data().rating) || 0;
+            count++;
+          });
+          reviewsCache[uid] = { rating: count ? sum / count : 0, count };
+        } catch (e) {
+          reviewsCache[uid] = { rating: 0, count: 0 };
+        }
+      }));
+    }
+
+    // ==========================================
+    // Init from URL
+    // ==========================================
     function init() {
       const urlParams = new URLSearchParams(window.location.search);
-      const query = urlParams.get('q');
-      
-      if (query) {
-        currentSearchQuery = query;
-        extractedKeywords = getKeywords(query);
-        
-        document.getElementById('headerSearchInput').value = query;
-        
-        // Update header text
-        document.querySelector('.page-header h1').textContent = `Results for "${query}"`;
-        
-        if (extractedKeywords.length > 0) {
+      const q = urlParams.get('q');
+      const cat = urlParams.get('category');
+
+      if (q) {
+        currentSearchQuery = q;
+        extractedKeywords = getKeywords(q);
+        $('headerSearchInput').value = q;
+        $('pageTitle').textContent = `Results for "${q}"`;
+        if (extractedKeywords.length) {
           searchInfoText.textContent = `Showing matches for: ${extractedKeywords.join(', ')}`;
           searchResultsInfo.style.display = 'flex';
-          searchResultsInfo.style.alignItems = 'center';
         }
       }
-      
-      applyFilters();
+
+      if (cat) {
+        const box = document.querySelector(`.filter-category[value="${CSS.escape(cat)}"]`);
+        if (box) box.checked = true;
+      }
+
+      loadGigs();
     }
 
-    // --- Filtering Logic ---
+    // ==========================================
+    // Filter + sort + render
+    // ==========================================
     function applyFilters() {
-      // 1. Get active filters
       const selectedCategories = Array.from(document.querySelectorAll('.filter-category:checked')).map(cb => cb.value);
       const selectedBudgets = Array.from(document.querySelectorAll('.filter-budget:checked')).map(cb => cb.value);
       const selectedRatings = Array.from(document.querySelectorAll('.filter-rating:checked')).map(cb => parseFloat(cb.value));
       const selectedAvailability = Array.from(document.querySelectorAll('.filter-availability:checked')).map(cb => cb.value);
-      
-      const sortBy = document.getElementById('sortSelect').value;
+      const sortBy = $('sortSelect').value;
 
-      // 2. Filter the array
-      let filtered = mockGigs.map(gig => {
-        // Calculate search score
+      // Compute search score once
+      const scored = allGigs.map(g => {
+        const seller = sellerCache[g.ownerUid] || {};
+        const reviews = reviewsCache[g.ownerUid] || { rating: 0, count: 0 };
+        const price = getStartingPrice(g);
         let searchScore = 0;
         if (extractedKeywords.length > 0) {
-          const searchableText = `${gig.title} ${gig.description} ${gig.category} ${gig.tags.join(' ')}`.toLowerCase();
-          
-          extractedKeywords.forEach(kw => {
-            if (searchableText.includes(kw)) searchScore++;
-          });
+          const haystack = `${g.title || ''} ${g.description || ''} ${g.category || ''} ${(g.tags || []).join(' ')}`.toLowerCase();
+          extractedKeywords.forEach(kw => { if (haystack.includes(kw)) searchScore++; });
         }
+        return { ...g, _seller: seller, _reviews: reviews, _price: price, _searchScore: searchScore };
+      });
 
-        return { ...gig, searchScore };
-      }).filter(gig => {
-        // Search Query Filter (Must match at least 1 keyword if query exists)
-        if (extractedKeywords.length > 0 && gig.searchScore === 0) {
-          return false;
-        }
-
-        // Category Filter
-        if (selectedCategories.length > 0 && !selectedCategories.includes(gig.category)) {
-          return false;
-        }
-
-        // Budget Filter
+      // Filter
+      const filtered = scored.filter(g => {
+        if (extractedKeywords.length > 0 && g._searchScore === 0) return false;
+        if (selectedCategories.length > 0 && !selectedCategories.includes(g.category)) return false;
         if (selectedBudgets.length > 0) {
-          let matchesBudget = false;
-          for (let range of selectedBudgets) {
-            const [min, max] = range.split('-').map(Number);
-            if (gig.budget >= min && gig.budget <= max) {
-              matchesBudget = true;
-              break;
-            }
-          }
-          if (!matchesBudget) return false;
+          const match = selectedBudgets.some(r => {
+            const [min, max] = r.split('-').map(Number);
+            return g._price >= min && g._price <= max;
+          });
+          if (!match) return false;
         }
-
-        // Rating Filter (If any selected, must match the highest selected)
         if (selectedRatings.length > 0) {
-          const maxSelectedRating = Math.max(...selectedRatings);
-          if (gig.freelancer.rating < maxSelectedRating) return false;
+          const maxSelected = Math.max(...selectedRatings);
+          if ((g._reviews.rating || 0) < maxSelected) return false;
         }
-
-        // Availability Filter
         if (selectedAvailability.length > 0) {
-          if (selectedAvailability.includes('online') && !gig.freelancer.online) return false;
-          if (selectedAvailability.includes('verified') && !gig.freelancer.verified) return false;
+          if (selectedAvailability.includes('online') && g._seller.online === false) return false;
+          // "verified": profiles where the doc exists (Freelancer got one when signing up) — you can tighten later
+          if (selectedAvailability.includes('verified') && !sellerCache[g.ownerUid]) return false;
         }
-
         return true;
       });
 
-      // 3. Sort
+      // Sort
       if (sortBy === 'rating') {
-        filtered.sort((a, b) => b.freelancer.rating - a.freelancer.rating);
+        filtered.sort((a, b) => (b._reviews.rating || 0) - (a._reviews.rating || 0));
+      } else if (sortBy === 'price-low') {
+        filtered.sort((a, b) => a._price - b._price);
+      } else if (sortBy === 'price-high') {
+        filtered.sort((a, b) => b._price - a._price);
       } else if (currentSearchQuery) {
-        // If there's a search query, sort by search relevance first
-        filtered.sort((a, b) => b.searchScore - a.searchScore);
+        filtered.sort((a, b) => b._searchScore - a._searchScore);
       }
 
-      // 4. Render
       renderGigs(filtered);
     }
 
-    // --- Render Function ---
+    // ==========================================
+    // Render
+    // ==========================================
+    function renderSkeletons() {
+      grid.innerHTML = Array.from({ length: 4 }).map(() => `
+        <div class="skeleton-card">
+          <div class="skeleton skeleton-cover"></div>
+          <div class="skeleton-body">
+            <div class="skeleton skeleton-line short"></div>
+            <div class="skeleton skeleton-line medium"></div>
+            <div class="skeleton skeleton-line"></div>
+            <div class="skeleton skeleton-line short"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
     function renderGigs(gigs) {
       countElement.textContent = gigs.length;
       grid.innerHTML = '';
@@ -630,89 +701,100 @@
         return;
       }
 
-      gigs.forEach(gig => {
-        const card = document.createElement('div');
-        card.className = 'gig-card';
-        
-        // Highlight matching tags
-        const tagsHTML = gig.tags.map(tag => {
-          // Check if any extracted keyword matches the tag
-          const isHighlighted = extractedKeywords.some(kw => tag.toLowerCase().includes(kw));
-          return `<span class="${isHighlighted ? 'highlighted' : ''}">${tag}</span>`;
+      grid.innerHTML = gigs.map(g => {
+        const seller = g._seller || {};
+        const reviews = g._reviews || { rating: 0, count: 0 };
+        const online = seller.online !== false;
+        const verified = !!sellerCache[g.ownerUid];
+        const price = g._price;
+
+        // Cover
+        let coverHtml;
+        if (g.coverUrl && g.coverType === 'video') {
+          coverHtml = `<video src="${escapeAttr(g.coverUrl)}" muted playsinline></video>`;
+        } else if (g.coverUrl) {
+          coverHtml = `<img src="${escapeAttr(g.coverUrl)}" alt="${escapeAttr(g.title || '')}" loading="lazy">`;
+        } else {
+          coverHtml = `<div class="gig-cover-placeholder"><i class="fas fa-image"></i></div>`;
+        }
+
+        // Tag highlights based on keyword match
+        const tagSlice = (g.tags || []).slice(0, 5);
+        const tagsHTML = tagSlice.map(t => {
+          const hl = extractedKeywords.some(kw => t.toLowerCase().includes(kw));
+          return `<span class="${hl ? 'highlighted' : ''}">${escapeHTML(t)}</span>`;
         }).join('');
 
-        // Online indicator
-        const onlineDot = gig.freelancer.online 
-          ? `<span class="online-indicator" title="Online now"></span>` 
-          : '';
+        const ratingHTML = reviews.count > 0
+          ? `<div class="rating"><i class="fas fa-star"></i> ${reviews.rating.toFixed(1)} (${reviews.count})</div>`
+          : `<div class="rating"><span class="no-reviews">No reviews yet</span></div>`;
 
-        card.innerHTML = `
-          <img src="${gig.coverImage}" alt="${gig.title}" class="gig-cover" loading="lazy">
-          <div class="gig-content">
-            <div class="gig-category">${gig.category}</div>
-            <h3 class="gig-title">${gig.title}</h3>
-            <p class="gig-desc">${gig.description}</p>
-            <div class="gig-tags">${tagsHTML}</div>
-            <div class="gig-footer">
-              <div class="gig-freelancer">
-                <div class="freelancer-avatar-wrap">
-                  <img src="${gig.freelancer.photo}" alt="${gig.freelancer.name}" class="freelancer-avatar">
-                  ${onlineDot}
-                </div>
-                <div class="freelancer-info">
-                  <h4>${gig.freelancer.name}</h4>
-                  <div class="rating">
-                    <i class="fas fa-star"></i> ${gig.freelancer.rating} (${gig.freelancer.reviews})
+        return `
+          <div class="gig-card" data-gig-id="${g.id}">
+            <div class="gig-cover-wrap">
+              ${coverHtml}
+              ${hasPackages(g) ? `<span class="gig-status-badge">${(g.packages?.basic?.enabled ? 1 : 0) + (g.packages?.standard?.enabled ? 1 : 0) + (g.packages?.premium?.enabled ? 1 : 0)} package${((g.packages?.basic?.enabled ? 1 : 0) + (g.packages?.standard?.enabled ? 1 : 0) + (g.packages?.premium?.enabled ? 1 : 0)) > 1 ? 's' : ''}</span>` : ''}
+            </div>
+            <div class="gig-content">
+              <div class="gig-category">${escapeHTML(g.category || '')}</div>
+              <h3 class="gig-title">${escapeHTML(g.title || 'Untitled gig')}</h3>
+              <p class="gig-desc">${escapeHTML(g.description || '')}</p>
+              ${tagsHTML ? `<div class="gig-tags">${tagsHTML}</div>` : ''}
+              <div class="gig-footer">
+                <div class="gig-freelancer">
+                  <div class="freelancer-avatar-wrap">
+                    <img src="${seller.photoURL || initialsAvatar(seller.displayName || 'F')}" alt="${escapeAttr(seller.displayName || 'Freelancer')}" class="freelancer-avatar">
+                    ${online ? `<span class="online-indicator" title="Online now"></span>` : ''}
+                  </div>
+                  <div class="freelancer-info">
+                    <h4>${escapeHTML(seller.displayName || 'Freelancer')}${verified ? ' <i class="fas fa-check-circle" style="color:var(--green-verified);font-size:.75rem"></i>' : ''}</h4>
+                    ${ratingHTML}
                   </div>
                 </div>
-              </div>
-              <div class="gig-price">
-                <span style="font-weight: 700; color: var(--primary);">$${gig.budget}</span>
+                <div class="gig-price">
+                  ${price > 0 ? `
+                    <div class="gig-price-label">From</div>
+                    <div class="gig-price-value">$${price.toLocaleString()}</div>
+                  ` : ''}
+                </div>
               </div>
             </div>
           </div>
         `;
-        
-        card.addEventListener('click', () => {
-          alert(`Navigate to Gig Page for: ${gig.title}`);
-        });
+      }).join('');
 
-        grid.appendChild(card);
+      // Click → gig.html
+      grid.querySelectorAll('.gig-card').forEach(card => {
+        card.addEventListener('click', () => {
+          window.location.href = `gig.html?id=${card.dataset.gigId}`;
+        });
       });
     }
 
-    // --- Event Listeners ---
-    document.querySelectorAll('.filter-checkbox input').forEach(checkbox => {
-      checkbox.addEventListener('change', applyFilters);
+    // ==========================================
+    // Event listeners
+    // ==========================================
+    document.querySelectorAll('.filter-checkbox input').forEach(cb => {
+      cb.addEventListener('change', applyFilters);
     });
+    $('sortSelect').addEventListener('change', applyFilters);
 
-    document.getElementById('sortSelect').addEventListener('change', applyFilters);
-
-    // Clear Search
     window.clearSearch = function() {
       window.location.href = 'service.html';
     };
-
-    // Header Search Handler (Fixed Mobile Click)
     window.handleHeaderSearch = function() {
-      const query = document.getElementById('headerSearchInput').value.trim();
-      if (query) {
-        window.location.href = `service.html?q=${encodeURIComponent(query)}`;
-      } else {
-        window.location.href = `service.html`;
-      }
+      const q = $('headerSearchInput').value.trim();
+      window.location.href = q ? `service.html?q=${encodeURIComponent(q)}` : 'service.html';
     };
-
-    // Allow pressing 'Enter' in header search
-    document.getElementById('headerSearchInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        window.handleHeaderSearch();
-      }
+    $('headerSearchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') window.handleHeaderSearch();
     });
 
-    // Run init on load
-    init();
+    // Cleanup
+    window.addEventListener('beforeunload', () => { unsubGigs?.(); });
 
+    // Boot
+    init();
   </script>
 </body>
 </html>

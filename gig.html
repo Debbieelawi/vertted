@@ -4,13 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gig Details — Vertted</title>
-  
-  <!-- Fonts -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
@@ -21,23 +18,16 @@
     button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
     .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
 
-    /* ===== VARIABLES ===== */
     :root {
-      --primary: #1e2b4f;
-      --primary-dark: #151d36;
-      --accent: #f26b21;
-      --accent-hover: #d95b17;
-      --accent-soft: #fdf2e8;
-      --text-main: #1a1a24;
-      --text-muted: #5e5e6b;
-      --border-color: #e5e3df;
-      --white: #ffffff;
+      --primary: #1e2b4f; --primary-dark: #151d36;
+      --accent: #f26b21; --accent-hover: #d95b17; --accent-soft: #fdf2e8;
+      --text-main: #1a1a24; --text-muted: #5e5e6b;
+      --border-color: #e5e3df; --white: #ffffff;
       --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
       --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
       --shadow-lg: 0 24px 64px rgba(0,0,0,0.12);
-      --radius-pill: 50px;
-      --radius-card: 24px;
-      --green-verified: #22c55e;
+      --radius-pill: 50px; --radius-card: 24px;
+      --green-verified: #22c55e; --red: #ef4444; --amber: #f59e0b;
       --dark-bg: #0d1627;
     }
 
@@ -59,52 +49,79 @@
     .btn-primary-dark:hover { background: var(--primary-dark); transform: translateY(-1px); }
     .menu-toggle { display: none; font-size: 1.4rem; color: var(--primary); }
 
+    /* ===== PAGE STATES ===== */
+    .gig-state {
+      padding: 80px 24px;
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .gig-state-icon {
+      width: 72px; height: 72px;
+      border-radius: 20px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; margin-bottom: 18px;
+    }
+    .gig-state.error .gig-state-icon { background: #fdeaea; color: var(--red); }
+    .gig-state.loading .gig-state-icon { background: var(--accent-soft); color: var(--accent); }
+    .gig-state.unavailable .gig-state-icon { background: #fff7e6; color: var(--amber); }
+    .gig-state h2 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .gig-state p { font-size: .95rem; color: var(--text-muted); line-height: 1.6; }
+    .gig-state .gig-state-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+    .gig-state .gig-state-actions a,
+    .gig-state .gig-state-actions button {
+      padding: 12px 22px; border-radius: var(--radius-pill);
+      font-weight: 600; font-size: .9rem; transition: all .2s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .gig-state .gig-state-actions .primary { background: var(--accent); color: #fff; }
+    .gig-state .gig-state-actions .primary:hover { background: var(--accent-hover); }
+    .gig-state .gig-state-actions .ghost { background: var(--white); border: 1px solid var(--border-color); color: var(--text-main); }
+    .gig-state .gig-state-actions .ghost:hover { background: #fafaf9; }
+    .gig-spinner {
+      width: 24px; height: 24px;
+      border: 3px solid rgba(242,107,33,.25);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     /* ===== GIG PAGE LAYOUT ===== */
     .gig-page-section { padding: 40px 0 80px; }
-    
-    .breadcrumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+    .breadcrumbs { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .breadcrumbs a { color: var(--accent); font-weight: 500; transition: text-decoration 0.2s; }
     .breadcrumbs a:hover { text-decoration: underline; }
     .breadcrumbs span { color: var(--text-main); font-weight: 500; }
 
-    .gig-layout-grid {
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 40px;
-      align-items: start;
-    }
-
-    /* ===== LEFT COLUMN (Main Content) ===== */
+    .gig-layout-grid { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
     .gig-main-content { display: flex; flex-direction: column; gap: 40px; }
-    
     .gig-title { font-size: 2rem; font-weight: 700; color: var(--primary); line-height: 1.2; letter-spacing: -0.01em; }
-    
-    .gig-gallery {
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-card);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
+
+    /* Gallery */
+    .gig-gallery { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .gig-gallery-main-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #eee; overflow: hidden; }
+    .gig-gallery-main { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gig-gallery-main-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gig-gallery-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      background: #f3f2ef; color: var(--text-muted); font-size: 2.4rem;
     }
-    .gig-gallery-main { width: 100%; height: 400px; object-fit: cover; background: #eee; }
-    .gig-gallery-thumbs { display: flex; gap: 12px; padding: 12px; overflow-x: auto; background: var(--white); border-top: 1px solid var(--border-color); }
-    .gig-gallery-thumbs img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; cursor: pointer; opacity: 0.6; transition: opacity 0.2s, border 0.2s; border: 2px solid transparent; }
-    .gig-gallery-thumbs img:hover, .gig-gallery-thumbs img.active { opacity: 1; border-color: var(--accent); }
 
     .section-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 32px; box-shadow: var(--shadow-sm); }
     .section-title { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; }
-    
     .gig-description { font-size: 1rem; color: var(--text-muted); line-height: 1.7; white-space: pre-line; }
-    
     .gig-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
     .gig-tags span { background: var(--accent-soft); color: var(--accent); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; }
 
     /* FAQs */
     .faq-item { border-bottom: 1px solid var(--border-color); padding: 16px 0; }
     .faq-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .faq-question { font-size: 1rem; font-weight: 600; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-    .faq-question i { color: var(--text-muted); transition: transform 0.3s; }
-    .faq-answer { font-size: 0.95rem; color: var(--text-muted); margin-top: 12px; display: none; line-height: 1.6; }
+    .faq-question { font-size: 1rem; font-weight: 600; color: var(--primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .faq-question i { color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
+    .faq-answer { font-size: 0.95rem; color: var(--text-muted); margin-top: 12px; display: none; line-height: 1.6; white-space: pre-line; }
     .faq-item.open .faq-answer { display: block; }
     .faq-item.open .faq-question i { transform: rotate(180deg); }
 
@@ -117,61 +134,86 @@
     .review-author-info span { font-size: 0.8rem; color: var(--text-muted); }
     .review-stars { color: var(--accent); font-size: 0.9rem; margin-bottom: 8px; }
     .review-text { font-size: 0.95rem; color: var(--text-main); line-height: 1.6; }
+    .reviews-empty { font-size: .9rem; color: var(--text-muted); padding: 20px; text-align: center; background: #fafaf9; border-radius: 12px; border: 1px dashed var(--border-color); }
 
-    /* ===== RIGHT COLUMN (Sidebar) ===== */
+    /* ===== SIDEBAR ===== */
     .gig-sidebar { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 24px; }
-    
-    .seller-card {
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-card);
-      padding: 32px;
-      box-shadow: var(--shadow-md);
-      text-align: center;
-    }
-    
+    .seller-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 32px; box-shadow: var(--shadow-md); text-align: center; }
     .seller-avatar-wrap { position: relative; display: inline-block; margin-bottom: 16px; }
     .seller-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--white); box-shadow: var(--shadow-sm); }
     .seller-online-dot { position: absolute; bottom: 4px; right: 4px; width: 18px; height: 18px; background: #22c55e; border: 3px solid var(--white); border-radius: 50%; box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.3); }
-    
     .seller-name { font-size: 1.2rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; }
     .seller-name i { color: var(--green-verified); font-size: 1rem; }
     .seller-title { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
-    
     .seller-stats { display: flex; justify-content: center; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border-color); }
     .stat-item { display: flex; flex-direction: column; align-items: center; }
     .stat-value { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
     .stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-
     .btn-contact-large { width: 100%; padding: 16px 0; background: var(--accent); color: var(--white); border-radius: var(--radius-pill); font-weight: 600; font-size: 1rem; transition: background 0.2s, transform 0.1s; margin-bottom: 12px; }
     .btn-contact-large:hover { background: var(--accent-hover); transform: translateY(-1px); }
     .btn-view-profile { width: 100%; padding: 14px 0; background: var(--white); border: 1px solid var(--border-color); color: var(--text-main); border-radius: var(--radius-pill); font-weight: 600; font-size: 0.95rem; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .btn-view-profile:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
-    .gig-meta-card {
-      background: var(--white);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-card);
-      padding: 24px;
-      box-shadow: var(--shadow-sm);
-    }
+    .gig-meta-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 24px; box-shadow: var(--shadow-sm); }
     .gig-meta-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; }
     .gig-meta-row:last-child { margin-bottom: 0; }
     .gig-meta-label { color: var(--text-muted); }
     .gig-meta-value { font-weight: 600; color: var(--primary); }
+
+    /* ===== PACKAGES (new) ===== */
+    .packages-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 24px; box-shadow: var(--shadow-sm); }
+    .packages-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .packages-title { font-size: 1.05rem; font-weight: 700; color: var(--primary); }
+    .packages-subtitle { font-size: .78rem; color: var(--text-muted); margin-top: 2px; }
+    .pkg-tabs { display: flex; gap: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 16px; }
+    .pkg-tab {
+      flex: 1; padding: 12px 10px;
+      background: #fafaf9; color: var(--text-muted);
+      font-size: .82rem; font-weight: 600;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      transition: all .2s;
+      border-right: 1px solid var(--border-color);
+    }
+    .pkg-tab:last-child { border-right: none; }
+    .pkg-tab:hover:not(.active) { background: #f3f2ef; color: var(--primary); }
+    .pkg-tab.active { background: var(--accent); color: #fff; }
+    .pkg-tab .pkg-tab-name { text-transform: uppercase; letter-spacing: .04em; font-size: .72rem; font-weight: 700; }
+    .pkg-tab .pkg-tab-price { font-size: .9rem; font-weight: 700; }
+    .pkg-tab .pkg-tab-days { font-size: .68rem; opacity: .8; }
+
+    .pkg-details {
+      padding: 14px;
+      background: #fafaf9;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    .pkg-details .pkg-scope {
+      font-size: .88rem; color: var(--text-main);
+      line-height: 1.55;
+      margin-bottom: 10px;
+      white-space: pre-line;
+    }
+    .pkg-details .pkg-meta {
+      display: flex; gap: 14px; flex-wrap: wrap;
+      font-size: .82rem; color: var(--text-muted);
+    }
+    .pkg-details .pkg-meta span { display: inline-flex; align-items: center; gap: 5px; }
+    .pkg-details .pkg-meta i { color: var(--accent); font-size: .78rem; }
+    .pkg-details .pkg-meta strong { color: var(--primary); font-weight: 700; }
 
     /* ===== MORE GIGS STRIP ===== */
     .more-gigs-section { margin-top: 60px; border-top: 1px solid var(--border-color); padding-top: 60px; }
     .more-gigs-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
     .more-gigs-header h2 { font-size: 1.8rem; font-weight: 700; color: var(--primary); }
     .more-gigs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    
     .gig-card { background: var(--white); border: 1px solid var(--border-color); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; cursor: pointer; }
     .gig-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: #d0cdc7; }
     .gig-cover { width: 100%; height: 160px; object-fit: cover; background: #eee; }
     .gig-content { padding: 16px; display: flex; flex-direction: column; flex: 1; }
     .gig-category { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
     .gig-title-small { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; line-height: 1.3; flex: 1; }
+    .gig-price-hint { font-size: .78rem; color: var(--text-muted); margin-bottom: 10px; }
+    .gig-price-hint strong { color: var(--primary); font-weight: 700; font-size: .9rem; }
     .gig-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: auto; }
     .gig-freelancer { display: flex; align-items: center; gap: 8px; }
     .freelancer-avatar-wrap { position: relative; display: inline-block; flex-shrink: 0; }
@@ -181,7 +223,7 @@
     .freelancer-info .rating { font-size: 0.65rem; color: var(--text-muted); display: flex; align-items: center; gap: 2px; }
     .freelancer-info .rating i { color: var(--accent); }
 
-    /* ===== CHATBOT & FOOTER (Reused) ===== */
+    /* ===== CHATBOT & FOOTER ===== */
     .floating-chat-widget { position: fixed; bottom: 32px; right: 32px; width: 60px; height: 60px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 1.6rem; box-shadow: 0 8px 32px rgba(242, 107, 33, 0.4); cursor: pointer; z-index: 998; transition: transform 0.2s, background 0.2s; }
     .floating-chat-widget:hover { transform: translateY(-4px); background: var(--accent-hover); }
     .chatbot-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.2); backdrop-filter: blur(2px); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s; }
@@ -207,8 +249,7 @@
     .chatbot-input-area input:focus { border-color: var(--primary); }
     .chatbot-send-btn { background: var(--accent); color: var(--white); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
     .chatbot-send-btn:hover { background: var(--accent-hover); }
-    
-    /* Footer CSS stays exactly as provided */
+
     .vert-footer { background: var(--dark-bg); color: #e8e6e1; position: relative; overflow: hidden; font-size: 0.9rem; margin-top: 80px; }
     .vert-footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(242, 107, 33, 0.55), transparent); }
     .vert-footer::after { content: ''; position: absolute; top: -220px; right: -220px; width: 620px; height: 620px; background: radial-gradient(circle, rgba(242, 107, 33, 0.14), transparent 60%); border-radius: 50%; pointer-events: none; z-index: 0; }
@@ -254,15 +295,6 @@
     .vert-footer-contact-list li i { color: #f26b21; font-size: 0.85rem; margin-top: 3px; flex-shrink: 0; width: 16px; }
     .vert-footer-contact-list li a { color: rgba(255, 255, 255, 0.75); transition: color 0.2s; }
     .vert-footer-contact-list li a:hover { color: #f26b21; }
-    .vert-footer-newsletter { padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
-    .vert-footer-newsletter label { display: block; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: #f26b21; margin-bottom: 12px; }
-    .vert-footer-newsletter-row { display: flex; align-items: stretch; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-pill); overflow: hidden; transition: border-color 0.2s; }
-    .vert-footer-newsletter-row:focus-within { border-color: #f26b21; }
-    .vert-footer-newsletter-row input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; padding: 12px 20px; color: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.85rem; }
-    .vert-footer-newsletter-row input::placeholder { color: rgba(255, 255, 255, 0.4); }
-    .vert-footer-newsletter-row button { background: #f26b21; border: 0; color: #ffffff; padding: 0 22px; font-size: 0.9rem; transition: background 0.2s; cursor: pointer; display: flex; align-items: center; }
-    .vert-footer-newsletter-row button:hover { background: #d95b17; }
-    .vert-footer-newsletter-note { font-size: 0.72rem; color: rgba(255, 255, 255, 0.4); margin-top: 10px; letter-spacing: 0.02em; }
     .vert-footer-trust { display: flex; gap: 20px; flex-wrap: wrap; padding: 30px 0 0; margin-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
     .vert-footer-trust-item { display: inline-flex; align-items: center; gap: 10px; font-size: 0.82rem; color: rgba(255, 255, 255, 0.6); font-weight: 500; }
     .vert-footer-trust-item i { color: #f26b21; font-size: 0.9rem; }
@@ -273,7 +305,24 @@
     .vert-footer-legal a { font-size: 0.8rem; color: rgba(255, 255, 255, 0.5); transition: color 0.2s; }
     .vert-footer-legal a:hover { color: #f26b21; }
 
-    /* ===== RESPONSIVE ===== */
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--primary); color: #fff;
+      padding: 14px 22px; border-radius: 12px;
+      font-size: .9rem; font-weight: 500;
+      box-shadow: var(--shadow-md);
+      transform: translateY(120%); opacity: 0;
+      transition: all .3s ease;
+      z-index: 9999;
+      display: flex; align-items: center; gap: 10px;
+      max-width: calc(100vw - 48px);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.error { background: var(--red); }
+    .toast.success { background: var(--green-verified); }
+
+    /* Responsive */
     @media (max-width: 1024px) {
       .gig-layout-grid { grid-template-columns: 1fr; }
       .gig-sidebar { position: relative; top: 0; }
@@ -281,17 +330,14 @@
     }
     @media (max-width: 900px) {
       .header-search-wrapper { display: none; }
-      .nav-links { display: none; }
       .menu-toggle { display: block; }
       .header-actions .btn-signin { display: none; }
     }
     @media (max-width: 768px) {
       .more-gigs-grid { grid-template-columns: 1fr; }
       .gig-title { font-size: 1.6rem; }
-      .gig-gallery-main { height: 300px; }
       .section-card { padding: 24px; }
       .seller-card { padding: 24px; }
-      
       .vert-footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
       .vert-footer-brand { grid-column: 1 / -1; }
     }
@@ -314,16 +360,14 @@
       <a href="index.html" class="logo-container">
         <img src="image/vertted-logo.jpeg" alt="Vertted Logo" class="logo-img" />
       </a>
-      
       <div class="header-search-wrapper">
         <input type="text" id="headerSearchInput" placeholder="Search for services..." />
         <button type="button" class="header-search-icon-btn" onclick="handleHeaderSearch()">
           <i class="fas fa-search"></i>
         </button>
       </div>
-      
       <div class="header-actions">
-        <button class="btn-signin">Sign in</button>
+        <button class="btn-signin" onclick="window.location.href='portal/freelancer/login.html'">Sign in</button>
         <button class="btn-primary-dark">Hire The Agency</button>
         <button class="menu-toggle"><i class="fas fa-bars"></i></button>
       </div>
@@ -333,120 +377,152 @@
   <!-- ===== GIG PAGE CONTENT ===== -->
   <main class="gig-page-section">
     <div class="container">
-      
-      <!-- Breadcrumbs -->
-      <div class="breadcrumbs" id="breadcrumbs">
-        <a href="service.html">Explore Services</a>
-        <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
-        <a href="service.html" id="breadcrumbCategory">Category</a>
-        <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
-        <span id="breadcrumbTitle">Gig Title</span>
+
+      <!-- Loading -->
+      <div class="gig-state loading" id="stateLoading">
+        <div class="gig-state-icon"><span class="gig-spinner"></span></div>
+        <h2>Loading gig…</h2>
+        <p>Fetching the latest details from Vertted.</p>
       </div>
 
-      <!-- Main Grid -->
-      <div class="gig-layout-grid">
-        
-        <!-- Left Column -->
-        <div class="gig-main-content">
-          
-          <h1 class="gig-title" id="gigTitle">I will design a premium fintech app UI/UX in Figma</h1>
-          
-          <!-- Gallery -->
-          <div class="gig-gallery">
-            <img src="" alt="Gig Cover" class="gig-gallery-main" id="mainGalleryImage" />
-            <div class="gig-gallery-thumbs" id="galleryThumbs">
-              <!-- Thumbnails injected via JS -->
-            </div>
-          </div>
+      <!-- Not found / unavailable / error -->
+      <div class="gig-state error" id="stateError" style="display:none;">
+        <div class="gig-state-icon"><i class="fas fa-triangle-exclamation"></i></div>
+        <h2 id="stateErrorTitle">Gig not found</h2>
+        <p id="stateErrorMessage">The link may be wrong, or the gig was removed. Explore other services on Vertted.</p>
+        <div class="gig-state-actions">
+          <a href="service.html" class="primary"><i class="fas fa-magnifying-glass"></i> Browse services</a>
+          <a href="index.html" class="ghost"><i class="fas fa-house"></i> Go home</a>
+        </div>
+      </div>
 
-          <!-- Description & Tags -->
-          <div class="section-card">
-            <h2 class="section-title">About this gig</h2>
-            <div class="gig-description" id="gigDescription">
-              <!-- Description injected via JS -->
-            </div>
-            <div class="gig-tags" id="gigTags">
-              <!-- Tags injected via JS -->
-            </div>
-          </div>
+      <div class="gig-state unavailable" id="stateUnavailable" style="display:none;">
+        <div class="gig-state-icon"><i class="fas fa-eye-slash"></i></div>
+        <h2>This gig isn't available</h2>
+        <p>The freelancer may have paused or removed this gig. Explore other services in the same category.</p>
+        <div class="gig-state-actions">
+          <a href="service.html" class="primary"><i class="fas fa-magnifying-glass"></i> Browse services</a>
+        </div>
+      </div>
 
-          <!-- FAQs -->
-          <div class="section-card">
-            <h2 class="section-title">Frequently Asked Questions</h2>
-            <div id="gigFaqs">
-              <!-- FAQs injected via JS -->
-            </div>
-          </div>
+      <!-- Real content -->
+      <div id="gigPageContent" style="display:none;">
 
-          <!-- Reviews -->
-          <div class="section-card" id="reviewsSection">
-            <h2 class="section-title">Reviews for this gig</h2>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Showing reviews that match the tags for this service.</p>
-            <div class="reviews-grid" id="gigReviews">
-              <!-- Reviews injected via JS -->
-            </div>
-          </div>
-
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs" id="breadcrumbs">
+          <a href="service.html">Explore Services</a>
+          <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+          <a href="service.html" id="breadcrumbCategory">Category</a>
+          <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+          <span id="breadcrumbTitle">Gig Title</span>
         </div>
 
-        <!-- Right Column (Sidebar) -->
-        <aside class="gig-sidebar">
-          
-          <!-- Seller Card -->
-          <div class="seller-card">
-            <div class="seller-avatar-wrap">
-              <img src="" alt="Seller" class="seller-avatar" id="sellerAvatar" />
-              <span class="seller-online-dot" id="sellerOnlineDot"></span>
-            </div>
-            <h3 class="seller-name" id="sellerName">Amara Okafor <i class="fas fa-check-circle"></i></h3>
-            <p class="seller-title" id="sellerTitle">Figma specialist for fintech apps</p>
-            
-            <div class="seller-stats">
-              <div class="stat-item">
-                <span class="stat-value" id="sellerRating">4.9</span>
-                <span class="stat-label">Rating</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-value" id="sellerReviews">132</span>
-                <span class="stat-label">Reviews</span>
+        <div class="gig-layout-grid">
+
+          <!-- Left Column -->
+          <div class="gig-main-content">
+
+            <h1 class="gig-title" id="gigTitle">Gig Title</h1>
+
+            <!-- Gallery -->
+            <div class="gig-gallery">
+              <div class="gig-gallery-main-wrap" id="galleryMainWrap">
+                <!-- injected via JS -->
               </div>
             </div>
 
-            <button class="btn-contact-large" onclick="document.getElementById('floatingChatBtn').click()">Contact Seller</button>
-            <a href="#" class="btn-view-profile"><i class="fas fa-user"></i> View Full Profile</a>
+            <!-- Description & Tags -->
+            <div class="section-card">
+              <h2 class="section-title">About this gig</h2>
+              <div class="gig-description" id="gigDescription"></div>
+              <div class="gig-tags" id="gigTags"></div>
+            </div>
+
+            <!-- FAQs -->
+            <div class="section-card" id="faqsSection">
+              <h2 class="section-title">Frequently Asked Questions</h2>
+              <div id="gigFaqs"></div>
+            </div>
+
+            <!-- Reviews -->
+            <div class="section-card" id="reviewsSection">
+              <h2 class="section-title">Reviews for this gig</h2>
+              <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Verified reviews from past clients.</p>
+              <div class="reviews-grid" id="gigReviews"></div>
+            </div>
+
           </div>
 
-          <!-- Gig Meta -->
-          <div class="gig-meta-card">
-            <div class="gig-meta-row">
-              <span class="gig-meta-label">Starting Budget</span>
-              <span class="gig-meta-value" id="gigBudget">$800</span>
+          <!-- Right Column (Sidebar) -->
+          <aside class="gig-sidebar">
+
+            <!-- Packages -->
+            <div class="packages-card" id="packagesCard">
+              <div class="packages-header">
+                <div>
+                  <div class="packages-title">Choose a package</div>
+                  <div class="packages-subtitle" id="packagesSubtitle">Pick the tier that fits your project.</div>
+                </div>
+              </div>
+              <div class="pkg-tabs" id="pkgTabs"></div>
+              <div class="pkg-details" id="pkgDetails"></div>
             </div>
-            <div class="gig-meta-row">
-              <span class="gig-meta-label">Delivery Time</span>
-              <span class="gig-meta-value" id="gigDelivery">7 Days</span>
+
+            <!-- Seller Card -->
+            <div class="seller-card">
+              <div class="seller-avatar-wrap">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23e5e3df'/></svg>" alt="Seller" class="seller-avatar" id="sellerAvatar" />
+                <span class="seller-online-dot" id="sellerOnlineDot"></span>
+              </div>
+              <h3 class="seller-name" id="sellerName">— <i class="fas fa-check-circle"></i></h3>
+              <p class="seller-title" id="sellerTitle">—</p>
+              <div class="seller-stats">
+                <div class="stat-item">
+                  <span class="stat-value" id="sellerRating">—</span>
+                  <span class="stat-label">Rating</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value" id="sellerReviews">—</span>
+                  <span class="stat-label">Reviews</span>
+                </div>
+              </div>
+              <button class="btn-contact-large" id="contactSellerBtn">Contact Seller</button>
+              <a href="#" class="btn-view-profile" id="viewProfileBtn"><i class="fas fa-user"></i> View Full Profile</a>
             </div>
-            <div class="gig-meta-row">
-              <span class="gig-meta-label">Category</span>
-              <span class="gig-meta-value" id="gigCategoryMeta">Website & Development</span>
+
+            <!-- Gig Meta -->
+            <div class="gig-meta-card">
+              <div class="gig-meta-row">
+                <span class="gig-meta-label">Starting at</span>
+                <span class="gig-meta-value" id="gigStartingPrice">—</span>
+              </div>
+              <div class="gig-meta-row">
+                <span class="gig-meta-label">Delivery</span>
+                <span class="gig-meta-value" id="gigDelivery">—</span>
+              </div>
+              <div class="gig-meta-row">
+                <span class="gig-meta-label">Category</span>
+                <span class="gig-meta-value" id="gigCategoryMeta">—</span>
+              </div>
+              <div class="gig-meta-row" id="gigSelectedPkgRow" style="display:none;">
+                <span class="gig-meta-label">Selected</span>
+                <span class="gig-meta-value" id="gigSelectedPkg">—</span>
+              </div>
             </div>
+
+          </aside>
+        </div>
+
+        <!-- More Gigs Strip -->
+        <div class="more-gigs-section" id="moreGigsSection" style="display:none;">
+          <div class="more-gigs-header">
+            <h2>More gigs for your search</h2>
+            <a href="service.html" style="color: var(--accent); font-weight: 600; font-size: 0.95rem;">View all <i class="fas fa-arrow-right"></i></a>
           </div>
-
-        </aside>
+          <div class="more-gigs-grid" id="moreGigsGrid"></div>
+        </div>
 
       </div>
-
-      <!-- More Gigs Strip -->
-      <div class="more-gigs-section">
-        <div class="more-gigs-header">
-          <h2>More gigs for your search</h2>
-          <a href="service.html" style="color: var(--accent); font-weight: 600; font-size: 0.95rem;">View all <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="more-gigs-grid" id="moreGigsGrid">
-          <!-- Related gigs injected via JS -->
-        </div>
-      </div>
-
     </div>
   </main>
 
@@ -582,226 +658,556 @@
     </div>
   </div>
 
-  <!-- ===== JAVASCRIPT & FIREBASE SETUP ===== -->
+  <!-- Toast -->
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+  <!-- ===== FIREBASE + RENDER ===== -->
   <script type="module">
-    // ==========================================
-    // 1. FIREBASE SETUP (Commented out for static preview)
-    // ==========================================
-    /*
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, collection, query, where, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, collection, query, where,
+      getDocs, limit, addDoc, updateDoc, increment, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-      appId: "YOUR_APP_ID"
+      apiKey: "AIzaSyDsL6tQHjXqTK0NTSDgb6SMS_1_ode2whQ",
+      authDomain: "vertted-28f7f.firebaseapp.com",
+      projectId: "vertted-28f7f",
+      storageBucket: "vertted-28f7f.firebasestorage.app",
+      messagingSenderId: "912377837951",
+      appId: "1:912377837951:web:c5550721e51b2a3a5f824a",
+      measurementId: "G-Q4FQ96Q25T"
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
-    */
 
     // ==========================================
-    // 2. MOCK DATA (For UI Preview)
+    // State
     // ==========================================
-    const mockGigs = {
-      gig1: {
-        id: "gig1",
-        title: "I will design a premium fintech app UI/UX in Figma",
-        category: "Website & Development",
-        description: "Looking for a modern, clean, and user-friendly interface for your fintech app? I specialize in Figma designs for banking and financial platforms.\n\nWhat you get:\n- High-fidelity Figma prototypes\n- Responsive design for iOS and Android\n- Design system and components\n- 2 rounds of revisions\n\nI have over 5 years of experience designing for top financial institutions.",
-        tags: ["Figma", "UI/UX", "Fintech", "Mobile App"],
-        budget: 800,
-        deliveryTime: "7 Days",
-        coverImage: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=1200&auto=format&fit=crop",
-        gallery: [
-          "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?q=80&w=1200&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop"
-        ],
-        seller: {
-          name: "Amara Okafor",
-          title: "Figma specialist for fintech apps",
-          photo: "https://randomuser.me/api/portraits/women/44.jpg",
-          rating: "4.9",
-          reviews: "132",
-          online: true
-        },
-        faqs: [
-          { q: "Do you provide the source Figma file?", a: "Yes, upon final delivery and approval, you will receive full access to the Figma source files." },
-          { q: "Can you work with my existing brand guidelines?", a: "Absolutely. I can adapt to your brand colors, typography, and existing design systems." }
-        ],
-        reviews: [
-          { author: "Nneoma Daniel", role: "CEO ZeniWeb", text: "Vertted made it so easy to find a skilled web developer. Amara's Figma work was exceptional.", rating: 5, avatar: "https://randomuser.me/api/portraits/women/65.jpg" },
-          { author: "Femi Ade", role: "Creator", text: "The UI/UX was perfect for our fintech app. Highly recommended.", rating: 5, avatar: "https://randomuser.me/api/portraits/men/22.jpg" }
-        ]
-      }
-    };
+    let currentUser = null;
+    let gigData = null;
+    let sellerProfile = null;
+    let selectedTier = 'basic';
+    let reviewCount = 0;
+    let avgRating = 0;
+    let clicked = false;   // only bump clicks once per session per gig
 
-    // Related gigs mock data
-    const relatedGigs = [
-      { id: "gig2", title: "I will build a high-converting Webflow website for your SaaS", category: "Website & Development", coverImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop", seller: { name: "Daniel Mensah", photo: "https://randomuser.me/api/portraits/men/32.jpg", rating: "4.8", online: false } },
-      { id: "gig3", title: "I will create viral TikTok ad creatives for your beauty brand", category: "Marketing", coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop", seller: { name: "Zainab Bello", photo: "https://randomuser.me/api/portraits/women/68.jpg", rating: "4.9", online: true } },
-      { id: "gig4", title: "I will build custom AI chatbots to automate your customer support", category: "AI Automation", coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=800&auto=format&fit=crop", seller: { name: "Kenji Tanaka", photo: "https://randomuser.me/api/portraits/men/45.jpg", rating: "4.8", online: true } }
-    ];
+    const $ = (id) => document.getElementById(id);
 
     // ==========================================
-    // 3. RENDER LOGIC
+    // Helpers
     // ==========================================
-    document.addEventListener('DOMContentLoaded', () => {
-      // Get ID from URL, default to gig1 for preview
+    const toastEl = $('toast');
+    let toastTimer;
+    function toast(msg, type = 'success') {
+      toastEl.className = `toast ${type}`;
+      $('toastMsg').textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3500);
+    }
+    function initialsAvatar(name) {
+      const letter = (name || 'U').trim().charAt(0).toUpperCase();
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
+      return 'data:image/svg+xml;utf8,' + svg;
+    }
+    function escapeHTML(s) {
+      return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function escapeAttr(s) {
+      return String(s ?? '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    }
+    function showError(title, message) {
+      $('stateLoading').style.display = 'none';
+      $('stateUnavailable').style.display = 'none';
+      $('gigPageContent').style.display = 'none';
+      $('stateErrorTitle').textContent = title;
+      $('stateErrorMessage').textContent = message;
+      $('stateError').style.display = 'block';
+    }
+    function showUnavailable() {
+      $('stateLoading').style.display = 'none';
+      $('stateError').style.display = 'none';
+      $('gigPageContent').style.display = 'none';
+      $('stateUnavailable').style.display = 'block';
+    }
+    function showContent() {
+      $('stateLoading').style.display = 'none';
+      $('stateError').style.display = 'none';
+      $('stateUnavailable').style.display = 'none';
+      $('gigPageContent').style.display = 'block';
+    }
+
+    // ==========================================
+    // Boot
+    // ==========================================
+    onAuthStateChanged(auth, (user) => {
+      currentUser = user;
+    });
+
+    (async function init() {
       const urlParams = new URLSearchParams(window.location.search);
-      const gigId = urlParams.get('id') || 'gig1';
-      
-      // In a real app, you would fetch this from Firebase:
-      // const gigRef = doc(db, "gigs", gigId);
-      // const gigSnap = await getDoc(gigRef);
-      // const gigData = gigSnap.data();
-      
-      const gigData = mockGigs[gigId] || mockGigs['gig1']; // Fallback
+      const gigId = urlParams.get('id');
+      if (!gigId) {
+        return showError('No gig specified', 'Open a gig from the marketplace to see its details here.');
+      }
 
-      // 1. Populate Header & Meta
-      document.title = `${gigData.title} — Vertted`;
-      document.getElementById('breadcrumbCategory').textContent = gigData.category;
-      document.getElementById('breadcrumbCategory').href = `service.html?q=${encodeURIComponent(gigData.category)}`;
-      document.getElementById('breadcrumbTitle').textContent = gigData.title;
-      
-      document.getElementById('gigTitle').textContent = gigData.title;
-      document.getElementById('gigDescription').textContent = gigData.description;
-      document.getElementById('gigBudget').textContent = `$${gigData.budget}`;
-      document.getElementById('gigDelivery').textContent = gigData.deliveryTime;
-      document.getElementById('gigCategoryMeta').textContent = gigData.category;
+      try {
+        const gigSnap = await getDoc(doc(db, 'gigs', gigId));
+        if (!gigSnap.exists()) {
+          return showError('Gig not found', 'The link may be wrong, or the gig was removed.');
+        }
+        gigData = { id: gigSnap.id, ...gigSnap.data() };
 
-      // 2. Populate Gallery
-      document.getElementById('mainGalleryImage').src = gigData.coverImage;
-      const thumbsContainer = document.getElementById('galleryThumbs');
-      thumbsContainer.innerHTML = gigData.gallery.map((img, index) => 
-        `<img src="${img}" class="${index === 0 ? 'active' : ''}" onclick="changeMainImage(this, '${img}')" />`
-      ).join('');
+        if (gigData.status !== 'live') {
+          return showUnavailable();
+        }
 
-      // 3. Populate Tags
-      const tagsContainer = document.getElementById('gigTags');
-      tagsContainer.innerHTML = gigData.tags.map(tag => `<span>${tag}</span>`).join('');
+        // Bump impressions (skip if owner viewing their own gig)
+        if (currentUser?.uid !== gigData.ownerUid) {
+          try {
+            await updateDoc(doc(db, 'gigs', gigId), {
+              impressions: increment(1)
+            });
+          } catch (e) { /* non-critical */ }
+        }
 
-      // 4. Populate FAQs
-      const faqContainer = document.getElementById('gigFaqs');
-      faqContainer.innerHTML = gigData.faqs.map(faq => `
-        <div class="faq-item">
-          <div class="faq-question">${faq.q} <i class="fas fa-chevron-down"></i></div>
-          <div class="faq-answer">${faq.a}</div>
+        // Fetch seller profile (public read)
+        try {
+          const pSnap = await getDoc(doc(db, 'profiles', gigData.ownerUid));
+          sellerProfile = pSnap.exists() ? pSnap.data() : null;
+        } catch (e) {
+          sellerProfile = null;
+        }
+
+        // Fetch reviews + count them for the seller card
+        await fetchReviewsAndSellerStats();
+
+        // Render everything
+        renderAll();
+        showContent();
+
+        // Now safe to load related gigs
+        fetchRelatedGigs();
+      } catch (err) {
+        console.error(err);
+        showError('Could not load gig', 'Something went wrong. Please try again in a moment.');
+      }
+    })();
+
+    // ==========================================
+    // Reviews + seller stats
+    // ==========================================
+    async function fetchReviewsAndSellerStats() {
+      try {
+        // approved reviews for this freelancer
+        const rq = query(
+          collection(db, 'reviews'),
+          where('freelancerUid', '==', gigData.ownerUid),
+          where('status', '==', 'approved'),
+          limit(50)
+        );
+        const rs = await getDocs(rq);
+        const list = [];
+        let sum = 0;
+        rs.forEach(d => {
+          const r = d.data();
+          sum += Number(r.rating) || 0;
+          list.push({ id: d.id, ...r });
+        });
+        list.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+        reviewCount = list.length;
+        avgRating = reviewCount > 0 ? (sum / reviewCount) : 0;
+        renderReviews(list.slice(0, 5));
+      } catch (e) {
+        console.warn('reviews fetch failed', e);
+        renderReviews([]);
+      }
+    }
+
+    function renderReviews(list) {
+      const container = $('gigReviews');
+      if (!list.length) {
+        container.innerHTML = `<div class="reviews-empty">No approved reviews yet — be the first to hire ${escapeHTML(sellerProfile?.displayName || 'this freelancer')}.</div>`;
+        return;
+      }
+      container.innerHTML = list.map(r => `
+        <div class="review-card">
+          <div class="review-header">
+            <img src="${r.clientAvatar || initialsAvatar(r.clientName)}" alt="${escapeAttr(r.clientName || 'Client')}" class="review-avatar">
+            <div class="review-author-info">
+              <h4>${escapeHTML(r.clientName || 'Client')}</h4>
+              <span>${r.gigTitle ? escapeHTML(r.gigTitle) : 'Verified client'}</span>
+            </div>
+          </div>
+          <div class="review-stars">${'<i class="fas fa-star"></i>'.repeat(Number(r.rating) || 0)}</div>
+          <p class="review-text">"${escapeHTML(r.text || '')}"</p>
         </div>
       `).join('');
+    }
 
-      // Add FAQ click listeners
-      document.querySelectorAll('.faq-question').forEach(btn => {
+    // ==========================================
+    // Render
+    // ==========================================
+    function renderAll() {
+      document.title = `${gigData.title || 'Gig'} — Vertted`;
+
+      // Breadcrumbs
+      $('breadcrumbCategory').textContent = gigData.category || 'Category';
+      $('breadcrumbCategory').href = `service.html?q=${encodeURIComponent(gigData.category || '')}`;
+      $('breadcrumbTitle').textContent = gigData.title || 'Gig';
+
+      // Title
+      $('gigTitle').textContent = gigData.title || 'Untitled gig';
+
+      // Gallery
+      renderGallery();
+
+      // Description
+      $('gigDescription').textContent = gigData.description || '';
+
+      // Tags
+      const tagsWrap = $('gigTags');
+      tagsWrap.innerHTML = (gigData.tags || []).map(t => `<span>${escapeHTML(t)}</span>`).join('');
+
+      // FAQs
+      const faqsWrap = $('gigFaqs');
+      const faqs = gigData.faqs || [];
+      if (!faqs.length) {
+        $('faqsSection').style.display = 'none';
+      } else {
+        $('faqsSection').style.display = '';
+        faqsWrap.innerHTML = faqs.map(f => `
+          <div class="faq-item">
+            <div class="faq-question">${escapeHTML(f.q || '')} <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">${escapeHTML(f.a || '')}</div>
+          </div>
+        `).join('');
+        faqsWrap.querySelectorAll('.faq-question').forEach(el => {
+          el.addEventListener('click', () => el.parentElement.classList.toggle('open'));
+        });
+      }
+
+      // Seller card
+      renderSellerCard();
+
+      // Packages
+      renderPackages();
+
+      // Meta
+      const start = Number(gigData.startingPrice || 0);
+      $('gigStartingPrice').textContent = start > 0 ? `$${start.toLocaleString()}` : '—';
+      $('gigDelivery').textContent = deriveShortDelivery();
+      $('gigCategoryMeta').textContent = gigData.category || '—';
+
+      // Contact button
+      $('contactSellerBtn').addEventListener('click', onContactSeller);
+
+      // View profile
+      const vpBtn = $('viewProfileBtn');
+      vpBtn.href = `freelancer.html?id=${encodeURIComponent(gigData.ownerUid)}`;
+    }
+
+    function renderGallery() {
+      const wrap = $('galleryMainWrap');
+      if (!gigData.coverUrl) {
+        wrap.innerHTML = `<div class="gig-gallery-placeholder"><i class="fas fa-image"></i></div>`;
+        return;
+      }
+      if (gigData.coverType === 'video') {
+        wrap.innerHTML = `<video src="${escapeAttr(gigData.coverUrl)}" controls playsinline></video>`;
+      } else {
+        wrap.innerHTML = `<img class="gig-gallery-main" src="${escapeAttr(gigData.coverUrl)}" alt="${escapeAttr(gigData.title || 'Gig cover')}" />`;
+      }
+    }
+
+    function renderSellerCard() {
+      const name = sellerProfile?.displayName || 'A Vertted freelancer';
+      $('sellerAvatar').src = sellerProfile?.photoURL || initialsAvatar(name);
+      $('sellerName').innerHTML = `${escapeHTML(name)} <i class="fas fa-check-circle"></i>`;
+      $('sellerTitle').textContent = sellerProfile?.headline || (gigData.category ? `${gigData.category} specialist` : '');
+
+      const online = sellerProfile?.online !== false;
+      $('sellerOnlineDot').style.display = online ? 'block' : 'none';
+
+      $('sellerRating').textContent = avgRating > 0 ? avgRating.toFixed(1) : '—';
+      $('sellerReviews').textContent = reviewCount > 0 ? reviewCount : '—';
+    }
+
+    // ==========================================
+    // Packages
+    // ==========================================
+    function normalizePackages(p) {
+      if (!p) return null;
+      return {
+        basic: {
+          enabled: true,
+          title: p.basic?.title || '',
+          price: Number(p.basic?.price) || 0,
+          days: Number(p.basic?.days) || 0
+        },
+        standard: {
+          enabled: !!p.standard?.enabled,
+          title: p.standard?.title || '',
+          price: Number(p.standard?.price) || 0,
+          days: Number(p.standard?.days) || 0
+        },
+        premium: {
+          enabled: !!p.premium?.enabled,
+          title: p.premium?.title || '',
+          price: Number(p.premium?.price) || 0,
+          days: Number(p.premium?.days) || 0
+        }
+      };
+    }
+
+    function renderPackages() {
+      const pk = normalizePackages(gigData.packages);
+      const tabs = $('pkgTabs');
+      const details = $('pkgDetails');
+      const card = $('packagesCard');
+
+      // If no packages at all, hide the card
+      const enabledTiers = pk ? ['basic', 'standard', 'premium'].filter(t => pk[t].enabled && pk[t].price > 0) : [];
+      if (enabledTiers.length === 0) {
+        card.style.display = 'none';
+        return;
+      }
+      card.style.display = '';
+
+      // Default selected to cheapest enabled
+      if (!enabledTiers.includes(selectedTier)) {
+        const cheapest = enabledTiers.reduce((min, t) => pk[t].price < pk[min].price ? t : min, enabledTiers[0]);
+        selectedTier = cheapest;
+      }
+
+      // Render tabs
+      tabs.innerHTML = enabledTiers.map(t => {
+        const active = t === selectedTier ? 'active' : '';
+        const label = { basic: 'Basic', standard: 'Standard', premium: 'Premium' }[t];
+        return `
+          <button class="pkg-tab ${active}" data-tier="${t}">
+            <span class="pkg-tab-name">${label}</span>
+            <span class="pkg-tab-price">$${pk[t].price.toLocaleString()}</span>
+            <span class="pkg-tab-days">${pk[t].days} day${pk[t].days === 1 ? '' : 's'}</span>
+          </button>
+        `;
+      }).join('');
+
+      tabs.querySelectorAll('.pkg-tab').forEach(btn => {
         btn.addEventListener('click', () => {
-          const parent = btn.parentElement;
-          parent.classList.toggle('open');
+          selectedTier = btn.dataset.tier;
+          renderPackages();
         });
       });
 
-      // 5. Populate Reviews
-      const reviewsContainer = document.getElementById('gigReviews');
-      reviewsContainer.innerHTML = gigData.reviews.map(review => `
-        <div class="review-card">
-          <div class="review-header">
-            <img src="${review.avatar}" alt="${review.author}" class="review-avatar">
-            <div class="review-author-info">
-              <h4>${review.author}</h4>
-              <span>${review.role}</span>
-            </div>
-          </div>
-          <div class="review-stars">
-            ${'<i class="fas fa-star"></i>'.repeat(review.rating)}
-          </div>
-          <p class="review-text">"${review.text}"</p>
+      // Detail body
+      const sel = pk[selectedTier];
+      const label = { basic: 'Basic', standard: 'Standard', premium: 'Premium' }[selectedTier];
+      $('packagesSubtitle').textContent = `${label} package · $${sel.price.toLocaleString()} · ${sel.days} day${sel.days === 1 ? '' : 's'}`;
+      details.innerHTML = `
+        <div class="pkg-scope">${escapeHTML(sel.title || '')}</div>
+        <div class="pkg-meta">
+          <span><i class="fas fa-tag"></i> <strong>$${sel.price.toLocaleString()}</strong></span>
+          <span><i class="fas fa-clock"></i> <strong>${sel.days}</strong> day${sel.days === 1 ? '' : 's'}</span>
         </div>
-      `).join('');
+      `;
 
-      // 6. Populate Seller Card
-      document.getElementById('sellerAvatar').src = gigData.seller.photo;
-      document.getElementById('sellerName').innerHTML = `${gigData.seller.name} <i class="fas fa-check-circle"></i>`;
-      document.getElementById('sellerTitle').textContent = gigData.seller.title;
-      document.getElementById('sellerRating').textContent = gigData.seller.rating;
-      document.getElementById('sellerReviews').textContent = gigData.seller.reviews;
-      
-      const onlineDot = document.getElementById('sellerOnlineDot');
-      if (!gigData.seller.online) {
-        onlineDot.style.display = 'none';
+      // Update meta rows
+      $('gigStartingPrice').textContent = `$${pk[enabledTiers[0]].price.toLocaleString()}`;
+      $('gigDelivery').textContent = `${pk[selectedTier].days} day${pk[selectedTier].days === 1 ? '' : 's'}`;
+      $('gigSelectedPkgRow').style.display = '';
+      $('gigSelectedPkg').textContent = `${label} · $${pk[selectedTier].price.toLocaleString()}`;
+
+      // Update Contact button label
+      $('contactSellerBtn').textContent = `Continue with ${label} · $${pk[selectedTier].price.toLocaleString()}`;
+    }
+
+    function deriveShortDelivery() {
+      const pk = normalizePackages(gigData.packages);
+      if (!pk) return '—';
+      const sel = pk[selectedTier] || pk.basic;
+      if (sel && sel.days > 0) return `${sel.days} day${sel.days === 1 ? '' : 's'}`;
+      // fallback: shortest enabled
+      const enabled = ['basic', 'standard', 'premium'].filter(t => pk[t].enabled && pk[t].days > 0);
+      if (!enabled.length) return '—';
+      const min = enabled.reduce((m, t) => pk[t].days < pk[m].days ? t : m, enabled[0]);
+      return `${pk[min].days} day${pk[min].days === 1 ? '' : 's'}`;
+    }
+
+    // ==========================================
+    // Contact seller → create/reuse thread
+    // ==========================================
+    async function onContactSeller() {
+      if (!currentUser) {
+        toast('Sign in to contact the seller.', 'error');
+        setTimeout(() => {
+          window.location.href = `portal/freelancer/login.html?next=${encodeURIComponent(location.href)}`;
+        }, 900);
+        return;
+      }
+      if (currentUser.uid === gigData.ownerUid) {
+        toast("This is your own gig — you can't message yourself.", 'error');
+        return;
       }
 
-      // 7. Populate Related Gigs
-      const relatedGrid = document.getElementById('moreGigsGrid');
-      relatedGrid.innerHTML = relatedGigs.map(gig => `
-        <div class="gig-card" onclick="window.location.href='gig.html?id=${gig.id}'">
-          <img src="${gig.coverImage}" alt="${gig.title}" class="gig-cover">
-          <div class="gig-content">
-            <div class="gig-category">${gig.category}</div>
-            <h3 class="gig-title-small">${gig.title}</h3>
-            <div class="gig-footer">
-              <div class="gig-freelancer">
-                <div class="freelancer-avatar-wrap">
-                  <img src="${gig.seller.photo}" alt="${gig.seller.name}" class="freelancer-avatar">
-                  ${gig.seller.online ? '<span class="online-indicator"></span>' : ''}
-                </div>
-                <div class="freelancer-info">
-                  <h4>${gig.seller.name}</h4>
-                  <div class="rating">
-                    <i class="fas fa-star"></i> ${gig.seller.rating}
+      const btn = $('contactSellerBtn');
+      btn.disabled = true;
+      const originalLabel = btn.textContent;
+      btn.innerHTML = `<span class="gig-spinner" style="width:16px;height:16px;border-width:2px;vertical-align:middle;margin-right:6px;"></span>Opening chat…`;
+
+      try {
+        // bump clicks (once per session)
+        if (!clicked) {
+          clicked = true;
+          try { await updateDoc(doc(db, 'gigs', gigData.id), { clicks: increment(1) }); } catch (e) {}
+        }
+
+        // Find existing thread between these two users
+        const threadsRef = collection(db, 'threads');
+        const q1 = query(
+          threadsRef,
+          where('participants', 'array-contains', currentUser.uid)
+        );
+        const snap = await getDocs(q1);
+        let existing = null;
+        snap.forEach(d => {
+          const data = d.data();
+          if (Array.isArray(data.participants)
+              && data.participants.includes(gigData.ownerUid)
+              && data.participants.length === 2) {
+            existing = { id: d.id, ...data };
+          }
+        });
+
+        let threadId;
+        if (existing) {
+          threadId = existing.id;
+        } else {
+          const pk = normalizePackages(gigData.packages);
+          const tier = pk?.[selectedTier];
+          const intro = tier
+            ? `Hi! I'm interested in your ${selectedTier} package ($${tier.price}) for "${gigData.title}".`
+            : `Hi! I'm interested in "${gigData.title}".`;
+
+          const newRef = await addDoc(threadsRef, {
+            participants: [currentUser.uid, gigData.ownerUid],
+            otherName: sellerProfile?.displayName || 'Freelancer',
+            otherAvatar: sellerProfile?.photoURL || '',
+            lastMessage: intro,
+            lastMessageAt: serverTimestamp(),
+            unreadBy: { [gigData.ownerUid]: 1 },
+            gigId: gigData.id,
+            createdAt: serverTimestamp()
+          });
+          threadId = newRef.id;
+
+          await addDoc(collection(db, 'threads', threadId, 'messages'), {
+            senderUid: currentUser.uid,
+            type: 'text',
+            text: intro,
+            createdAt: serverTimestamp()
+          });
+        }
+
+        window.location.href = `portal/freelancer/inbox.html?thread=${threadId}`;
+      } catch (err) {
+        console.error(err);
+        toast('Could not open chat — please try again.', 'error');
+        btn.disabled = false;
+        btn.textContent = originalLabel;
+      }
+    }
+
+    // ==========================================
+    // Related gigs
+    // ==========================================
+    async function fetchRelatedGigs() {
+      try {
+        const q = query(
+          collection(db, 'gigs'),
+          where('category', '==', gigData.category || ''),
+          where('status', '==', 'live'),
+          limit(6)
+        );
+        const snap = await getDocs(q);
+        const related = [];
+        snap.forEach(d => {
+          if (d.id === gigData.id) return;
+          related.push({ id: d.id, ...d.data() });
+        });
+        if (!related.length) return;
+
+        // Fetch seller profiles for these gigs in bulk (small N)
+        const profileCache = {};
+        await Promise.all(related.slice(0, 3).map(async g => {
+          if (profileCache[g.ownerUid]) return;
+          try {
+            const p = await getDoc(doc(db, 'profiles', g.ownerUid));
+            profileCache[g.ownerUid] = p.exists() ? p.data() : null;
+          } catch (e) { profileCache[g.ownerUid] = null; }
+        }));
+
+        const grid = $('moreGigsGrid');
+        grid.innerHTML = related.slice(0, 3).map(g => {
+          const s = profileCache[g.ownerUid] || {};
+          const online = s.online !== false;
+          const price = Number(g.startingPrice || g.packages?.basic?.price || 0);
+          const cover = g.coverUrl || '';
+          return `
+            <div class="gig-card" onclick="window.location.href='gig.html?id=${g.id}'">
+              ${cover
+                ? `<img src="${escapeAttr(cover)}" alt="${escapeAttr(g.title || '')}" class="gig-cover">`
+                : `<div class="gig-cover" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted)"><i class="fas fa-image" style="font-size:2rem"></i></div>`}
+              <div class="gig-content">
+                <div class="gig-category">${escapeHTML(g.category || '')}</div>
+                <h3 class="gig-title-small">${escapeHTML(g.title || '')}</h3>
+                ${price > 0 ? `<div class="gig-price-hint">From <strong>$${price.toLocaleString()}</strong></div>` : ''}
+                <div class="gig-footer">
+                  <div class="gig-freelancer">
+                    <div class="freelancer-avatar-wrap">
+                      <img src="${s.photoURL || initialsAvatar(s.displayName || 'F')}" alt="${escapeAttr(s.displayName || 'Freelancer')}" class="freelancer-avatar">
+                      ${online ? '<span class="online-indicator"></span>' : ''}
+                    </div>
+                    <div class="freelancer-info">
+                      <h4>${escapeHTML(s.displayName || 'Freelancer')}</h4>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      `).join('');
-    });
-
-    // Gallery Click Logic
-    window.changeMainImage = function(thumb, src) {
-      document.getElementById('mainGalleryImage').src = src;
-      document.querySelectorAll('.gig-gallery-thumbs img').forEach(img => img.classList.remove('active'));
-      thumb.classList.add('active');
-    };
+          `;
+        }).join('');
+        $('moreGigsSection').style.display = '';
+      } catch (e) {
+        console.warn('related gigs failed', e);
+      }
+    }
 
     // ==========================================
-    // 4. EXISTING HEADER & CHATBOT LOGIC
+    // Header search + chatbot
     // ==========================================
     window.handleHeaderSearch = function() {
-      const query = document.getElementById('headerSearchInput').value.trim();
-      if (query) {
-        window.location.href = `service.html?q=${encodeURIComponent(query)}`;
-      } else {
-        window.location.href = `service.html`;
-      }
+      const q = $('headerSearchInput').value.trim();
+      window.location.href = q ? `service.html?q=${encodeURIComponent(q)}` : 'service.html';
     };
-
-    document.getElementById('headerSearchInput').addEventListener('keypress', function(e) {
+    $('headerSearchInput').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') window.handleHeaderSearch();
     });
 
-    // Chatbot logic (same as previous)
-    const openChatBtn = document.getElementById('floatingChatBtn');
-    const closeChatBtn = document.getElementById('closeChatBtn');
-    const chatOverlay = document.getElementById('chatOverlay');
-    const chatPanel = document.getElementById('chatPanel');
-    const chatMessages = document.getElementById('chatMessages');
-    const chatInput = document.getElementById('chatInput');
-    const sendChatBtn = document.getElementById('sendChatBtn');
+    const openChatBtn = $('floatingChatBtn');
+    const closeChatBtn = $('closeChatBtn');
+    const chatOverlay = $('chatOverlay');
+    const chatPanel = $('chatPanel');
+    const chatMessages = $('chatMessages');
+    const chatInput = $('chatInput');
+    const sendChatBtn = $('sendChatBtn');
 
-    function openChat() {
-      chatPanel.classList.add('active');
-      chatOverlay.classList.add('active');
-    }
-
-    function closeChat() {
-      chatPanel.classList.remove('active');
-      chatOverlay.classList.remove('active');
-    }
-
+    function openChat() { chatPanel.classList.add('active'); chatOverlay.classList.add('active'); }
+    function closeChat() { chatPanel.classList.remove('active'); chatOverlay.classList.remove('active'); }
     openChatBtn.addEventListener('click', openChat);
     closeChatBtn.addEventListener('click', closeChat);
     chatOverlay.addEventListener('click', closeChat);
@@ -810,77 +1216,55 @@
       const msgDiv = document.createElement('div');
       msgDiv.className = `message ${sender}`;
       msgDiv.innerHTML = text;
-      
-      if (options && options.length > 0) {
+      if (options && options.length) {
         const optDiv = document.createElement('div');
         optDiv.className = 'chat-options';
         options.forEach(opt => {
-          const btn = document.createElement('button');
-          btn.className = 'chat-option-btn';
-          btn.textContent = opt;
-          btn.addEventListener('click', () => handleUserSelection(opt));
-          optDiv.appendChild(btn);
+          const b = document.createElement('button');
+          b.className = 'chat-option-btn';
+          b.textContent = opt;
+          b.addEventListener('click', () => handleUserSelection(opt));
+          optDiv.appendChild(b);
         });
         msgDiv.appendChild(optDiv);
       }
-      
       chatMessages.appendChild(msgDiv);
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
-
     function startConversation() {
-      addMessage(
-        "Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?",
-        'bot',
-        ['A freelancer', 'The agency']
-      );
+      addMessage("Hi! I'm Vertted's AI assistant. Are you looking to hire the agency or a freelancer?", 'bot', ['A freelancer', 'The agency']);
     }
-
     let chatState = 'initial';
-
     function handleUserSelection(selection) {
-      const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
-      if (lastBotMsg) lastBotMsg.remove();
+      const last = chatMessages.querySelector('.message.bot:last-child .chat-options');
+      if (last) last.remove();
       addMessage(selection, 'user');
-
       setTimeout(() => {
         if (chatState === 'initial') {
           if (selection === 'A freelancer') {
             chatState = 'choosing_service';
-            addMessage(
-              "Awesome! Which service: Website & Development, Marketing, or Video & Animation?",
-              'bot',
-              ['Website & Development', 'Marketing', 'Video & Animation']
-            );
+            addMessage("Awesome! Which service: Website & Development, Marketing, or Video & Animation?", 'bot', ['Website & Development', 'Marketing', 'Video & Animation']);
           } else {
             chatState = 'agency_selected';
-            addMessage(
-              "Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.",
-              'bot'
-            );
+            addMessage("Great choice! Our agency will handle everything for you. Please let us know a brief overview of your project, and we'll get back to you shortly.", 'bot');
           }
         } else if (chatState === 'choosing_service') {
           chatState = 'service_selected';
-          addMessage(
-            "Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.",
-            'bot'
-          );
+          addMessage("Thanks! I'll match you with verified specialists in that area. You can also reach our team via the Contact page or WhatsApp.", 'bot');
         }
       }, 600);
     }
-
     function handleTypedMessage() {
       const text = chatInput.value.trim();
       if (!text) return;
-      const lastBotMsg = chatMessages.querySelector('.message.bot:last-child .chat-options');
-      if (lastBotMsg) lastBotMsg.remove();
+      const last = chatMessages.querySelector('.message.bot:last-child .chat-options');
+      if (last) last.remove();
       addMessage(text, 'user');
       chatInput.value = '';
       setTimeout(() => {
         addMessage("Got it! I've noted that down. Our team will review your request and get back to you shortly.", 'bot');
       }, 800);
     }
-
     sendChatBtn.addEventListener('click', handleTypedMessage);
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') handleTypedMessage();
