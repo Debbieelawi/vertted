@@ -28,7 +28,7 @@
       --green: #22c55e; --red: #ef4444; --amber: #f59e0b; --blue: #4f46e5;
     }
 
-    /* ===== PORTAL SHELL (shared with dashboard) ===== */
+    /* ===== PORTAL SHELL ===== */
     .portal-shell { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
     .portal-sidebar {
       background: var(--primary); color: #fff; padding: 24px 0;
@@ -151,7 +151,7 @@
     .form-hint { font-size: .78rem; color: var(--text-muted); margin-top: 4px; }
 
     /* Avatar upload */
-    .avatar-row { display: flex; align-items: center; gap: 20px; }
+    .avatar-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
     .avatar-preview {
       width: 96px; height: 96px; border-radius: 50%;
       object-fit: cover;
@@ -159,7 +159,55 @@
       box-shadow: var(--shadow-sm);
       background: #f3f2ef;
     }
-    .avatar-actions { display: flex; flex-direction: column; gap: 8px; }
+    .avatar-actions { display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1; }
+    .avatar-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+    .avatar-buttons .btn-secondary {
+      flex: 1 1 auto;
+      min-width: 0;
+      white-space: nowrap;
+      padding: 10px 14px;
+      font-size: .85rem;
+    }
+
+    /* NEW: URL input dialog (inline) */
+    .url-input-row {
+      display: none;
+      gap: 8px;
+      margin-top: 8px;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+    .url-input-row.show { display: flex; }
+    .url-input-row input {
+      flex: 1;
+      min-width: 200px;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: .88rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .url-input-row input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30,43,79,.08);
+    }
+    .url-input-row button {
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: .85rem;
+      font-weight: 600;
+      transition: all .2s;
+    }
+    .url-input-row .apply {
+      background: var(--primary); color: #fff;
+    }
+    .url-input-row .apply:hover { background: var(--primary-dark); }
+    .url-input-row .cancel {
+      background: #f3f2ef; color: var(--text-main);
+    }
+    .url-input-row .cancel:hover { background: #e5e3df; }
 
     /* Social icons row */
     .socials-grid {
@@ -309,21 +357,44 @@
       transition: background .2s;
     }
     .portfolio-tile-overlay .del:hover { background: #fff; }
-    .portfolio-add {
+    .portfolio-tile-overlay .source {
+      position: absolute;
+      top: 8px; left: 8px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.92);
+      color: var(--text-muted);
+      font-size: .65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .portfolio-tile-overlay .source.link { color: var(--blue); }
+
+    /* Portfolio add tiles — two variants side by side */
+    .portfolio-add-group {
       aspect-ratio: 4/3;
+      display: flex; flex-direction: column;
+      gap: 8px;
+    }
+    .portfolio-add {
+      flex: 1;
       border: 2px dashed var(--border-color);
       border-radius: 16px;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 8px;
+      gap: 6px;
       color: var(--text-muted);
       cursor: pointer;
       transition: all .2s;
-      font-size: .9rem; font-weight: 600;
+      font-size: .82rem; font-weight: 600;
+      padding: 8px;
+      text-align: center;
+      min-height: 0;
     }
     .portfolio-add:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-    .portfolio-add i { font-size: 1.4rem; }
+    .portfolio-add.link:hover { border-color: var(--blue); color: var(--blue); background: #eef2ff; }
+    .portfolio-add i { font-size: 1.1rem; }
 
+    /* Upload progress */
     .upload-progress {
       position: fixed; bottom: 24px; left: 50%;
       transform: translateX(-50%);
@@ -486,7 +557,7 @@
 
   <div class="portal-shell">
 
-    <!-- ===== SIDEBAR ===== -->
+    <!-- SIDEBAR -->
     <aside class="portal-sidebar" id="portalSidebar">
       <div class="portal-brand">
         <a href="../index.html"><img src="../image/vertted-logo.jpeg" alt="Vertted" /></a>
@@ -509,7 +580,7 @@
       </div>
     </aside>
 
-    <!-- ===== MAIN ===== -->
+    <!-- MAIN -->
     <main class="portal-main">
       <div class="portal-topbar">
         <div>
@@ -542,15 +613,25 @@
           </div>
           <div class="form-grid">
             <div class="form-row full">
-              <label>Profile photo</label>
+              <label>Profile photo <span class="hint">upload or paste a link</span></label>
               <div class="avatar-row">
                 <img id="avatarPreview" class="avatar-preview" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23e5e3df'/></svg>" alt="Avatar" />
                 <div class="avatar-actions">
                   <input type="file" id="avatarInput" accept="image/*" hidden />
-                  <button type="button" class="btn-secondary" onclick="document.getElementById('avatarInput').click()">
-                    <i class="fas fa-upload"></i> Upload photo
-                  </button>
-                  <small class="form-hint">JPG or PNG, max 2MB</small>
+                  <div class="avatar-buttons">
+                    <button type="button" class="btn-secondary" onclick="document.getElementById('avatarInput').click()">
+                      <i class="fas fa-upload"></i> Upload photo
+                    </button>
+                    <button type="button" class="btn-secondary" id="avatarUseLinkBtn">
+                      <i class="fas fa-link"></i> Use a link
+                    </button>
+                  </div>
+                  <small class="form-hint">JPG or PNG, max 2MB · or paste any image URL</small>
+                  <div class="url-input-row" id="avatarUrlRow">
+                    <input type="url" id="avatarUrlInput" placeholder="https://example.com/photo.jpg" />
+                    <button type="button" class="apply" id="avatarUrlApply">Apply</button>
+                    <button type="button" class="cancel" id="avatarUrlCancel">Cancel</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -705,7 +786,7 @@
           <div class="card-header">
             <div>
               <h2>Portfolio</h2>
-              <p>Showcase your best work. Up to 12 images.</p>
+              <p>Showcase your best work. Upload images or paste image links. Up to 12.</p>
             </div>
           </div>
           <div class="portfolio-grid" id="portfolioGrid"></div>
@@ -718,7 +799,6 @@
       <!-- ===== TAB: SETTINGS ===== -->
       <div class="tab-panel" id="tab-settings">
 
-        <!-- Password -->
         <div class="card">
           <div class="card-header">
             <div>
@@ -745,7 +825,6 @@
           </div>
         </div>
 
-        <!-- Notifications -->
         <div class="card">
           <div class="card-header">
             <div>
@@ -754,31 +833,19 @@
             </div>
           </div>
           <div class="setting-row">
-            <div class="setting-text">
-              <h4>New messages</h4>
-              <p>Email me when a client sends a message.</p>
-            </div>
+            <div class="setting-text"><h4>New messages</h4><p>Email me when a client sends a message.</p></div>
             <div class="switch" data-setting="notifMessages"></div>
           </div>
           <div class="setting-row">
-            <div class="setting-text">
-              <h4>Order updates</h4>
-              <p>Email me about new orders, revisions, and deliveries.</p>
-            </div>
+            <div class="setting-text"><h4>Order updates</h4><p>Email me about new orders, revisions, and deliveries.</p></div>
             <div class="switch" data-setting="notifOrders"></div>
           </div>
           <div class="setting-row">
-            <div class="setting-text">
-              <h4>New reviews</h4>
-              <p>Email me when a client leaves a review.</p>
-            </div>
+            <div class="setting-text"><h4>New reviews</h4><p>Email me when a client leaves a review.</p></div>
             <div class="switch" data-setting="notifReviews"></div>
           </div>
           <div class="setting-row">
-            <div class="setting-text">
-              <h4>Marketing &amp; product news</h4>
-              <p>Occasional updates about new Vertted features.</p>
-            </div>
+            <div class="setting-text"><h4>Marketing &amp; product news</h4><p>Occasional updates about new Vertted features.</p></div>
             <div class="switch" data-setting="notifMarketing"></div>
           </div>
           <div class="save-bar">
@@ -786,7 +853,6 @@
           </div>
         </div>
 
-        <!-- Time zone + visibility -->
         <div class="card">
           <div class="card-header">
             <div>
@@ -814,7 +880,6 @@
         </div>
 
       </div>
-
     </main>
   </div>
 
@@ -836,7 +901,7 @@
       updatePassword, EmailAuthProvider, reauthenticateWithCredential
     } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import {
-      getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp
+      getFirestore, doc, getDoc, updateDoc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
     import {
       getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject
@@ -859,11 +924,10 @@
 
     const $ = (id) => document.getElementById(id);
     let currentUser = null;
-    let profile = {};      // in-memory copy
-    let dirty = {};        // per-section dirty flags
+    let profile = {};
 
     // ==========================================
-    // Helper UI
+    // Helpers
     // ==========================================
     const toastEl = $('toast');
     let toastTimer;
@@ -890,6 +954,16 @@
       const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
       return 'data:image/svg+xml;utf8,' + svg;
     }
+    // Validate an http(s) or data URL — rejects javascript:, ftp:, etc.
+    function isValidImageUrl(url) {
+      if (!url) return false;
+      try {
+        const u = new URL(url);
+        return u.protocol === 'http:' || u.protocol === 'https:' || u.protocol === 'data:';
+      } catch {
+        return false;
+      }
+    }
 
     // Time zones
     const TIMEZONES = [
@@ -915,17 +989,14 @@
       }
       currentUser = user;
 
-      // Sidebar user
       $('portalUserName').textContent = user.displayName || 'Freelancer';
       $('portalUserAvatar').src = user.photoURL || initialsAvatar(user.displayName);
 
-      // Load profile
       const ref = doc(db, 'profiles', user.uid);
       const snap = await getDoc(ref);
       profile = snap.exists() ? snap.data() : {};
       applyProfileToForm(profile);
 
-      // Ready
       $('loadingOverlay').classList.add('hidden');
       setIndicator('', 'Ready');
     });
@@ -934,8 +1005,6 @@
       await signOut(auth);
       window.location.href = 'login.html';
     });
-
-    // Mobile nav
     $('mobileNavToggle').addEventListener('click', () => {
       $('portalSidebar').classList.toggle('open');
       $('sidebarBackdrop').classList.toggle('show');
@@ -945,9 +1014,7 @@
       $('sidebarBackdrop').classList.remove('show');
     });
 
-    // ==========================================
     // Tabs
-    // ==========================================
     document.querySelectorAll('.profile-tab').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.profile-tab').forEach(b => b.classList.remove('active'));
@@ -958,10 +1025,9 @@
     });
 
     // ==========================================
-    // Fill form from profile
+    // Apply profile → form
     // ==========================================
     function applyProfileToForm(p) {
-      // Identity
       $('fieldName').value = p.displayName || '';
       $('fieldLocation').value = p.location || '';
       $('fieldHeadline').value = p.headline || '';
@@ -969,7 +1035,6 @@
       $('fieldLanguages').value = (p.languages || []).join(', ');
       $('avatarPreview').src = p.photoURL || initialsAvatar(p.displayName);
 
-      // Service
       $('fieldServiceCategory').value = p.serviceCategory || '';
       $('fieldContactEmail').value = p.contactEmail || currentUser.email || '';
       $('fieldWhatsapp').value = p.whatsapp || '';
@@ -983,25 +1048,19 @@
       $('socialInstagram').value = s.instagram || '';
       $('socialGithub').value = s.github || '';
 
-      // Video
       $('fieldIntroVideo').value = p.introVideoUrl || '';
       renderVideoPreview(p.introVideoUrl);
 
-      // Availability
       const av = p.availability || {};
       $('fieldAvailStatus').value = av.status || 'available';
       $('fieldAvailHours').value = av.hoursPerWeek ?? '';
       fillTimezones($('fieldAvailTimezone'));
       if (av.timezone) $('fieldAvailTimezone').value = av.timezone;
 
-      // Certs / jobs
       renderCerts(p.certifications || []);
       renderJobs(p.jobHistory || []);
-
-      // Portfolio
       renderPortfolio(p.portfolio || []);
 
-      // Settings
       const set = p.settings || {};
       const notif = set.notifications || {};
       setSwitch('notifMessages', !!notif.messages);
@@ -1024,7 +1083,6 @@
         wrap.innerHTML = `<div class="placeholder"><i class="fas fa-video"></i> No video yet</div>`;
         return;
       }
-      // Try to derive a YouTube thumbnail
       const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
       if (ytMatch) {
         wrap.innerHTML = `<img src="https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg" alt="Intro video thumbnail" />`;
@@ -1038,14 +1096,70 @@
     }
 
     // ==========================================
-    // Certs / Jobs repeaters
+    // Avatar: upload + URL fallback
+    // ==========================================
+    $('avatarInput').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file || !currentUser) return;
+      if (file.size > 2 * 1024 * 1024) return toast('Avatar must be under 2MB', 'error');
+      const path = `avatars/${currentUser.uid}/${Date.now()}_${file.name}`;
+      const ref = storageRef(storage, path);
+      $('uploadProgress').classList.add('show');
+      $('uploadBar').style.width = '0%';
+      try {
+        const task = uploadBytesResumable(ref, file);
+        task.on('state_changed',
+          (snap) => { $('uploadBar').style.width = Math.round((snap.bytesTransferred / snap.totalBytes) * 100) + '%'; },
+          (err) => { throw err; },
+          async () => {
+            const url = await getDownloadURL(task.snapshot.ref);
+            $('avatarPreview').src = url;
+            profile.photoURL = url;
+            profile.photoStoragePath = path;
+            profile.photoSource = 'upload';
+            $('uploadProgress').classList.remove('show');
+            toast('Avatar uploaded — don\'t forget to save', 'success');
+          }
+        );
+      } catch (err) {
+        console.error(err);
+        $('uploadProgress').classList.remove('show');
+        toast('Upload failed. Try the "Use a link" option instead.', 'error');
+      }
+    });
+
+    $('avatarUseLinkBtn').addEventListener('click', () => {
+      $('avatarUrlRow').classList.toggle('show');
+      if ($('avatarUrlRow').classList.contains('show')) {
+        $('avatarUrlInput').value = profile.photoURL && profile.photoSource === 'link' ? profile.photoURL : '';
+        $('avatarUrlInput').focus();
+      }
+    });
+    $('avatarUrlCancel').addEventListener('click', () => {
+      $('avatarUrlRow').classList.remove('show');
+      $('avatarUrlInput').value = '';
+    });
+    $('avatarUrlApply').addEventListener('click', () => {
+      const url = $('avatarUrlInput').value.trim();
+      if (!url) return toast('Paste an image link first', 'error');
+      if (!isValidImageUrl(url)) return toast('Enter a valid http(s) image link', 'error');
+      $('avatarPreview').src = url;
+      profile.photoURL = url;
+      profile.photoSource = 'link';
+      profile.photoStoragePath = '';   // so old storage asset can be cleaned up on next save if desired
+      $('avatarUrlRow').classList.remove('show');
+      toast('Image linked — don\'t forget to save', 'success');
+    });
+
+    // ==========================================
+    // Certs / jobs repeaters
     // ==========================================
     function renderCerts(list) {
       const wrap = $('certList');
       wrap.innerHTML = '';
       list.forEach((c, i) => wrap.appendChild(makeCertRow(c, i)));
     }
-    function makeCertRow(data = {}, idx = null) {
+    function makeCertRow(data = {}) {
       const row = document.createElement('div');
       row.className = 'repeat-item';
       row.innerHTML = `
@@ -1089,8 +1203,10 @@
     }
 
     // ==========================================
-    // Portfolio
+    // Portfolio: upload + URL fallback
     // ==========================================
+    let pendingUrlForPortfolio = null;
+
     function renderPortfolio(list) {
       const grid = $('portfolioGrid');
       grid.innerHTML = '';
@@ -1098,15 +1214,19 @@
       list.forEach((item, i) => {
         const tile = document.createElement('div');
         tile.className = 'portfolio-tile';
+        const source = item.storagePath ? 'upload' : 'link';
+        const sourceLabel = source === 'upload' ? 'Uploaded' : 'Linked';
+        const sourceCls = source === 'upload' ? '' : 'link';
         tile.innerHTML = `
           <img src="${item.img}" alt="${item.label || ''}" />
           <div class="portfolio-tile-overlay">
+            <span class="source ${sourceCls}">${sourceLabel}</span>
             <input type="text" data-idx="${i}" value="${item.label || ''}" placeholder="Label" />
             <button class="del" type="button" data-idx="${i}"><i class="fas fa-trash"></i></button>
           </div>
         `;
         tile.querySelector('.del').addEventListener('click', () => {
-          // Remove from storage if possible
+          // Remove from storage only if it was uploaded
           if (item.storagePath) {
             deleteObject(storageRef(storage, item.storagePath)).catch(() => {});
           }
@@ -1118,14 +1238,38 @@
       });
 
       if (list.length < 12) {
-        const add = document.createElement('label');
-        add.className = 'portfolio-add';
-        add.innerHTML = `<i class="fas fa-plus"></i><span>Add image</span><input type="file" accept="image/*" hidden />`;
-        add.querySelector('input').addEventListener('change', (e) => {
+        // Two mini tiles: upload + link
+        const group = document.createElement('div');
+        group.className = 'portfolio-add-group';
+
+        const uploadTile = document.createElement('label');
+        uploadTile.className = 'portfolio-add';
+        uploadTile.innerHTML = `<i class="fas fa-cloud-upload-alt"></i><span>Upload</span><input type="file" accept="image/*" hidden />`;
+        uploadTile.querySelector('input').addEventListener('change', (e) => {
           const file = e.target.files[0];
           if (file) uploadPortfolioImage(file);
+          e.target.value = '';
         });
-        grid.appendChild(add);
+
+        const linkTile = document.createElement('button');
+        linkTile.type = 'button';
+        linkTile.className = 'portfolio-add link';
+        linkTile.innerHTML = `<i class="fas fa-link"></i><span>Add via link</span>`;
+        linkTile.addEventListener('click', () => {
+          const url = prompt('Paste an image URL (https://…)');
+          if (!url) return;
+          if (!isValidImageUrl(url)) return toast('Enter a valid http(s) image link', 'error');
+          const list = profile.portfolio || [];
+          if (list.length >= 12) return toast('Max 12 portfolio items', 'error');
+          list.push({ id: Date.now(), img: url, label: '', storagePath: '' });
+          profile.portfolio = list;
+          renderPortfolio(list);
+          toast('Image added via link — don\'t forget to save', 'success');
+        });
+
+        group.appendChild(uploadTile);
+        group.appendChild(linkTile);
+        grid.appendChild(group);
       }
     }
 
@@ -1147,7 +1291,7 @@
         (err) => {
           console.error(err);
           $('uploadProgress').classList.remove('show');
-          toast('Upload failed', 'error');
+          toast('Upload failed. Use "Add via link" instead.', 'error');
         },
         async () => {
           const url = await getDownloadURL(task.snapshot.ref);
@@ -1161,7 +1305,7 @@
       );
     }
 
-    // Sync label input changes
+    // Label input sync
     $('portfolioGrid').addEventListener('input', (e) => {
       if (e.target.matches('.portfolio-tile-overlay input')) {
         const idx = parseInt(e.target.dataset.idx, 10);
@@ -1174,7 +1318,6 @@
       if (!currentUser) return;
       setIndicator('saving', 'Saving portfolio…');
       try {
-        // Clean payload: drop storagePath from the public payload? keep it, easier for delete later
         await updateDoc(doc(db, 'profiles', currentUser.uid), {
           portfolio: profile.portfolio || [],
           updatedAt: serverTimestamp()
@@ -1185,38 +1328,6 @@
         console.error(err);
         setIndicator('error', 'Save failed');
         toast('Could not save portfolio', 'error');
-      }
-    });
-
-    // ==========================================
-    // Avatar upload
-    // ==========================================
-    $('avatarInput').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file || !currentUser) return;
-      if (file.size > 2 * 1024 * 1024) return toast('Avatar must be under 2MB', 'error');
-      const path = `avatars/${currentUser.uid}/${Date.now()}_${file.name}`;
-      const ref = storageRef(storage, path);
-      $('uploadProgress').classList.add('show');
-      $('uploadBar').style.width = '0%';
-      try {
-        const task = uploadBytesResumable(ref, file);
-        task.on('state_changed',
-          (snap) => { $('uploadBar').style.width = Math.round((snap.bytesTransferred / snap.totalBytes) * 100) + '%'; },
-          (err) => { throw err; },
-          async () => {
-            const url = await getDownloadURL(task.snapshot.ref);
-            $('avatarPreview').src = url;
-            profile.photoURL = url;
-            profile.photoStoragePath = path;
-            $('uploadProgress').classList.remove('show');
-            toast('Avatar uploaded — don\'t forget to save', 'success');
-          }
-        );
-      } catch (err) {
-        console.error(err);
-        $('uploadProgress').classList.remove('show');
-        toast('Upload failed', 'error');
       }
     });
 
@@ -1254,17 +1365,16 @@
           certifications: readRepeatables('certList', ['title', 'issuer']),
           jobHistory: readRepeatables('jobList', ['date', 'title', 'company']),
           photoURL: profile.photoURL || currentUser.photoURL || '',
+          photoSource: profile.photoSource || 'upload',
           updatedAt: serverTimestamp()
         };
 
-        // Compute profile strength
         const strength = computeProfileStrength({ ...profile, ...payload });
         payload.profileStrength = strength;
 
         await updateDoc(doc(db, 'profiles', currentUser.uid), payload);
         profile = { ...profile, ...payload };
 
-        // Refresh preview
         renderVideoPreview(payload.introVideoUrl);
         if (payload.photoURL) $('avatarPreview').src = payload.photoURL;
 
@@ -1292,7 +1402,6 @@
       return Math.min(100, score);
     }
 
-    // Discard
     $('reloadProfileBtn').addEventListener('click', async () => {
       const snap = await getDoc(doc(db, 'profiles', currentUser.uid));
       profile = snap.exists() ? snap.data() : {};
@@ -1301,7 +1410,7 @@
     });
 
     // ==========================================
-    // Settings: notifications
+    // Settings — notifications
     // ==========================================
     document.querySelectorAll('.switch').forEach(sw => {
       sw.addEventListener('click', () => sw.classList.toggle('on'));
@@ -1336,7 +1445,7 @@
     });
 
     // ==========================================
-    // Settings: visibility
+    // Settings — visibility
     // ==========================================
     document.querySelectorAll('#visibilitySegmented button').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1369,7 +1478,7 @@
     });
 
     // ==========================================
-    // Settings: password change
+    // Settings — password
     // ==========================================
     $('changePassBtn').addEventListener('click', async () => {
       if (!currentUser) return;
@@ -1402,9 +1511,7 @@
       }
     });
 
-    // ==========================================
-    // Init time zones once DOM is ready
-    // ==========================================
+    // Init timezone selects
     fillTimezones($('fieldAvailTimezone'));
     fillTimezones($('fieldSettingsTimezone'));
   </script>
