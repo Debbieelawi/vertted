@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inbox — Vertted Portal</title>
+  <title>Inbox — Vertted Freelancer</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1007,7 +1007,14 @@
     });
 
     // ==========================================
-    // Load threads (BULLETPROOF NAME/AVATAR LOGIC)
+    // Load threads — resolve the counterpart from their PROFILE.
+    //
+    // The thread doc is SHARED by both sides, so any cached
+    // "otherName" field is inherently side-ambiguous: for a
+    // freelancer it must be the CLIENT, for a client it must be
+    // the FREELANCER. Never trust it. We always look up the person
+    // who is NOT the current user (otherUid) and use THEIR profile
+    // displayName/photoURL. Cached fields are last-resort only.
     // ==========================================
     function loadThreads() {
       if (unsubThreads) unsubThreads();
@@ -1015,46 +1022,54 @@
         collection(db, 'threads'),
         where('participants', 'array-contains', currentUser.uid)
       );
-      
+
       unsubThreads = onSnapshot(q, async (snap) => {
-        let tempThreads = [];
         let totalUnread = 0;
-        
-        // Use Promise.all to fetch missing profiles if names are missing
+
         const promises = snap.docs.map(async (d) => {
           const data = d.data();
           const otherUid = (data.participants || []).find(uid => uid !== currentUser.uid);
-          
-          let otherName = data.otherName || data.clientName || data.freelancerName;
-          let otherAvatar = data.otherAvatar || data.clientAvatar || data.freelancerAvatar;
 
-          // If the thread document didn't save the names correctly, fetch from profile
-          if (!otherName || otherName === 'Freelancer' || otherName === 'Client') {
+          // Resolve the counterpart from their profile — the only reliable source.
+          let otherName = null;
+          let otherAvatar = null;
+
+          if (otherUid) {
             try {
               const pSnap = await getDoc(doc(db, 'profiles', otherUid));
               if (pSnap.exists()) {
-                const pData = pSnap.data();
-                otherName = pData.displayName || pData.fullName || 'User';
-                otherAvatar = pData.photoURL;
+                const p = pSnap.data();
+                otherName = p.displayName || p.fullName || p.name || null;
+                otherAvatar = p.photoURL || p.avatarUrl || null;
               }
-            } catch (e) { console.error("Could not fetch profile for", otherUid, e); }
+            } catch (e) {
+              console.error('Could not fetch profile for', otherUid, e);
+            }
           }
 
-          // Fallback if still missing
-          otherName = otherName || 'Client';
+          // Last-resort fallback (only if the profile lookup failed).
+          // Prefer a side-specific cached name over a viewer-relative one.
+          if (!otherName) {
+            otherName =
+              data.clientName ||      // for the freelancer, the counterpart is the client
+              data.otherName ||
+              'Client';
+          }
+          otherAvatar = otherAvatar || data.otherAvatar || null;
+
           totalUnread += (data.unreadBy?.[currentUser.uid] || 0);
 
-          return { 
-            id: d.id, 
-            ...data, 
-            otherUid, 
-            otherName: otherName, 
-            otherAvatar 
+          return {
+            id: d.id,
+            ...data,
+            otherUid,
+            otherName,
+            otherAvatar
           };
         });
 
-        tempThreads = await Promise.all(promises);
-        threads = tempThreads.sort((a, b) => (b.lastMessageAt?.seconds || 0) - (a.lastMessageAt?.seconds || 0));
+        threads = (await Promise.all(promises))
+          .sort((a, b) => (b.lastMessageAt?.seconds || 0) - (a.lastMessageAt?.seconds || 0));
 
         const badge = $('navMsgBadge');
         badge.textContent = totalUnread;
@@ -1348,15 +1363,20 @@
         // Update thread snapshot so the dashboard reflects the new status
         const threadUpdate = { lastOfferStatus: newStatus };
 
-        // On accept, ALSO create the order (client‑side accept is the one that
-        // spawns the order — the freelancer's offer is the intent).
+        // On accept, ALSO create the order. The offer sender is the freelancer;
+        // the acceptor is the client. Work out both sides explicitly.
         if (action === 'accept') {
           const thread = threads.find(t => t.id === activeThreadId);
           const freelancerUid = data.senderUid === currentUser.uid ? currentUser.uid : data.senderUid;
           const clientUid = data.senderUid === currentUser.uid ? thread.otherUid : data.senderUid;
 
-          const freelancerName = (thread?.otherName || 'Freelancer');
-          const clientName = currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Client';
+          // Side-specific cached names — NEVER a viewer-relative "otherName".
+          const freelancerName = (freelancerUid === currentUser.uid)
+            ? (currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Freelancer')
+            : (thread?.otherName || 'Freelancer');
+          const clientName = (clientUid === currentUser.uid)
+            ? (currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Client')
+            : (thread?.otherName || 'Client');
 
           const orderRef = await addDoc(collection(db, 'orders'), {
             freelancerUid,
@@ -1548,7 +1568,8 @@
           createdAt: serverTimestamp()
         });
 
-        // Add the missing snapshot fields to the thread
+        // Snapshot the offer on the thread AND write side-specific cached
+        // names so neither side ever has to rely on a viewer-relative "otherName".
         await updateDoc(doc(db, 'threads', activeThreadId), {
           lastMessage: `Offer: ${title} — $${amount}`,
           lastMessageAt: serverTimestamp(),
@@ -1556,6 +1577,9 @@
           lastOfferStatus: 'pending',
           lastOfferFromUid: currentUser.uid,
           lastOffer: { title, amount, deliveryDays: days, scope, status: 'pending' },
+          freelancerUid: currentUser.uid,
+          freelancerName: currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Freelancer',
+          clientUid: otherUid,
           [`unreadBy.${otherUid}`]: increment(1),
           [`unreadBy.${currentUser.uid}`]: 0
         });
@@ -1713,8 +1737,7 @@
     $('convProfileBtn').addEventListener('click', () => {
       const t = threads.find(t => t.id === activeThreadId);
       if (!t) return;
-      const otherUid = (t.participants || []).find(uid => uid !== currentUser.uid);
-      if (otherUid) window.open(`../../freelancer.html?id=${otherUid}`, '_blank');
+      if (t.otherUid) window.open(`../../freelancer.html?id=${t.otherUid}`, '_blank');
     });
     $('convRefreshBtn').addEventListener('click', () => {
       if (activeThreadId) loadMessages(activeThreadId);
