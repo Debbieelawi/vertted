@@ -281,18 +281,6 @@
     .file-list li span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .file-list li button { color: var(--red); font-size: .85rem; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
 
-    .upload-progress {
-      position: fixed; bottom: 24px; left: 50%;
-      transform: translateX(-50%);
-      background: var(--primary); color: #fff;
-      padding: 12px 20px; border-radius: 12px;
-      font-size: .85rem; box-shadow: var(--shadow-md);
-      z-index: 9999; display: none; align-items: center; gap: 10px;
-    }
-    .upload-progress.show { display: flex; }
-    .upload-progress .bar { width: 100px; height: 4px; background: rgba(255,255,255,.2); border-radius: 4px; overflow: hidden; }
-    .upload-progress .bar span { display: block; height: 100%; background: var(--accent); width: 0%; transition: width .2s; }
-
     .toast {
       position: fixed; bottom: 24px; right: 24px;
       background: var(--primary); color: #fff;
@@ -368,6 +356,7 @@
   <div class="portal-shell">
     <aside class="portal-sidebar" id="portalSidebar">
       <div class="portal-brand">
+        <!-- FIXED IMAGE PATH -->
         <a href="../../index.html"><img src="../../image/vertted-logo.jpeg" alt="Vertted" /></a>
       </div>
       <ul class="portal-nav">
@@ -436,7 +425,7 @@
 
             <div class="conv-composer">
               <div class="composer-actions">
-                <button class="composer-action primary" id="sendOfferBtn" title="Clients can't send offers — only freelancers do. Hidden for you." style="display:none;"><i class="fas fa-tag"></i> Send offer</button>
+                <button class="composer-action primary" id="sendOfferBtn" style="display:none;"><i class="fas fa-tag"></i> Send offer</button>
                 <button class="composer-action" id="sendDeliveryBtn" style="display:none;"><i class="fas fa-box-open"></i> Send delivery</button>
               </div>
               <div class="composer-row">
@@ -453,15 +442,8 @@
     </main>
   </div>
 
-  <div class="upload-progress" id="uploadProgress">
-    <i class="fas fa-cloud-upload-alt"></i>
-    <span>Uploading…</span>
-    <div class="bar"><span id="uploadBar"></span></div>
-  </div>
-
   <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
 
-  <!-- ===== FIREBASE ===== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
@@ -469,9 +451,6 @@
       getFirestore, collection, query, where, orderBy, onSnapshot,
       doc, getDoc, addDoc, updateDoc, serverTimestamp, increment, limit, getDocs
     } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-    import {
-      getStorage, ref as storageRef, uploadBytesResumable, getDownloadURL
-    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDsL6tQHjXqTK0NTSDgb6SMS_1_ode2whQ",
@@ -486,7 +465,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
     let currentUser = null;
     let threads = [];
@@ -560,7 +538,6 @@
             clearInterval(tryOpen);
             selectThread(wanted).then(() => {
               if (action) {
-                // Wait for messages to render then trigger the button
                 setTimeout(() => triggerDeepLinkAction(action), 800);
               }
             });
@@ -571,10 +548,8 @@
     });
 
     function triggerDeepLinkAction(action) {
-      // Find the last offer card in the conversation and click accept/decline
       const buttons = document.querySelectorAll('.offer-card [data-offer-action]');
       if (!buttons.length) return;
-      // Pick the last card's matching button
       const lastCard = document.querySelector('.offer-card:last-of-type') || document.querySelector('.offer-card');
       if (!lastCard) return;
       const wantedBtn = lastCard.querySelector(`[data-offer-action="${action === 'accept' ? 'accept' : 'decline'}"]`);
@@ -595,7 +570,7 @@
     });
 
     // ==========================================
-    // Load threads (client = participant)
+    // Load threads (FIXED NAME/AVATAR LOGIC)
     // ==========================================
     function loadThreads() {
       if (unsubThreads) unsubThreads();
@@ -603,15 +578,46 @@
         collection(db, 'threads'),
         where('participants', 'array-contains', currentUser.uid)
       );
-      unsubThreads = onSnapshot(q, (snap) => {
-        threads = [];
+      
+      unsubThreads = onSnapshot(q, async (snap) => {
+        let tempThreads = [];
         let totalUnread = 0;
-        snap.forEach(d => {
+        
+        // Use Promise.all to fetch missing profiles if names are missing
+        const promises = snap.docs.map(async (d) => {
           const data = d.data();
-          threads.push({ id: d.id, ...data });
+          const otherUid = (data.participants || []).find(uid => uid !== currentUser.uid);
+          
+          let otherName = data.otherName || data.clientName || data.freelancerName;
+          let otherAvatar = data.otherAvatar || data.clientAvatar || data.freelancerAvatar;
+
+          // If the thread document didn't save the names correctly, fetch from profile
+          if (!otherName || otherName === 'Freelancer' || otherName === 'Client') {
+            try {
+              const pSnap = await getDoc(doc(db, 'profiles', otherUid));
+              if (pSnap.exists()) {
+                const pData = pSnap.data();
+                otherName = pData.displayName || pData.fullName || 'User';
+                otherAvatar = pData.photoURL;
+              }
+            } catch (e) { console.error("Could not fetch profile for", otherUid, e); }
+          }
+
+          // Fallback if still missing
+          otherName = otherName || 'Freelancer';
           totalUnread += (data.unreadBy?.[currentUser.uid] || 0);
+
+          return { 
+            id: d.id, 
+            ...data, 
+            otherUid, 
+            otherName: otherName, 
+            otherAvatar 
+          };
         });
-        threads.sort((a, b) => (b.lastMessageAt?.seconds || 0) - (a.lastMessageAt?.seconds || 0));
+
+        tempThreads = await Promise.all(promises);
+        threads = tempThreads.sort((a, b) => (b.lastMessageAt?.seconds || 0) - (a.lastMessageAt?.seconds || 0));
 
         const badge = $('navMsgBadge');
         badge.textContent = totalUnread;
@@ -651,10 +657,10 @@
         const active = t.id === activeThreadId;
         return `
           <li class="thread-item ${active ? 'active' : ''}" data-thread-id="${t.id}">
-            <img class="thread-avatar" src="${t.otherAvatar || initialsAvatar(t.otherName)}" alt="${escapeHTML(t.otherName || 'Freelancer')}" />
+            <img class="thread-avatar" src="${t.otherAvatar || initialsAvatar(t.otherName)}" alt="${escapeHTML(t.otherName)}" />
             <div class="thread-body">
               <div class="thread-head">
-                <span class="thread-name">${escapeHTML(t.otherName || 'Freelancer')}</span>
+                <span class="thread-name">${escapeHTML(t.otherName)}</span>
                 <span class="thread-time">${timeAgo(t.lastMessageAt)}</span>
               </div>
               <div class="thread-preview ${unread > 0 ? 'unread' : ''}">${escapeHTML(t.lastMessage || 'No messages yet')}</div>
@@ -675,6 +681,7 @@
     // Select thread
     // ==========================================
     async function selectThread(threadId) {
+      if (!threadId) return; // Guard against null
       if (activeThreadId === threadId) return;
       activeThreadId = threadId;
 
@@ -690,7 +697,7 @@
       $('conversationActive').style.display = 'flex';
 
       $('convAvatar').src = thread.otherAvatar || initialsAvatar(thread.otherName);
-      $('convName').textContent = thread.otherName || 'Freelancer';
+      $('convName').textContent = thread.otherName;
       $('convSubtitle').textContent = 'Tap for details';
 
       if (thread.unreadBy?.[currentUser.uid]) {
@@ -709,6 +716,7 @@
     // Messages
     // ==========================================
     function loadMessages(threadId) {
+      if (!threadId) return; // Guard against null
       if (unsubMessages) unsubMessages();
       const msgsRef = collection(db, 'threads', threadId, 'messages');
       const q = query(msgsRef, orderBy('createdAt', 'asc'), limit(300));
@@ -885,6 +893,7 @@
     }
 
     async function handleOfferAction(msgId, action, btn) {
+      if (!activeThreadId) return; // Guard
       btn.disabled = true;
       try {
         const ref = doc(db, 'threads', activeThreadId, 'messages', msgId);
@@ -899,19 +908,13 @@
           ...(action === 'accept' ? { 'offer.acceptedAt': serverTimestamp() } : {})
         });
 
-        // Update thread snapshot so the dashboard reflects the new status
-        const threadUpdate = {
-          lastOfferStatus: newStatus
-        };
+        const threadUpdate = { lastOfferStatus: newStatus };
 
-        // On accept, ALSO create the order (client‑side accept is the one that
-        // spawns the order — the freelancer's offer is the intent).
         if (action === 'accept') {
           const thread = threads.find(t => t.id === activeThreadId);
           const freelancerUid = data.senderUid;
           const clientUid = currentUser.uid;
 
-          // Figure out names from the thread's cache
           const freelancerName = (thread?.otherName || 'Freelancer');
           const clientName = currentUser.displayName || (currentUser.email || '').split('@')[0] || 'Client';
 
@@ -936,7 +939,6 @@
 
           threadUpdate.lastOrderId = orderRef.id;
 
-          // Notify in the thread
           await addDoc(collection(db, 'threads', activeThreadId, 'messages'), {
             senderUid: currentUser.uid,
             type: 'system',
@@ -958,6 +960,7 @@
     }
 
     async function handleDeliveryAction(msgId, action, btn) {
+      if (!activeThreadId) return; // Guard
       btn.disabled = true;
       try {
         const ref = doc(db, 'threads', activeThreadId, 'messages', msgId);
@@ -967,7 +970,6 @@
           ...(action === 'accept' ? { 'delivery.acceptedAt': serverTimestamp() } : {})
         });
 
-        // Mirror status onto the order if we can find it
         const snap = await getDoc(ref);
         const data = snap.data();
         if (data.orderId) {
@@ -978,7 +980,6 @@
           });
         }
 
-        // System message
         await addDoc(collection(db, 'threads', activeThreadId, 'messages'), {
           senderUid: currentUser.uid,
           type: 'system',
