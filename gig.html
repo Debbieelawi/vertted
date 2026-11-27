@@ -1025,7 +1025,7 @@
       if (!currentUser) {
         toast('Sign in to contact the seller.', 'error');
         setTimeout(() => {
-          window.location.href = `portal/freelancer/login.html?next=${encodeURIComponent(location.href)}`;
+          window.location.href = `portal/client/login.html?next=${encodeURIComponent(location.href)}`;
         }, 900);
         return;
       }
@@ -1088,7 +1088,7 @@
           });
         }
 
-        window.location.href = `portal/freelancer/inbox.html?thread=${threadId}`;
+        window.location.href = `portal/client/inbox.html?thread=${threadId}`;
       } catch (err) {
         console.error(err);
         toast('Could not open chat — please try again.', 'error');
