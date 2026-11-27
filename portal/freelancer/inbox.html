@@ -58,7 +58,12 @@
       padding: 16px 24px; border-top: 1px solid rgba(255,255,255,.08);
       display: flex; align-items: center; gap: 12px;
     }
-    .portal-user img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+    .portal-user-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .9rem; flex-shrink: 0;
+    }
     .portal-user-info { flex: 1; min-width: 0; }
     .portal-user-info h4 { font-size: 0.85rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .portal-user-info span { font-size: 0.7rem; color: rgba(255,255,255,.55); }
@@ -151,7 +156,10 @@
     }
     .thread-avatar {
       width: 44px; height: 44px;
-      border-radius: 50%; object-fit: cover;
+      border-radius: 50%;
+      background: var(--accent); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem;
       flex-shrink: 0;
     }
     .thread-body { flex: 1; min-width: 0; }
@@ -222,7 +230,7 @@
       background: var(--white);
       flex-shrink: 0;
     }
-    .conv-header .thread-avatar { width: 40px; height: 40px; }
+    .conv-header .thread-avatar { width: 40px; height: 40px; font-size: .95rem; }
     .conv-header-info { flex: 1; min-width: 0; }
     .conv-header-info h3 {
       font-size: 1rem; font-weight: 700; color: var(--primary);
@@ -257,10 +265,14 @@
 
     .msg-avatar {
       width: 30px; height: 30px;
-      border-radius: 50%; object-fit: cover;
+      border-radius: 50%;
+      background: var(--primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .75rem;
       flex-shrink: 0;
       align-self: flex-end;
     }
+    .msg-row.mine .msg-avatar { background: var(--accent); }
     .msg-bubble {
       border-radius: 16px;
       padding: 10px 14px;
@@ -716,7 +728,7 @@
         <li><a href="reviews.html"><i class="fas fa-star"></i> Reviews</a></li>
       </ul>
       <div class="portal-user">
-        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='%23e5e3df'/></svg>" id="portalUserAvatar" alt="User" />
+        <div class="portal-user-avatar" id="portalUserAvatar">U</div>
         <div class="portal-user-info">
           <h4 id="portalUserName">Loading…</h4>
           <span>Freelancer</span>
@@ -764,7 +776,7 @@
               <button class="conv-action-btn conv-back-btn" id="convBackBtn" style="margin-right:4px;">
                 <i class="fas fa-arrow-left"></i>
               </button>
-              <img class="thread-avatar" id="convAvatar" alt="Client" />
+              <div class="thread-avatar" id="convAvatar">C</div>
               <div class="conv-header-info">
                 <h3 id="convName">Client</h3>
                 <p id="convSubtitle"></p>
@@ -932,10 +944,8 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3200);
     }
-    function initialsAvatar(name) {
-      const letter = (name || 'U').trim().charAt(0).toUpperCase();
-      const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' fill='%23f26b21'/><text x='50%' y='55%' font-family='Inter,sans-serif' font-size='18' fill='white' text-anchor='middle' dominant-baseline='middle'>${letter}</text></svg>`;
-      return 'data:image/svg+xml;utf8,' + svg;
+    function initialOf(name) {
+      return (name || 'U').trim().charAt(0).toUpperCase();
     }
     function escapeHTML(s) {
       return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -974,7 +984,7 @@
       }
       currentUser = user;
       $('portalUserName').textContent = user.displayName || 'Freelancer';
-      $('portalUserAvatar').src = user.photoURL || initialsAvatar(user.displayName);
+      $('portalUserAvatar').textContent = initialOf(user.displayName);
 
       await loadThreads();
 
@@ -1007,14 +1017,12 @@
     });
 
     // ==========================================
-    // Load threads — resolve the counterpart from their PROFILE.
+    // Load threads — resolve the counterpart name from their PROFILE.
     //
-    // The thread doc is SHARED by both sides, so any cached
-    // "otherName" field is inherently side-ambiguous: for a
-    // freelancer it must be the CLIENT, for a client it must be
-    // the FREELANCER. Never trust it. We always look up the person
-    // who is NOT the current user (otherUid) and use THEIR profile
-    // displayName/photoURL. Cached fields are last-resort only.
+    // Avatars are intentionally NOT used. The thread list and message
+    // rows render initials only, so we never touch photoURL/avatarUrl.
+    // The thread doc is shared by both sides, so cached names are
+    // side-ambiguous; we always look up profiles/{otherUid}.displayName.
     // ==========================================
     function loadThreads() {
       if (unsubThreads) unsubThreads();
@@ -1030,9 +1038,8 @@
           const data = d.data();
           const otherUid = (data.participants || []).find(uid => uid !== currentUser.uid);
 
-          // Resolve the counterpart from their profile — the only reliable source.
+          // Resolve the counterpart NAME from their profile.
           let otherName = null;
-          let otherAvatar = null;
 
           if (otherUid) {
             try {
@@ -1040,7 +1047,6 @@
               if (pSnap.exists()) {
                 const p = pSnap.data();
                 otherName = p.displayName || p.fullName || p.name || null;
-                otherAvatar = p.photoURL || p.avatarUrl || null;
               }
             } catch (e) {
               console.error('Could not fetch profile for', otherUid, e);
@@ -1051,11 +1057,10 @@
           // Prefer a side-specific cached name over a viewer-relative one.
           if (!otherName) {
             otherName =
-              data.clientName ||      // for the freelancer, the counterpart is the client
+              data.clientName ||   // for the freelancer, the counterpart is the client
               data.otherName ||
               'Client';
           }
-          otherAvatar = otherAvatar || data.otherAvatar || null;
 
           totalUnread += (data.unreadBy?.[currentUser.uid] || 0);
 
@@ -1063,8 +1068,7 @@
             id: d.id,
             ...data,
             otherUid,
-            otherName,
-            otherAvatar
+            otherName
           };
         });
 
@@ -1109,7 +1113,7 @@
         const active = t.id === activeThreadId;
         return `
           <li class="thread-item ${active ? 'active' : ''}" data-thread-id="${t.id}">
-            <img class="thread-avatar" src="${t.otherAvatar || initialsAvatar(t.otherName)}" alt="${escapeHTML(t.otherName)}" />
+            <div class="thread-avatar">${escapeHTML(initialOf(t.otherName))}</div>
             <div class="thread-body">
               <div class="thread-head">
                 <span class="thread-name">${escapeHTML(t.otherName)}</span>
@@ -1148,7 +1152,7 @@
       $('conversationPlaceholder').style.display = 'none';
       $('conversationActive').style.display = 'flex';
 
-      $('convAvatar').src = thread.otherAvatar || initialsAvatar(thread.otherName);
+      $('convAvatar').textContent = initialOf(thread.otherName);
       $('convName').textContent = thread.otherName;
       $('convSubtitle').textContent = 'Tap for details';
 
@@ -1215,14 +1219,15 @@
         return `<div class="system-msg">${escapeHTML(m.text || '')}</div>`;
       }
 
-      const avatarUrl = mine
-        ? (currentUser.photoURL || initialsAvatar(currentUser.displayName))
-        : (thread.otherAvatar || initialsAvatar(thread.otherName));
+      // Initials only — no profile images.
+      const avatarInitial = mine
+        ? initialOf(currentUser.displayName)
+        : initialOf(thread.otherName);
 
       if (m.type === 'text') {
         return `
           <div class="msg-row ${sideClass}">
-            <img class="msg-avatar" src="${avatarUrl}" alt="" />
+            <div class="msg-avatar">${escapeHTML(avatarInitial)}</div>
             <div class="msg-bubble">
               ${escapeHTML(m.text || '').replace(/\n/g, '<br>')}
               <div class="msg-time">${formatTime(m.createdAt)}</div>
@@ -1231,12 +1236,12 @@
         `;
       }
 
-      if (m.type === 'offer') return renderOfferCard(m, mine, avatarUrl);
-      if (m.type === 'delivery') return renderDeliveryCard(m, mine, avatarUrl);
+      if (m.type === 'offer') return renderOfferCard(m, mine, avatarInitial);
+      if (m.type === 'delivery') return renderDeliveryCard(m, mine, avatarInitial);
       return '';
     }
 
-    function renderOfferCard(m, mine, avatarUrl) {
+    function renderOfferCard(m, mine, avatarInitial) {
       const o = m.offer || {};
       const status = o.status || 'pending';
       const canRespond = !mine && status === 'pending';
@@ -1258,7 +1263,7 @@
 
       return `
         <div class="msg-row ${mine ? 'mine' : 'theirs'}">
-          <img class="msg-avatar" src="${avatarUrl}" alt="" />
+          <div class="msg-avatar">${escapeHTML(avatarInitial)}</div>
           <div class="msg-bubble offer-card">
             <div class="card-header">
               <div class="card-type"><i class="fas fa-tag"></i> Offer</div>
@@ -1279,7 +1284,7 @@
       `;
     }
 
-    function renderDeliveryCard(m, mine, avatarUrl) {
+    function renderDeliveryCard(m, mine, avatarInitial) {
       const d = m.delivery || {};
       const status = m.deliveryStatus || 'delivered';
       const files = d.files || [];
@@ -1301,7 +1306,7 @@
 
       return `
         <div class="msg-row ${mine ? 'mine' : 'theirs'}">
-          <img class="msg-avatar" src="${avatarUrl}" alt="" />
+          <div class="msg-avatar">${escapeHTML(avatarInitial)}</div>
           <div class="msg-bubble delivery-card">
             <div class="card-header delivery">
               <div class="card-type"><i class="fas fa-box-open"></i> Delivery${d.revision ? ' · Revision ' + d.revision : ''}</div>
