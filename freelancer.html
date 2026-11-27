@@ -80,6 +80,9 @@
     .section-title i { color: var(--accent); font-size: 1.3rem; }
     .section-empty { font-size: .88rem; color: var(--text-muted); padding: 22px; text-align: center; background: #fafaf9; border: 1px dashed var(--border-color); border-radius: 14px; }
 
+    /* Bio */
+    .bio-text { font-size: 1rem; color: var(--text-main); line-height: 1.7; white-space: pre-line; }
+
     /* Intro Video */
     .intro-video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-md); background: #d9d6d0; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; }
     .intro-video-wrapper img { width: 100%; height: 100%; object-fit: cover; opacity: .85; }
@@ -374,6 +377,11 @@
       <!-- Right Column -->
       <div class="right-col">
 
+        <div class="content-section" id="bioSection">
+          <h2 class="section-title"><i class="fas fa-user-tie"></i> About</h2>
+          <div class="bio-text" id="freelancerBio"></div>
+        </div>
+
         <div class="content-section">
           <h2 class="section-title"><i class="fas fa-history"></i> Job History</h2>
           <div class="timeline" id="jobHistoryTimeline"></div>
@@ -607,13 +615,16 @@
       return out;
     }
     function normalizePortfolioItem(item) {
+      if (typeof item === 'string') {
+        return { id: '', img: item, label: 'Portfolio item', storagePath: '', title: '', costRange: '', description: '', timeline: '', testimonial: '' };
+      }
       return {
         id: item.id || '',
-        img: item.img || '',
-        label: item.label || '',
+        img: item.img || item.image || item.url || '',
+        label: item.label || item.name || '',
         storagePath: item.storagePath || '',
         title: item.title || '',
-        costRange: item.costRange || '',
+        costRange: item.costRange || item.cost || '',
         description: item.description || '',
         timeline: item.timeline || '',
         testimonial: item.testimonial || ''
@@ -665,7 +676,10 @@
         }
         profile = pSnap.data();
         profile.uid = targetUid;
-        portfolioItems = (profile.portfolio || []).map(normalizePortfolioItem);
+        
+        // Handle different possible portfolio field names
+        const rawPortfolio = profile.portfolio || profile.portfolios || profile.portfolioItems || [];
+        portfolioItems = rawPortfolio.map(normalizePortfolioItem);
 
         // Fetch gigs + reviews in parallel
         const [gigsSnap, reviewsSnap] = await Promise.all([
@@ -702,7 +716,7 @@
       document.title = 'Profile unavailable — Vertted';
       $('freelancerName').innerHTML = escapeHTML(title);
       $('freelancerHeadline').textContent = message;
-      ['introVideoSection'].forEach(id => $(id) && ($(id).style.display = 'none'));
+      ['introVideoSection', 'bioSection'].forEach(id => $(id) && ($(id).style.display = 'none'));
       $('portfolioGrid').innerHTML = `<div class="section-empty">${escapeHTML(message)}</div>`;
       $('gigsList').innerHTML = '';
       $('jobHistoryTimeline').innerHTML = '';
@@ -714,13 +728,14 @@
     // Master render
     // ==========================================
     function renderAll() {
-      const name = profile.displayName || 'A Vertted freelancer';
+      // Handle different name field names
+      const name = profile.displayName || profile.fullName || profile.name || 'A Vertted freelancer';
       document.title = `${name} — Vertted`;
 
       // -------- Profile header --------
-      $('freelancerAvatar').src = profile.photoURL || initialsAvatar(name);
+      $('freelancerAvatar').src = profile.photoURL || profile.avatar || initialsAvatar(name);
       $('freelancerName').innerHTML = `${escapeHTML(name)} <i class="fas fa-check-circle"></i>`;
-      $('freelancerHeadline').textContent = profile.headline || '';
+      $('freelancerHeadline').textContent = profile.headline || profile.title || '';
 
       // Online dot
       const online = profile.online !== false;
@@ -733,36 +748,48 @@
       $('reviewsHeadingCount').textContent = reviews.length;
 
       // Location
-      $('freelancerLocation').textContent = profile.location || '—';
+      $('freelancerLocation').textContent = profile.location || profile.city || '—';
 
-      // Socials
+      // Socials (Check both nested object and flat fields)
       const socials = profile.socialLinks || {};
       const socialMap = [
-        { key: 'linkedin',  icon: 'fab fa-linkedin-in' },
-        { key: 'dribbble',  icon: 'fab fa-dribbble' },
-        { key: 'behance',   icon: 'fab fa-behance' },
-        { key: 'twitter',   icon: 'fab fa-twitter' },
-        { key: 'instagram', icon: 'fab fa-instagram' },
-        { key: 'github',    icon: 'fab fa-github' },
-        { key: 'website',   icon: 'fas fa-globe' }
+        { key: 'linkedin',  icon: 'fab fa-linkedin-in', flat: 'socialLinkedin' },
+        { key: 'dribbble',  icon: 'fab fa-dribbble', flat: 'socialDribbble' },
+        { key: 'behance',   icon: 'fab fa-behance', flat: 'socialBehance' },
+        { key: 'twitter',   icon: 'fab fa-twitter', flat: 'socialTwitter' },
+        { key: 'instagram', icon: 'fab fa-instagram', flat: 'socialInstagram' },
+        { key: 'github',    icon: 'fab fa-github', flat: 'socialGithub' },
+        { key: 'website',   icon: 'fas fa-globe', flat: 'fieldWebsite' }
       ];
       $('freelancerSocials').innerHTML = socialMap
-        .filter(s => socials[s.key])
-        .map(s => `<a href="${escapeAttr(socials[s.key])}" target="_blank" rel="noopener" aria-label="${s.key}"><i class="${s.icon}"></i></a>`)
+        .map(s => {
+          const url = socials[s.key] || profile[s.flat];
+          return url ? `<a href="${escapeAttr(url)}" target="_blank" rel="noopener" aria-label="${s.key}"><i class="${s.icon}"></i></a>` : '';
+        })
         .join('');
 
       // Contact card
       const firstName = name.split(' ')[0];
       $('contactCardTitle').textContent = `Work with ${firstName}`;
-      $('contactReplyTime').textContent = profile.availability?.status === 'unavailable'
+      $('contactReplyTime').textContent = profile.availability?.status === 'unavailable' || profile.availStatus === 'unavailable'
         ? 'Not taking new work right now'
         : 'Usually replies within hours';
-      $('contactLanguages').textContent = (profile.languages && profile.languages.length)
-        ? profile.languages.slice(0, 2).join(' · ')
-        : 'English';
+        
+      let langs = profile.languages || '';
+      if (Array.isArray(langs)) langs = langs.join(' · ');
+      $('contactLanguages').textContent = langs || 'English';
 
       // Contact button behavior
       $('contactMeBtn').onclick = () => onContactSeller();
+
+      // -------- Bio --------
+      const bioText = profile.bio || profile.about || profile.description || '';
+      if (bioText) {
+        $('bioSection').style.display = '';
+        $('freelancerBio').textContent = bioText;
+      } else {
+        $('bioSection').style.display = 'none';
+      }
 
       // -------- Intro video --------
       renderIntroVideo();
@@ -788,7 +815,7 @@
     // ==========================================
     function renderIntroVideo() {
       const wrapper = $('introVideoWrapper');
-      const url = profile.introVideoUrl || '';
+      const url = profile.introVideoUrl || profile.introVideo || profile.videoUrl || '';
       if (!url) {
         $('introVideoSection').style.display = 'none';
         return;
@@ -971,7 +998,7 @@
     // ==========================================
     function renderJobHistory() {
       const wrap = $('jobHistoryTimeline');
-      const list = profile.jobHistory || [];
+      const list = profile.jobHistory || profile.jobs || profile.workHistory || [];
       if (!list.length) {
         wrap.innerHTML = `<div class="section-empty">No job history yet.</div>`;
         return;
@@ -979,9 +1006,9 @@
       wrap.innerHTML = list.map(j => `
         <div class="timeline-item">
           <div class="timeline-dot"></div>
-          <div class="timeline-date">${escapeHTML(j.date || '')}</div>
-          <div class="timeline-title">${escapeHTML(j.title || '')}</div>
-          <div class="timeline-company">${escapeHTML(j.company || '')}</div>
+          <div class="timeline-date">${escapeHTML(j.date || j.year || '')}</div>
+          <div class="timeline-title">${escapeHTML(j.title || j.role || '')}</div>
+          <div class="timeline-company">${escapeHTML(j.company || j.client || '')}</div>
         </div>
       `).join('');
     }
@@ -991,7 +1018,7 @@
     // ==========================================
     function renderCertifications() {
       const wrap = $('certList');
-      const list = profile.certifications || [];
+      const list = profile.certifications || profile.certs || [];
       if (!list.length) {
         wrap.innerHTML = `<div class="section-empty">No certifications yet.</div>`;
         return;
@@ -1000,7 +1027,7 @@
         <div class="cert-card">
           <div class="cert-icon"><i class="fas fa-award"></i></div>
           <div class="cert-info">
-            <h4>${escapeHTML(c.title || '')}</h4>
+            <h4>${escapeHTML(c.title || c.name || '')}</h4>
             <p>${c.issuer ? 'Issued by ' + escapeHTML(c.issuer) : ''}</p>
           </div>
         </div>
@@ -1032,11 +1059,9 @@
     }
 
     // ==========================================
-    // Contact — UPDATED: Redirects to Inbox
+    // Contact — Redirects to Inbox
     // ==========================================
     function onContactSeller() {
-      // Redirect directly to the client portal inbox, passing the freelancer's UID
-      // The inbox will handle starting/opening the conversation.
       window.location.href = `portal/client/inbox.html?to=${profile.uid}`;
     }
 
