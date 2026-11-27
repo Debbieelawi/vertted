@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Sign in — Vertted</title>
+  <link rel="icon" href="data:,">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #fafaf9; color: #1a1a24; line-height: 1.5; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; background: none; }
+
+    :root {
+      --primary: #1e2b4f; --primary-dark: #151d36;
+      --accent: #f26b21; --accent-hover: #d95b17; --accent-soft: #fdf2e8;
+      --text-main: #1a1a24; --text-muted: #5e5e6b;
+      --border-color: #e5e3df; --white: #fff;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,.05);
+      --shadow-md: 0 12px 32px rgba(0,0,0,.08);
+      --radius-pill: 50px; --radius-card: 24px;
+      --green: #22c55e; --red: #ef4444; --amber: #f59e0b; --blue: #4f46e5;
+    }
+
+    .auth-shell { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+
+    .auth-brand {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(242,107,33,.28), transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(242,107,33,.18), transparent 50%),
+        var(--primary);
+      color: #fff; padding: 56px 64px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .auth-brand::before {
+      content: ''; position: absolute; top: -220px; right: -220px;
+      width: 620px; height: 620px;
+      background: radial-gradient(circle, rgba(242,107,33,.22), transparent 60%);
+      border-radius: 50%; pointer-events: none;
+    }
+    .auth-brand-logo img { height: 56px; filter: brightness(0) invert(1); }
+    .auth-brand-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.2vw, 3rem);
+      font-weight: 600; line-height: 1.15;
+      letter-spacing: -.02em; margin-bottom: 20px;
+      max-width: 520px;
+    }
+    .auth-brand-hero h1 em { color: var(--accent); font-style: italic; }
+    .auth-brand-hero p {
+      font-size: 1rem; line-height: 1.7;
+      color: rgba(255,255,255,.72);
+      max-width: 480px; margin-bottom: 32px;
+    }
+    .auth-brand-features { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .auth-brand-features li { display: flex; align-items: flex-start; gap: 12px; font-size: .92rem; color: rgba(255,255,255,.85); }
+    .auth-brand-features i { color: var(--accent); margin-top: 3px; font-size: .9rem; }
+    .auth-brand-footer { font-size: .8rem; color: rgba(255,255,255,.5); }
+
+    .auth-form-panel {
+      padding: 56px 64px;
+      display: flex; flex-direction: column; justify-content: center;
+      max-width: 560px; margin: 0 auto; width: 100%;
+    }
+    .auth-header { margin-bottom: 28px; }
+    .auth-header .admin-eyebrow {
+      display: inline-block;
+      padding: 4px 12px; border-radius: 20px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em;
+      margin-bottom: 12px;
+    }
+    .auth-header h2 { font-size: 1.9rem; font-weight: 700; color: var(--primary); letter-spacing: -.01em; margin-bottom: 6px; }
+    .auth-header p { font-size: .95rem; color: var(--text-muted); }
+
+    .auth-form { display: flex; flex-direction: column; gap: 14px; }
+    .form-row { display: flex; flex-direction: column; gap: 6px; }
+    .form-row label { font-size: .82rem; font-weight: 600; color: var(--primary); }
+    .form-input-wrap {
+      display: flex; align-items: center;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 0 14px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-input-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30,43,79,.08); }
+    .form-input-wrap i { color: var(--text-muted); font-size: .9rem; margin-right: 10px; }
+    .form-input-wrap input {
+      flex: 1; border: 0; outline: 0; background: transparent;
+      padding: 13px 0; font-family: 'Inter', sans-serif; font-size: .95rem;
+    }
+    .form-input-wrap input::placeholder { color: #a5a2b0; }
+    .toggle-pass { color: var(--text-muted); font-size: .9rem; padding: 6px; }
+    .toggle-pass:hover { color: var(--primary); }
+
+    .btn-primary-full {
+      background: var(--accent); color: var(--white);
+      padding: 14px 0; border-radius: var(--radius-pill);
+      font-weight: 600; font-size: .95rem;
+      transition: background .2s, transform .1s;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      margin-top: 6px;
+    }
+    .btn-primary-full:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-primary-full:disabled { opacity: .6; cursor: not-allowed; }
+    .btn-primary-full .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .divider {
+      display: flex; align-items: center; gap: 14px;
+      color: var(--text-muted); font-size: .78rem;
+      text-transform: uppercase; letter-spacing: .08em;
+      margin: 6px 0;
+    }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border-color); }
+
+    .btn-google {
+      display: flex; align-items: center; justify-content: center;
+      gap: 10px; padding: 13px 0;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-pill);
+      background: var(--white);
+      font-weight: 600; font-size: .92rem;
+      color: var(--text-main);
+      transition: all .2s;
+    }
+    .btn-google:hover { background: #fafaf9; border-color: #c9c6c0; transform: translateY(-1px); }
+    .btn-google i { color: #ea4335; font-size: 1rem; }
+
+    .admin-notice {
+      margin-top: 20px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: #f3f2ef;
+      color: var(--text-muted);
+      font-size: .82rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .auth-banner {
+      display: none; padding: 12px 16px; border-radius: 12px;
+      font-size: .85rem; font-weight: 500;
+      margin-bottom: 16px; align-items: center; gap: 10px;
+    }
+    .auth-banner.show { display: flex; }
+    .auth-banner.error { background: #fdeaea; color: #b91c1c; border: 1px solid #f5c2c2; }
+    .auth-banner.warning { background: #fff7e6; color: #b45309; border: 1px solid #fde68a; }
+    .auth-banner i { font-size: .95rem; }
+
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--primary); color: #fff;
+      padding: 14px 22px; border-radius: 12px;
+      font-size: .9rem; font-weight: 500;
+      box-shadow: var(--shadow-md);
+      transform: translateY(120%); opacity: 0;
+      transition: all .3s ease; z-index: 9999;
+      display: flex; align-items: center; gap: 10px;
+      max-width: calc(100vw - 48px);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.error { background: var(--red); }
+
+    @media (max-width: 960px) {
+      .auth-shell { grid-template-columns: 1fr; }
+      .auth-brand { display: none; }
+      .auth-form-panel { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-shell">
+
+    <section class="auth-brand">
+      <div class="auth-brand-logo">
+        <a href="../../index.html"><img src="../../image/vertted-logo.jpeg" alt="Vertted" /></a>
+      </div>
+      <div class="auth-brand-hero">
+        <h1>Admin access. <em>Every lever.</em></h1>
+        <p>Moderate the marketplace, manage users, resolve issues, and keep Vertted healthy — all in one panel.</p>
+        <ul class="auth-brand-features">
+          <li><i class="fas fa-shield-halved"></i> Role‑gated access via Firestore admins collection</li>
+          <li><i class="fas fa-star"></i> Moderate reviews before they go live</li>
+          <li><i class="fas fa-shopping-bag"></i> Oversee orders, disputes, and agency requests</li>
+          <li><i class="fas fa-users"></i> Manage freelancers and clients with full context</li>
+        </ul>
+      </div>
+      <div class="auth-brand-footer">
+        © 2026 Vertted. Admin panel — authorized personnel only.
+      </div>
+    </section>
+
+    <section class="auth-form-panel">
+
+      <div class="auth-header">
+        <span class="admin-eyebrow"><i class="fas fa-shield-halved" style="margin-right:4px"></i> Admin only</span>
+        <h2>Sign in</h2>
+        <p>Use your Vertted admin account.</p>
+      </div>
+
+      <div class="auth-banner" id="authBanner">
+        <i class="fas fa-info-circle" id="bannerIcon"></i>
+        <span id="bannerText"></span>
+      </div>
+
+      <form class="auth-form" id="authForm" novalidate>
+
+        <div class="form-row">
+          <label for="emailInput">Email address</label>
+          <div class="form-input-wrap">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="emailInput" placeholder="you@vertted.com" autocomplete="email" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="passwordInput">Password</label>
+          <div class="form-input-wrap">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="passwordInput" placeholder="At least 8 characters" autocomplete="current-password" required />
+            <button type="button" class="toggle-pass" id="togglePass" tabindex="-1">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary-full" id="submitBtn">
+          <span id="submitLabel">Sign in as admin</span>
+        </button>
+      </form>
+
+      <div class="divider">or</div>
+
+      <button type="button" class="btn-google" id="googleBtn">
+        <i class="fab fa-google"></i> Continue with Google
+      </button>
+
+      <div class="admin-notice">
+        <i class="fas fa-circle-info" style="color:var(--accent);margin-right:4px"></i>
+        Not an admin? Admins are seeded manually by an existing admin — ask a teammate to add you to the <code>admins</code> collection.
+      </div>
+
+    </section>
+  </div>
+
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import {
+      getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+      GoogleAuthProvider, signInWithPopup, signOut,
+      setPersistence, browserLocalPersistence, browserSessionPersistence
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDsL6tQHjXqTK0NTSDgb6SMS_1_ode2whQ",
+      authDomain: "vertted-28f7f.firebaseapp.com",
+      projectId: "vertted-28f7f",
+      storageBucket: "vertted-28f7f.firebasestorage.app",
+      messagingSenderId: "912377837951",
+      appId: "1:912377837951:web:c5550721e51b2a3a5f824a",
+      measurementId: "G-Q4FQ96Q25T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const $ = (id) => document.getElementById(id);
+
+    const banner = $('authBanner');
+    const bannerText = $('bannerText');
+    const bannerIcon = $('bannerIcon');
+    function showBanner(message, type = 'error') {
+      banner.className = `auth-banner show ${type}`;
+      bannerText.textContent = message;
+      bannerIcon.className = type === 'error'
+        ? 'fas fa-exclamation-circle'
+        : type === 'warning' ? 'fas fa-triangle-exclamation' : 'fas fa-info-circle';
+    }
+    function hideBanner() { banner.classList.remove('show'); }
+
+    const toastEl = $('toast');
+    let toastTimer;
+    function toast(msg, type = 'error') {
+      toastEl.className = `toast ${type}`;
+      $('toastMsg').textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 3500);
+    }
+
+    $('togglePass').addEventListener('click', () => {
+      const input = $('passwordInput');
+      const icon = $('togglePass').querySelector('i');
+      const showing = input.type === 'text';
+      input.type = showing ? 'password' : 'text';
+      icon.className = showing ? 'fas fa-eye' : 'fas fa-eye-slash';
+    });
+
+    function setSubmitting(isBusy, label) {
+      const btn = $('submitBtn');
+      btn.disabled = isBusy;
+      if (isBusy) {
+        btn.innerHTML = `<span class="spinner"></span><span>${label}</span>`;
+      } else {
+        btn.innerHTML = `<span id="submitLabel">Sign in as admin</span>`;
+      }
+    }
+
+    function friendlyError(err) {
+      const code = err?.code || '';
+      const map = {
+        'auth/invalid-email': 'That email address doesn’t look right.',
+        'auth/user-not-found': 'No account found with that email.',
+        'auth/wrong-password': 'Incorrect password.',
+        'auth/invalid-credential': 'Email or password is incorrect.',
+        'auth/too-many-requests': 'Too many attempts. Wait a moment and try again.',
+        'auth/network-request-failed': 'Network error. Check your connection.',
+        'auth/popup-closed-by-user': 'Sign-in cancelled.',
+        'auth/popup-blocked': 'Pop-up blocked. Please allow pop-ups for this site.'
+      };
+      return map[code] || (err?.message || 'Something went wrong. Please try again.');
+    }
+
+    // Verify admin status via the admins collection.
+    async function isAdmin(uid) {
+      try {
+        const snap = await getDoc(doc(db, 'admins', uid));
+        return snap.exists();
+      } catch (e) {
+        console.warn('admin check failed', e);
+        return false;
+      }
+    }
+
+    $('authForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideBanner();
+
+      const email = $('emailInput').value.trim();
+      const password = $('passwordInput').value;
+
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) return showBanner('Please enter a valid email address.');
+      if (!password || password.length < 8) return showBanner('Password must be at least 8 characters.');
+
+      setSubmitting(true, 'Checking access…');
+
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+
+        if (!(await isAdmin(cred.user.uid))) {
+          await signOut(auth);
+          setSubmitting(false);
+          return showBanner(
+            'You don’t have admin access. Ask an existing admin to add you.',
+            'warning'
+          );
+        }
+
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        console.error(err);
+        showBanner(friendlyError(err));
+        setSubmitting(false);
+      }
+    });
+
+    $('googleBtn').addEventListener('click', async () => {
+      hideBanner();
+      setSubmitting(true, 'Opening Google…');
+      try {
+        const provider = new GoogleAuthProvider();
+        const cred = await signInWithPopup(auth, provider);
+
+        if (!(await isAdmin(cred.user.uid))) {
+          await signOut(auth);
+          setSubmitting(false);
+          return showBanner(
+            'This Google account doesn’t have admin access.',
+            'warning'
+          );
+        }
+
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        console.error(err);
+        if (err.code !== 'auth/popup-closed-by-user') showBanner(friendlyError(err));
+        setSubmitting(false);
+      }
+    });
+
+    // If already signed in and admin, redirect
+    onAuthStateChanged(auth, async (user) => {
+      if (user && await isAdmin(user.uid)) {
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>
